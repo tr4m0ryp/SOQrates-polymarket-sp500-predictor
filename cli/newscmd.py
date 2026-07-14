@@ -96,3 +96,21 @@ def cmd_news_groupb_fit(_args):
         hits += d["hit_rate"] * d["n"]; n += d["n"]
     print(f"pooled conflicted hit-rate {hits/n*100:.1f}% (n={n}) "
           f"-> Z_CONFLICT {groupb.Z_CONFLICT} (conservative)")
+
+
+def cmd_news_llm_test(_args):
+    from news import llm, prompt, prefetch
+
+    ctx = prefetch.build()
+    payload = {"group_a_block": ctx, "headlines_since_last_run": [
+        {"id": "test-1", "ts": "2026-07-15T06:12:00Z", "source": "wire-test",
+         "title": "Fed's Waller says he favors a July cut if inflation stays soft"}],
+        "odds_deltas": {}, "seen_ids": []}
+    try:
+        out = llm.run(prompt.GROUP_B_PROMPT, payload, prompt.validate_b)
+    except llm.LlmError as e:
+        print(f"not ready: {e}")
+        return
+    print(f"provider: {out.pop('_provider')}")
+    for k, v in out.items():
+        print(f"  {k}: {v}")
