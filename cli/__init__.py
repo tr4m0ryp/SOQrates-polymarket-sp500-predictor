@@ -21,6 +21,9 @@ def main():
     gb = sub.add_parser("news-groupb-fit")
     gb.set_defaults(fn=newscmd.cmd_news_groupb_fit)
 
+    lt = sub.add_parser("news-llm-test")
+    lt.set_defaults(fn=newscmd.cmd_news_llm_test)
+
     bt = sub.add_parser("backtest")
     bt.add_argument("--rebuild", action="store_true")
     bt.set_defaults(fn=market.cmd_backtest)
