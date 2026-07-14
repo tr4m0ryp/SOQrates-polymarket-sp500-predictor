@@ -64,3 +64,14 @@ def cmd_news_timing(_args):
     for t, why in RUN_SCHEDULE:
         print(f"  {t}  {why}")
     print("  + event trigger: gap moves >0.15% within 15min between checkpoints")
+
+
+def cmd_news_prefetch(_args):
+    from news import prefetch
+    ctx = prefetch.build()
+    print(f"prefetch for {ctx['date']}: releases {ctx['releases_0830'] or 'none'}, "
+          f"NFP-Friday {ctx['is_nfp_friday']}")
+    for m in ctx["prediction_baseline"]:
+        odds = ", ".join(f"{k} {float(v)*100:.0f}%" for k, v in list(m["odds"].items())[:2])
+        print(f"  [{m['tag']}] {m['title'][:58]:58} ${m['volume']:>12,} | {odds}")
+    print("cached to .cache/news_prefetch.json - reused by every LLM run tonight")
