@@ -12,6 +12,9 @@ def main():
     nm.add_argument("--rebuild", action="store_true")
     nm.set_defaults(fn=newscmd.cmd_news_mistakes)
 
+    nt = sub.add_parser("news-timing")
+    nt.set_defaults(fn=newscmd.cmd_news_timing)
+
     bt = sub.add_parser("backtest")
     bt.add_argument("--rebuild", action="store_true")
     bt.set_defaults(fn=market.cmd_backtest)
