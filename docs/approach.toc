@@ -1,0 +1,17 @@
+\contentsline {section}{\numberline {1}The bet and the number it resolves on}{2}{section.1}%
+\contentsline {section}{\numberline {2}Why the official open is a strange number}{2}{section.2}%
+\contentsline {section}{\numberline {3}The core market model}{2}{section.3}%
+\contentsline {subsection}{\numberline {3.1}The idea}{2}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}The formula}{2}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}Measured accuracy}{3}{subsection.3.3}%
+\contentsline {subsection}{\numberline {3.4}Where the model fails --- a complete taxonomy}{3}{subsection.3.4}%
+\contentsline {section}{\numberline {4}Layer R: reconstructing the opening auction (in progress)}{3}{section.4}%
+\contentsline {section}{\numberline {5}The news layer}{4}{section.5}%
+\contentsline {subsection}{\numberline {5.1}The key empirical fact}{4}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}Group A: the midnight briefing}{4}{subsection.5.2}%
+\contentsline {subsection}{\numberline {5.3}Group B: the continuous watch}{4}{subsection.5.3}%
+\contentsline {section}{\numberline {6}Putting it together: the fusion rule}{5}{section.6}%
+\contentsline {section}{\numberline {7}Current status}{5}{section.7}%
+\contentsline {section}{\numberline {8}Open questions --- where suggestions help most}{5}{section.8}%
+\contentsline {section}{\numberline {A}Fitted constants and provenance}{6}{appendix.A}%
+\contentsline {section}{\numberline {B}Reproducing every number}{6}{appendix.B}%
