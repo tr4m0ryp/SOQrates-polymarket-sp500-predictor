@@ -20,6 +20,10 @@ _NS_H = 3_600_000_000_000
 STOP_NS = int(9.75 * _NS_H)          # stop parsing at 09:45 ET
 _TS_PROBE_EVERY = 1_000_000          # sample a timestamp every N messages
 
+MSG_NOII = 73            # 'I'
+MSG_CROSS = 81           # 'Q'
+MSG_DIRECTORY = 82       # 'R'
+
 _u16 = struct.Struct(">H")
 _noii = struct.Struct(">HH6sQQc8sIIIcc")   # 'I' body after type byte
 _cross = struct.Struct(">HH6sQ8sIQc")      # 'Q' body after type byte
@@ -78,10 +82,10 @@ def parse_opening(path: str, tickers: set[str] | None = None,
             body = off + 3
             n_msgs += 1
 
-            if mtype == 82:                     # 'R' stock directory
+            if mtype == MSG_DIRECTORY:
                 locate = _u16.unpack_from(buf, body)[0]
                 names[locate] = buf[body + 10:body + 18].decode().strip()
-            elif mtype == 73:                   # 'I' NOII
+            elif mtype == MSG_NOII:
                 (loc, _, ts, paired, imb, side, stock, far, near, ref,
                  ctype, _) = _noii.unpack_from(buf, body)
                 if ctype == b"O":
@@ -91,7 +95,7 @@ def parse_opening(path: str, tickers: set[str] | None = None,
                         rec.noii.append(NoiiSnap(
                             _ns(ts), near * _PX, far * _PX, ref * _PX,
                             paired, imb, side.decode()))
-            elif mtype == 81:                   # 'Q' cross trade
+            elif mtype == MSG_CROSS:
                 loc, _, ts, shares, stock, px, _, ctype = _cross.unpack_from(buf, body)
                 if ctype == b"O":
                     tick = stock.decode().strip() or names.get(loc, "")
@@ -102,7 +106,7 @@ def parse_opening(path: str, tickers: set[str] | None = None,
                         rec.cross_ts_ns = _ns(ts)
                         if _ns(ts) > STOP_NS:
                             return out
-            elif n_msgs % _TS_PROBE_EVERY == 0:  # cheap time probe on any msg
+            elif n_msgs % _TS_PROBE_EVERY == 0:
                 ts_ns = _ns(buf[body + 4:body + 10])
                 if progress:
                     progress(n_msgs, ts_ns)

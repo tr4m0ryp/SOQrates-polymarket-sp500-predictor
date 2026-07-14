@@ -8,7 +8,6 @@ ROOT = Path(__file__).resolve().parent.parent
 CACHE = ROOT / ".cache"
 CACHE.mkdir(exist_ok=True)
 
-# model constants (validated 2026-07-14, see project memory)
 A0 = 0.0092          # intercept of official-gap regression (%)
 K_DEFAULT = 0.767    # pooled futures->official attenuation
 EWMA_LAMBDA = 0.94   # decay for overnight gap^2 EWMA
