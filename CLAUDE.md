@@ -11,33 +11,34 @@ market. Model background, validated numbers, and roadmap live in project memory
 - matplotlib only inside plotting helpers.
 - No C/C++/Rust: the system is network-bound, one prediction/day; per-second
   data only in the 9:28-9:30 window. Do not add compiled components.
-- Files < 300 lines; split into the existing package tree, never flat.
+- Files < 300 lines; split into the existing domain tree at repo root, never flat.
+- Research plots live in `plots/`; run all commands from the repo root.
 
 ## Package map
 
-- `spx_open/data/` fetchers: Yahoo chart API (ES/NQ/YM/^GSPC/^VIX1D), stooq
+- `data/` fetchers: Yahoo chart API (ES/NQ/YM/^GSPC/^VIX1D), stooq
   ground-truth cross-check, IVV holdings -> index weights.
-- `spx_open/macro/` release calendar: NFP computed (first Friday), CPI/PPI
+- `macro/` release calendar: NFP computed (first Friday), CPI/PPI
   fetched from BLS schedule pages into `.cache/releases.json`.
-- `spx_open/model/` regime scaler + model cores (v1.2 ES-only, v1.3 adds
+- `model/` regime scaler + model cores (v1.2 ES-only, v1.3 adds
   VIX1D sigma + NQ spread) + inverse-variance fusion.
-- `spx_open/replica/` stage-3 auction first-tick assembly; Databento wrapper
+- `replica/` stage-3 auction first-tick assembly; Databento wrapper
   reads `DATABENTO_API_KEY` env (untested until a key is provided).
-- `spx_open/pm/` Polymarket gamma-api client + edge calculator.
-- `spx_open/backtest/` dataset builder (`.cache/dataset.json`) + metric runner.
+- `pm/` Polymarket gamma-api client + edge calculator.
+- `backtest/` dataset builder (`.cache/dataset.json`) + metric runner.
 
 ## Commands
 
 ```
-python3 -m spx_open backtest [--rebuild]   # train/test metrics, quirk table
-python3 -m spx_open predict                # live P(up) now + Polymarket edge
-python3 -m spx_open ground-truth           # stooq-vs-yahoo official-open audit
-python3 -m spx_open weights                # index weights / Nasdaq share
-python3 -m spx_open calendar-refresh       # FRED release dates (FRED_API_KEY)
-python3 -m spx_open noii-deviation --file  # NOII-vs-print stats from raw ITCH
-python3 -m spx_open lseg-status            # check DSS_USERNAME/DSS_PASSWORD
-python3 -m spx_open lseg-pull --date D     # pull one day, cache, discover FIDs
-python3 -m spx_open stage3 --date D        # replica-vs-official for cached day
+python3 . backtest [--rebuild]   # train/test metrics, quirk table
+python3 . predict                # live P(up) now + Polymarket edge
+python3 . ground-truth           # stooq-vs-yahoo official-open audit
+python3 . weights                # index weights / Nasdaq share
+python3 . calendar-refresh       # FRED release dates (FRED_API_KEY)
+python3 . noii-deviation --file  # NOII-vs-print stats from raw ITCH
+python3 . lseg-status            # check DSS_USERNAME/DSS_PASSWORD
+python3 . lseg-pull --date D     # pull one day, cache, discover FIDs
+python3 . stage3 --date D        # replica-vs-official for cached day
 ```
 
 ## Environment keys (all optional until the corresponding feature is used)
