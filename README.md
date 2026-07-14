@@ -7,8 +7,8 @@ and compares the model's probability against Polymarket's daily
 package map and commands.
 
 ```
-python3 -m spx_open backtest    # train/test metrics + quirk-day table
-python3 -m spx_open predict     # live P(up) now + Polymarket edge
+python3 . backtest    # train/test metrics + quirk-day table
+python3 . predict     # live P(up) now + Polymarket edge
 ```
 
 ## License
