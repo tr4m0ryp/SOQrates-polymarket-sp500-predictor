@@ -1,5 +1,5 @@
 """Model-vs-market edge calculation for the Polymarket SPX-open market."""
-from ..config import CONF_COMMIT
+from config import CONF_COMMIT
 
 EDGE_THRESHOLD = 0.05   # minimum price divergence worth trading
 

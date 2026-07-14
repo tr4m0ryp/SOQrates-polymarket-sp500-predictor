@@ -1,7 +1,7 @@
 """Inverse-variance fusion of (mu, sigma) estimates from pipeline stages."""
 import math
 
-from .core import phi
+from model.core import phi
 
 
 def combine(estimates: list[tuple[float, float]]) -> tuple[float, float]:
