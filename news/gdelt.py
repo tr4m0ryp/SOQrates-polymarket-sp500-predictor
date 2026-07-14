@@ -24,13 +24,13 @@ def _fmt(ts: str) -> str:
 
 
 def query(q: str, start: str, end: str, max_records: int = 30,
-          retries: int = 4) -> list[dict]:
+          retries: int = 4, sort: str = "datedesc") -> list[dict]:
     """start/end like '20260323T0400Z' or plain YYYYMMDDHHMMSS."""
     params = urllib.parse.urlencode({
         "query": q, "mode": "artlist", "format": "json",
         "startdatetime": _fmt(start).ljust(14, "0"),
         "enddatetime": _fmt(end).ljust(14, "0"),
-        "maxrecords": max_records, "sort": "dateasc"})
+        "maxrecords": max_records, "sort": sort})
     for i in range(retries):
         try:
             req = urllib.request.Request(f"{_API}?{params}", headers=_UA)
