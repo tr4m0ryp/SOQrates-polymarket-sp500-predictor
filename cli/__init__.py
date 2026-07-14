@@ -24,6 +24,11 @@ def main():
     lt = sub.add_parser("news-llm-test")
     lt.set_defaults(fn=newscmd.cmd_news_llm_test)
 
+    lb = sub.add_parser("news-llm-bench")
+    lb.add_argument("--models", default="", help="comma list; default = NVIDIA shortlist")
+    lb.add_argument("--verbose", action="store_true")
+    lb.set_defaults(fn=newscmd.cmd_news_llm_bench)
+
     bt = sub.add_parser("backtest")
     bt.add_argument("--rebuild", action="store_true")
     bt.set_defaults(fn=market.cmd_backtest)

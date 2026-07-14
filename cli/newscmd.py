@@ -114,3 +114,25 @@ def cmd_news_llm_test(_args):
     print(f"provider: {out.pop('_provider')}")
     for k, v in out.items():
         print(f"  {k}: {v}")
+
+
+def cmd_news_llm_bench(args):
+    import os
+    from news import bench
+
+    base = os.environ.get("LLM_BASE_URL", "https://integrate.api.nvidia.com/v1")
+    key = os.environ.get("LLM_API_KEY", "")
+    if not key:
+        print("set LLM_API_KEY (nvapi-... for NVIDIA) and rerun")
+        return
+    models = args.models.split(",") if args.models else list(bench.SHORTLIST)
+    print(f"benching {len(models)} models on {len(bench.CASES)} labeled cases\n")
+    results = bench.run_bench(models, base, key)
+    maxpts = 2.5 * len(bench.CASES)
+    for r in results:
+        lat = f"{r['median_latency']:.1f}s" if r["median_latency"] else "-"
+        print(f"{r['model']:48} {r['score']:>5.1f}/{maxpts:.0f}  "
+              f"valid {r['valid']}/{r['n']}  median {lat}")
+        if args.verbose:
+            print("\n".join(r["details"]))
+    print("\nwinner ->", results[0]["model"] if results else "none")
