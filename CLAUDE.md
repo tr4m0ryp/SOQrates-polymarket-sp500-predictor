@@ -33,8 +33,23 @@ python3 -m spx_open backtest [--rebuild]   # train/test metrics, quirk table
 python3 -m spx_open predict                # live P(up) now + Polymarket edge
 python3 -m spx_open ground-truth           # stooq-vs-yahoo official-open audit
 python3 -m spx_open weights                # index weights / Nasdaq share
-python3 -m spx_open calendar-refresh       # refetch BLS release dates
+python3 -m spx_open calendar-refresh       # FRED release dates (FRED_API_KEY)
+python3 -m spx_open noii-deviation --file  # NOII-vs-print stats from raw ITCH
+python3 -m spx_open lseg-status            # check DSS_USERNAME/DSS_PASSWORD
+python3 -m spx_open lseg-pull --date D     # pull one day, cache, discover FIDs
+python3 -m spx_open stage3 --date D        # replica-vs-official for cached day
 ```
+
+## Environment keys (all optional until the corresponding feature is used)
+
+- `DSS_USERNAME` / `DSS_PASSWORD` - LSEG DataScope Select (Tick History).
+  Academic license = research only; production trading needs commercial data.
+- `FRED_API_KEY` - release calendar (CPI/PPI/NFP/GDP); free from FRED.
+  Without it the calendar falls back to the NFP first-Friday rule.
+- `MASSIVE_API_KEY` - live NYSE imbalance websocket leg.
+- `DATABENTO_API_KEY` - optional alternative historical/live source.
+- Weights come from Slickcharts + nasdaqlisted.txt (no key); iShares CSV is
+  the fallback and currently serves a bot-wall.
 
 ## Conventions
 
