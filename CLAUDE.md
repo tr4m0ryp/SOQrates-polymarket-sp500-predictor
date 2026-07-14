@@ -17,9 +17,9 @@ market. Model background, validated numbers, and roadmap live in project memory
 ## Package map
 
 - `data/` fetchers: Yahoo chart API (ES/NQ/YM/^GSPC/^VIX1D), stooq
-  ground-truth cross-check, IVV holdings -> index weights.
-- `macro/` release calendar: NFP computed (first Friday), CPI/PPI
-  fetched from BLS schedule pages into `.cache/releases.json`.
+  ground-truth cross-check, Slickcharts + nasdaqlisted.txt -> index weights.
+- `macro/` release calendar: NFP computed (first Friday), CPI/PPI/GDP
+  from the FRED release-dates API into `.cache/releases.json`.
 - `model/` regime scaler + model cores (v1.2 ES-only, v1.3 adds
   VIX1D sigma + NQ spread) + inverse-variance fusion.
 - `replica/` stage-3 auction first-tick assembly; Databento wrapper
