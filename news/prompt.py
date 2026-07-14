@@ -64,3 +64,60 @@ def validate(raw: str) -> dict:
         "event_risks": [str(x) for x in out.get("event_risks", [])][:3],
         "rationale": str(out.get("rationale", ""))[:300],
     }
+
+
+# ---------------------------------------------------------------- Group B
+GROUP_B_DIRECTION_RULES = """direction: sign of the NEW information for US
+equities. +1 clearly bullish, -1 clearly bearish, 0 unclear/mixed/stale."""
+
+GROUP_B_PROMPT = """You are the intraday news classifier for an S&P 500
+official-open prediction model. You run at scheduled checkpoints and when
+a trigger fires. You do NOT receive market prices, futures gaps, or the
+model's position; never reason about how "the market" reacted - another
+system measures that. Your job is purely: what does the NEW text say?
+
+INPUT JSON: the Group-A prefetch block (tonight's calendar/odds baseline),
+headlines since the previous run (wire + GDELT + social, each with source
+and UTC timestamp), prediction-market odds deltas since baseline, and the
+list of story-ids you already classified tonight (ignore those).
+
+OUTPUT ONLY this JSON:
+{
+  "direction": <float -1..+1>,
+  "confidence": <float 0..1>,
+  "event_type": <"release"|"geopolitical"|"fed"|"earnings"|"other"|"none">,
+  "shock": <bool - is this a genuine new event (not analysis/recap)?>,
+  "sigma_mult": <float 1.0-2.0>,
+  "seen_ids": [<ids you classified this run>],
+  "rationale": "<one sentence citing the specific headline>"
+}
+
+RULES:
+- Most runs see nothing new: direction 0, confidence 0, event_type "none",
+  shock false, sigma_mult 1.0. That is the correct common output.
+- direction reflects ONLY new information since the last run. Recaps,
+  previews, and opinion pieces are NOT events (shock=false, direction 0).
+- confidence: 0.9+ only for unambiguous primary events (an 8:30 print far
+  from consensus, a head-of-state post, war action). Conflicting or
+  single-weak-source stories cap at 0.4.
+- Compare 8:30 prints against the consensus/nowcast in the Group-A block;
+  the surprise SIGN sets direction (cool inflation = +, hot = -; strong
+  jobs = usually - in a hiking regime, use the odds block for regime).
+- Odds deltas >= 5pts on war/Fed markets are events even without headlines.
+- sigma_mult > 1 only while an event is genuinely unresolved (headline war
+  risk, halted talks, disputed print).
+- Never exceed bounds; never add fields. The engine decides whether your
+  direction is even applicable - you never see its state."""
+
+
+def validate_b(raw: str) -> dict:
+    out = json.loads(raw)
+    return {
+        "direction": min(max(float(out["direction"]), -1.0), 1.0),
+        "confidence": min(max(float(out["confidence"]), 0.0), 1.0),
+        "event_type": str(out.get("event_type", "none")),
+        "shock": bool(out.get("shock", False)),
+        "sigma_mult": min(max(float(out.get("sigma_mult", 1.0)), 1.0), 2.0),
+        "seen_ids": [str(x) for x in out.get("seen_ids", [])][:200],
+        "rationale": str(out.get("rationale", ""))[:300],
+    }
