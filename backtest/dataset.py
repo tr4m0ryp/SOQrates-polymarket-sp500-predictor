@@ -12,9 +12,9 @@ _CACHE_FILE = CACHE / "dataset.json"
 
 def build() -> list[dict]:
     feeds = futures.load_feeds()
-    spx = yahoo.daily_open_close("^GSPC", 330)
+    spx = yahoo.daily_open_close("^GSPC", LOOKBACK_DAYS + 30)
     try:
-        vix = yahoo.daily_open_close("^VIX1D", 330)
+        vix = yahoo.daily_open_close("^VIX1D", LOOKBACK_DAYS + 30)
     except Exception:
         vix = {}
     days = sorted(spx)

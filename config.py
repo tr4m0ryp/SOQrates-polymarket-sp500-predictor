@@ -15,8 +15,8 @@ SMALL_GAP = 0.25     # |gap| %-threshold below which small-gap k applies
 SMALL_GAP_HOURS = (0, 1, 2, 3, 4)
 NFP_SIGMA_MULT = 1.3     # sigma widening before 8:30 on release mornings
 CONF_COMMIT = 0.65       # below this confidence = coin-flip / no-bet
-LOOKBACK_DAYS = 320      # hourly futures history window (Yahoo 60m limit 730d)
-DATASET_DAYS = 200       # trading days kept in the backtest dataset
+LOOKBACK_DAYS = 720      # hourly futures history window (Yahoo 60m cap ~730d)
+DATASET_DAYS = 480       # trading days kept in the backtest dataset
 
 QUIRK_DAYS = [           # ES held direction, official printed opposite/tiny
     "2025-09-12", "2025-09-17", "2025-11-06", "2025-12-03",
