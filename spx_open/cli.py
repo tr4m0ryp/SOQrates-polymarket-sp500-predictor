@@ -116,6 +116,64 @@ def cmd_noii_deviation(args):
             print(f"  {r['ticker']:6} cross {r['cross']:>9.2f}  {vals}")
 
 
+def cmd_lseg_pull(args):
+    from .config import CACHE
+    from .data import weights as wmod
+    from .replica import lseg_tick_history as lseg, lseg_parse
+
+    rows = wmod.load()
+    nas = [r["ticker"] for r in rows if r["exchange"] == "NASDAQ"]
+    nyse = [r["ticker"] for r in rows if r["exchange"] == "NYSE"]
+    print(f"pulling {args.date}: {len(nas)} Nasdaq + {len(nyse)} NYSE RICs")
+    payload = lseg.quirk_day_pull(nas, nyse, args.date)
+    out = CACHE / "lseg"
+    out.mkdir(exist_ok=True)
+    path = out / f"{args.date}.csv"
+    path.write_bytes(payload)
+    print(f"saved {path} ({len(payload)/1e6:.1f} MB)")
+    print("\ntop FIDs seen (extend lseg_parse.FID_MAP with auction fields):")
+    for name, n in list(lseg_parse.discover(payload).items())[:25]:
+        print(f"  {name}: {n}")
+
+
+def cmd_stage3(args):
+    from .config import CACHE
+    from .data import yahoo
+    from .replica import lseg_parse, pipeline
+
+    path = CACHE / "lseg" / f"{args.date}.csv"
+    if not path.exists():
+        print(f"no cached pull for {args.date} - run: lseg-pull --date {args.date}")
+        return
+    snaps = lseg_parse.snapshots(str(path))
+    pred = {}
+    for t, ss in snaps.items():
+        last = next((s for s in reversed(ss) if s.get("pred_open")), None)
+        if last:
+            pred[t] = last["pred_open"]
+    print(f"{len(pred)} tickers with indicative prices")
+    spx = yahoo.daily_open_close("^GSPC", 400)
+    days = sorted(spx)
+    if args.date not in spx:
+        print(f"{args.date} not a trading day in ^GSPC history")
+        return
+    prior = days[days.index(args.date) - 1]
+    closes = {}
+    for t in pred:                        # prior closes per constituent
+        try:
+            d = yahoo.daily_open_close(t.replace(".", "-"), 30 + 5)
+            closes[t] = d.get(prior, (None, None))[1]
+        except Exception:
+            continue
+    closes = {t: c for t, c in closes.items() if c}
+    rep = pipeline.replica_estimate(pred, closes)
+    official = (spx[args.date][0] / spx[prior][1] - 1) * 100
+    print(f"replica gap {rep['replica_gap_pct']:+.3f}% "
+          f"(live weight {rep['live_weight_pct']:.0f}%, sigma {rep['sigma_pct']:.3f}%)")
+    print(f"official gap {official:+.3f}%  -> direction "
+          f"{'MATCH' if (rep['replica_gap_pct'] > 0) == (official > 0) else 'MISS'}")
+
+
 def cmd_lseg_status(_args):
     from .replica import lseg_tick_history as lseg
     try:
