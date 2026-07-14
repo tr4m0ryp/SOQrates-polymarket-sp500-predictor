@@ -2,9 +2,9 @@
 import datetime as dt
 import json
 
-from ..config import CACHE, DATASET_DAYS
-from ..data import futures, yahoo
-from ..macro import releases
+from config import CACHE, DATASET_DAYS
+from data import futures, yahoo
+from macro import releases
 from ..model.regime import annotate_ewma
 
 _CACHE_FILE = CACHE / "dataset.json"

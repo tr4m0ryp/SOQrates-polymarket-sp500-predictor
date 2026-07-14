@@ -2,8 +2,8 @@
 import bisect
 import datetime as dt
 
-from ..config import NY, LOOKBACK_DAYS
-from . import yahoo
+from config import NY, LOOKBACK_DAYS
+from data import yahoo
 
 SYMBOLS = ("ES=F", "NQ=F", "YM=F")
 

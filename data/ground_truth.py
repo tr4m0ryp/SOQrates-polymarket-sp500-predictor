@@ -3,7 +3,7 @@ import csv
 import io
 import urllib.request
 
-from . import yahoo
+from data import yahoo
 
 _STOOQ = "https://stooq.com/q/d/l/?s=%5Espx&i=d"
 

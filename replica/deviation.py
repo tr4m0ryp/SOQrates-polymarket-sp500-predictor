@@ -6,7 +6,7 @@ the exchange's own indicative price at 9:28/9:29 sits from the print at
 """
 import math
 
-from .itch import SymbolAuction
+from replica.itch import SymbolAuction
 
 _NS_H = 3_600_000_000_000
 CHECKPOINTS = {          # ns since midnight ET
