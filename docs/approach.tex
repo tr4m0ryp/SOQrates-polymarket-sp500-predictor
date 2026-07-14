@@ -157,9 +157,77 @@ where $\hat{P}_i$ is the indicative price, $C_i$ yesterday's close, and stale
 stocks contribute exactly zero. NYSE names default to ``stale'' --- we measured
 their indicative prices to be 6--10$\times$ noisier than Nasdaq's.
 
-Status: parsers are built and validated on free sample data from both
-exchanges; historical replay of our actual quirk days awaits an academic LSEG
-Tick History account (approved, credentials pending).
+\subsection{Implementation via LSEG Tick History}
+
+LSEG Tick History (accessed through the DataScope Select REST API) is an
+archive of every message the exchanges published, going back to 1996 ---
+including the per-second Nasdaq NOII indicative prices and the NYSE imbalance
+feed for any past date. Access has been approved through a university
+(academic license); credentials are pending. The pipeline is already coded and
+waits only for the login:
+
+\begin{enumerate}
+\item \textbf{Authenticate} (\texttt{python3 . lseg-status}) --- exchanges the
+university credentials for an API token.
+\item \textbf{Pull one morning} (\texttt{lseg-pull -{}-date 2026-06-22}) ---
+requests all $\sim$505 index constituents, both exchanges, for the 9:15--9:40
+window of that date; the server prepares an extract which we download and
+cache ($\sim$tens of MB per day).
+\item \textbf{Field discovery} --- LSEG stores each exchange field under its
+own name; the first real pull prints a frequency table of the field names seen
+so the parser's mapping can be confirmed once, by hand, against the spec.
+\item \textbf{Replay} (\texttt{stage3 -{}-date 2026-06-22}) --- rebuilds the
+first index tick from the indicative prices via the $\mu_R$ formula above and
+compares it against the official open: one line of output per day, MATCH or
+MISS, with the replica's error in index points.
+\item \textbf{Batch validation} --- repeat over the 12 known quirk days plus a
+control sample of normal days; fit the replica's real uncertainty
+$\sigma_R(\tau)$ from these replays (currently a placeholder prior), which is
+the number the fusion rule needs.
+\end{enumerate}
+
+One caveat belongs in print: the academic license covers research --- i.e.\
+exactly this validation --- but a production system trading live must buy the
+same data commercially (dxFeed quote, or NYSE TAQ at \$1{,}000 for a
+12-months-back subscription).
+
+\subsection{What this should theoretically deliver}
+
+The free-sample measurement (indicative-vs-print error of 2--5\,bp per
+mega-cap, $\sim$1--2 index points aggregated) lets us state the expected
+outcome before spending anything:
+
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+ & Today (futures only) & With validated replica \\
+\midrule
+9:29 direction accuracy & $\sim$94\% & $\sim$97--98\% (ceiling no longer binds) \\
+Index-level error at 9:29 & $\pm$6 pts & $\pm$1--2 pts; $\pm$0.75 at 9:29:50 \\
+Quirk days handled & 2 of 12 & majority called; rest honestly priced \\
+Quirk-day Polymarket stance & stand down & buy the 1--6\textcent\ side the crowd abandoned \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The honest nuance: the very smallest quirk days (official gap of
+$\pm$0.1--0.2 points, like June 22's $-0.14$) sit \emph{inside} even the
+replica's error band --- those days the replica will not call with certainty
+either. But it does not need to. The crowd prices such days at 94--99 cents;
+the replica prices them at their true 60--80\%. Buying the abandoned side at
+1--6 cents with a true probability near 30--40\% is a several-fold
+expected-value trade \emph{even when the replica cannot name the winner}. On
+the larger quirk days (0.5--0.9 points, most of the twelve), a $\pm$0.75-point
+estimate at 9:29:50 is decisive. The 96.3\% ``ceiling'' of
+Section~3.3 stops applying entirely, because it was the limit of
+market-wide price data --- the replica reads the auction book itself, which is
+the mechanism that generates those residual errors.
+
+The second, quieter payoff is the fitted $\sigma_R$: once the replica's
+uncertainty is measured on real replays, the fusion rule automatically hands
+authority to it in the final two minutes --- no thresholds to tune --- and the
+same code path runs live later with a commercial feed (NCDS/dxFeed for Nasdaq,
+Massive for NYSE) without modification.
 
 \section{The news layer}
 
