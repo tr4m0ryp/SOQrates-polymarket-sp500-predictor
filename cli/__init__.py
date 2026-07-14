@@ -29,6 +29,9 @@ def main():
     lb.add_argument("--verbose", action="store_true")
     lb.set_defaults(fn=newscmd.cmd_news_llm_bench)
 
+    rp = sub.add_parser("news-replay")
+    rp.set_defaults(fn=newscmd.cmd_news_replay)
+
     bt = sub.add_parser("backtest")
     bt.add_argument("--rebuild", action="store_true")
     bt.set_defaults(fn=market.cmd_backtest)
