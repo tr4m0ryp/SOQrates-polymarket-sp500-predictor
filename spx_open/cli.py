@@ -189,7 +189,12 @@ def cmd_lseg_status(_args):
 
 def cmd_calendar_refresh(_args):
     from .macro import releases
-    out = releases.refresh()
+    try:
+        out = releases.refresh()
+    except RuntimeError as e:
+        print(f"not ready: {e}")
+        print("fallback active: NFP first-Friday rule (no key needed)")
+        return
     for name, dates in out.items():
         print(f"{name}: {len(dates)} dates" + (f" (latest {dates[-1]})" if dates else ""))
 
