@@ -18,6 +18,9 @@ def main():
     np_ = sub.add_parser("news-prefetch")
     np_.set_defaults(fn=newscmd.cmd_news_prefetch)
 
+    gb = sub.add_parser("news-groupb-fit")
+    gb.set_defaults(fn=newscmd.cmd_news_groupb_fit)
+
     bt = sub.add_parser("backtest")
     bt.add_argument("--rebuild", action="store_true")
     bt.set_defaults(fn=market.cmd_backtest)

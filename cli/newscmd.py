@@ -75,3 +75,24 @@ def cmd_news_prefetch(_args):
         odds = ", ".join(f"{k} {float(v)*100:.0f}%" for k, v in list(m["odds"].items())[:2])
         print(f"  [{m['tag']}] {m['title'][:58]:58} ${m['volume']:>12,} | {odds}")
     print("cached to .cache/news_prefetch.json - reused by every LLM run tonight")
+
+
+def cmd_news_groupb_fit(_args):
+    from backtest import dataset
+    from model.core import ModelProd
+    from news import groupb
+
+    rows = dataset.load()
+    train, test = dataset.split(rows)
+    model = ModelProd().fit(train)
+    for name, sub in (("train", train), ("test", test), ("pooled", rows)):
+        s = groupb.fit_shock_sigma(sub, model)
+        print(f"{name:6} post-shock sigma ratio {s['m_shock']:.2f} "
+              f"(shocked {s['n_shocked']} / quiet {s['n_quiet']})")
+    hits = n = 0
+    for h in (7, 8):
+        d = groupb.fit_conflicted_direction(rows, at_hour=h)
+        print(f"conflicted h={h}: hit {d['hit_rate']:.2f} n={d['n']}")
+        hits += d["hit_rate"] * d["n"]; n += d["n"]
+    print(f"pooled conflicted hit-rate {hits/n*100:.1f}% (n={n}) "
+          f"-> Z_CONFLICT {groupb.Z_CONFLICT} (conservative)")
