@@ -136,3 +136,18 @@ def cmd_news_llm_bench(args):
         if args.verbose:
             print("\n".join(r["details"]))
     print("\nwinner ->", results[0]["model"] if results else "none")
+
+
+def cmd_news_replay(_args):
+    from backtest import dataset
+    from news import replay
+
+    rows = dataset.load()
+    results = replay.replay_labeled(rows)
+    ok = [r for r in results if "verdict" in r]
+    correct = sum(1 for r in ok if r["verdict"] == "CORRECT")
+    weak = sum(1 for r in ok if r["verdict"] == "weak-right")
+    wrong = sum(1 for r in ok if r["verdict"] == "WRONG-SIGN")
+    missed = sum(1 for r in ok if r["verdict"] == "missed(0)")
+    print(f"\nreplayed {len(ok)} labeled days: {correct} correct, "
+          f"{weak} weak-right, {missed} missed(0), {wrong} wrong-sign")
