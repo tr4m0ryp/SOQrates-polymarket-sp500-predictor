@@ -1,0 +1,331 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=2.6cm]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs}
+\usepackage[colorlinks=true,linkcolor=blue,urlcolor=blue]{hyperref}
+\usepackage{parskip}
+\usepackage{xcolor}
+\newcommand{\intuition}[1]{\begin{quote}\small\itshape #1\end{quote}}
+
+\title{Predicting the S\&P 500 Official Opening Print\\
+\large A complete description of the model, the news layer, and the trading approach}
+\author{SPX Open Predictor project}
+\date{July 15, 2026 --- working draft for review}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Every trading day, Polymarket runs a market called ``S\&P 500 Opens Up or Down''.
+It pays out based on one specific number: the \emph{official} opening value of the
+S\&P 500 index, as published by the Wall Street Journal. This document explains,
+in plain language, how our system predicts that number: a statistical core model
+built on overnight futures, a planned reconstruction of the opening auction
+itself, and a news layer driven by a language model. Every parameter mentioned
+is fitted from roughly two years of historical data; nothing is hand-tuned.
+The document ends with open questions where suggestions are most useful.
+\end{abstract}
+
+\tableofcontents
+
+\section{The bet and the number it resolves on}
+
+The Polymarket contract asks a simple question: will the official S\&P 500 open
+be higher or lower than yesterday's official close? Shares of the winning side
+pay \$1; the losing side pays \$0. Prices before resolution behave like
+probabilities: if ``Up'' trades at \$0.70, the crowd collectively believes there
+is a 70\% chance the index opens higher.
+
+The subtlety --- and the entire reason this project exists --- is \emph{which}
+number decides the outcome. It is not the futures price, not an ETF price, not
+the level shown on a TradingView chart. It is the first index value that
+Standard \& Poor's computes at 9:30:00 New York time, echoed by the WSJ.
+
+\section{Why the official open is a strange number}
+
+The S\&P 500 is a weighted average of 500 stock prices. At 9:30:00 sharp, most
+of those stocks have not actually traded yet: each stock opens with its own
+auction on its own exchange, and those auctions finish at slightly different
+moments. S\&P's calculation does not wait. It computes the first index tick
+using \textbf{yesterday's closing price for every stock that has not opened
+yet}.
+
+\intuition{Picture a choir where each singer joins one by one. The first chord
+you hear is mostly yesterday's recording, with only a few live voices mixed in.
+Nasdaq-listed stocks (about 45--57\% of index weight, including Apple, Nvidia,
+Microsoft) join at exactly 9:30:00; many NYSE names lag by seconds to minutes.}
+
+Two measurable consequences follow. First, the official open only realizes
+about 80\% of the move that futures markets predict --- the stale stocks drag it
+toward yesterday's close. Second, on days when futures point only slightly up
+or down, the official open can land on the \emph{opposite} side of what every
+live chart shows. We call these \textbf{auction-quirk days}; they occur roughly
+once a month, and they are the days the Polymarket crowd loses most
+spectacularly (we measured six such days in five months --- on all six, the
+crowd held the losing side at 94--99 cents).
+
+\section{The core market model}
+
+\subsection{The idea}
+
+Overnight, S\&P 500 futures (ES) trade continuously and absorb almost all news.
+Our core model reads the futures ``gap'' --- the percentage difference between
+the futures price now and yesterday's 16:00 close --- and converts it into a
+probability that the official open prints higher.
+
+\subsection{The formula}
+
+Let $g$ be the futures gap and $\tau$ the minutes remaining before 9:30. The
+model predicts the official gap as
+\[
+\mu_m \;=\; a_0 + k \cdot g \;+\; c_{nq}(h)\,(q_{NQ}-g),
+\qquad
+P(\text{up}) = \Phi\!\left(\frac{\mu_m}{\sigma_m}\right),
+\]
+where $\Phi$ is the normal distribution function. The pieces:
+
+\begin{itemize}
+\item \textbf{Attenuation $k \approx 0.8$.} The official open realizes only
+part of the futures move (the stale-choir effect). Fitted, not assumed ---
+and the crowd's core error is trading as if $k=1$.
+\item \textbf{$k$ depends on conditions.} In calm regimes $k\approx0.73$; in
+volatile regimes $k\approx0.84$ (news carries through more fully). For small
+gaps early in the night, $k\approx1$.
+\item \textbf{The Nasdaq spread term.} Because the first tick is dominated by
+Nasdaq names, the spread between Nasdaq (NQ) and S\&P (ES) futures carries
+extra information early in the night.
+\item \textbf{Uncertainty $\sigma_m$ shrinks as the open approaches:} about
+$\pm0.34\%$ at midnight, $\pm0.15\%$ at 9:00, $\pm0.08\%$ at 9:29. It is
+scaled up on volatile nights using recent realized volatility and the VIX1D
+index, and multiplied by fitted event factors described below.
+\end{itemize}
+
+\subsection{Measured accuracy}
+
+Direction accuracy on out-of-sample data (probability computed, then compared
+with the realized official open):
+
+\begin{center}
+\begin{tabular}{lccccc}
+\toprule
+Prediction time & 00:00 & 04:00 & 07:00 & 09:00 & 09:29 \\
+\midrule
+Accuracy & 72.5\% & 77\% & 85\% & 90\% & $\sim$94\% \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Even with perfect market data at 9:30:00 the ceiling is 96.3\%, because the
+remaining error is auction mechanics, invisible to any futures-based method.
+Crucially, the model \emph{knows when it does not know}: dropping nights where
+its own confidence is below 65\% (about 4 nights in 10 at midnight) raises the
+accuracy of the remaining calls to $\sim$82\% at midnight and $\sim$94\% at 9:00.
+
+\subsection{Where the model fails --- a complete taxonomy}
+
+We classified every wrong committed call over 465 trading days. Three causes
+cover all of them:
+\begin{enumerate}
+\item \textbf{No signal existed} (coin-flip nights; excluded by the confidence
+filter).
+\item \textbf{News arrived after the prediction} ($\sim$half of all failures;
+flip windows cluster at the European open and above all in the 8:30--9:30
+release hour).
+\item \textbf{Auction quirks} (futures held one side all night; the official
+print landed on the other). Unfixable with futures data --- empirically
+confirmed, which motivates the auction layer.
+\end{enumerate}
+
+\section{Layer R: reconstructing the opening auction (in progress)}
+
+Both exchanges publish, before 9:30, per-stock \emph{indicative} auction prices
+--- the exchange's own running estimate of where each opening auction will
+print. Nasdaq's feed (``NOII'') updates every second from 9:28; NYSE's
+imbalance feed runs from 8:00.
+
+Using a free historical sample day we measured how close those indicative
+prices come to the actual opening prints: for Nasdaq mega-caps, within
+\textbf{2--5 basis points} at 9:29; aggregated to index level the error is
+roughly \textbf{1--2 index points} --- versus $\sim$6 points for the futures
+model at the same moment. That is the quirk-day killer: a weighted
+reconstruction of the first tick,
+\[
+\mu_R = \sum_i w_i \left(\frac{\hat{P}_i}{C_i} - 1\right)\cdot
+\mathbf{1}[\text{stock } i \text{ in the first tick}],
+\]
+where $\hat{P}_i$ is the indicative price, $C_i$ yesterday's close, and stale
+stocks contribute exactly zero. NYSE names default to ``stale'' --- we measured
+their indicative prices to be 6--10$\times$ noisier than Nasdaq's.
+
+Status: parsers are built and validated on free sample data from both
+exchanges; historical replay of our actual quirk days awaits an academic LSEG
+Tick History account (approved, credentials pending).
+
+\section{The news layer}
+
+\subsection{The key empirical fact}
+
+We verified on our own event days that \textbf{news publication and market
+reaction are simultaneous} (within one 15-minute indexing cycle). Nobody reads
+tomorrow's news early: when Trump posted about halting strikes on Iran, the
+first article and the 2\% futures jump landed in the same hour. Two design
+rules follow:
+
+\begin{enumerate}
+\item The language model can never front-run headlines; its value is
+\emph{interpreting} events better than the crowd repositions, and knowing when
+risk is elevated.
+\item The LLM must never see market data (prices, gaps, our position). That
+evidence is already in the core model; repeating it to the LLM would
+double-count it and anchor the LLM's judgment. Market moves only \emph{trigger}
+LLM runs; they are never LLM \emph{input}.
+\end{enumerate}
+
+\subsection{Group A: the midnight briefing}
+
+Slow-moving context is fetched once, just before the first model run
+($\sim$00:05): tomorrow's scheduled 8:30 releases, tonight's mega-cap earnings,
+inflation nowcasts versus consensus, and baseline odds from large prediction
+markets (Fed decisions, war-risk markets). We measured that these structural
+odds move only $\sim$0.2 points overnight, so one snapshot stays fresh until
+the open.
+
+A strictly-formatted LLM run turns this briefing into two numbers: a variance
+multiplier $m_A \in [1, 2.5]$ (anchored to a \emph{fitted} value of 1.29 for
+release mornings --- the data almost exactly confirmed our 1.3 guess) and a
+small directional tilt $|d_A| \le 0.3$, permitted only when a nowcast clearly
+disagrees with consensus.
+
+\intuition{Group A mostly answers ``how wild could tonight be?'', not ``which
+way?''. Before a scheduled release, risk is symmetric --- the honest
+contribution is width, not direction.}
+
+\subsection{Group B: the continuous watch}
+
+Unpredictable news needs continuous listening: a streaming financial wire
+(sub-minute), polling of key political accounts (no official API exists; 2--5
+minute scrapes), a global news sweep at each checkpoint, SEC filings in the
+evening, and the official release endpoints at exactly 8:30:00. The LLM runs at
+six scheduled checkpoints (02:30, 04:30, 07:00, 08:00, 08:35, 09:15 --- chosen
+from the measured distribution of when decisive news actually happens) plus
+event-triggered runs, capped at six per night.
+
+Its fitted mathematical effects:
+\begin{itemize}
+\item \textbf{Post-shock widening.} After a gap move of $\ge0.35\%$ within one
+hour, the official open is measurably harder to predict: residuals are
+$\sim$1.9$\times$ wider (fitted). $\sigma_m$ is widened accordingly for two
+hours.
+\item \textbf{Conflicted-day direction --- the most valuable find.} When a
+shock happened overnight but the gap has drifted back to nearly flat, the
+\emph{direction of the shock} still predicts the official open with
+\textbf{85\% accuracy} (81\% at 7:00, 93\% at 8:00; $n=41$). These flat-gap
+mornings are exactly the days the core model calls a coin flip and the
+Polymarket crowd misprices hardest. Only here does the LLM's direction enter:
+\[
+\mu_B = 0.9 \cdot d_B \cdot c \cdot \sigma_m
+\qquad (d_B \in [-1,1] \text{ direction},\; c \in [0,1] \text{ confidence}),
+\]
+and on already-repriced days the directional term is \emph{zero by
+construction} --- the gap has the news in it, and adding it again would count
+the same evidence twice.
+\end{itemize}
+
+\section{Putting it together: the fusion rule}
+
+Every layer produces an estimate with an uncertainty: the market core
+$(\mu_m, \sigma_m)$, the news voices $(\mu_A, \sigma_A)$, $(\mu_B, \sigma_B)$,
+and --- in the final two minutes, once live --- the auction replica
+$(\mu_R, \sigma_R)$. They are combined by inverse-variance weighting (the
+statistically optimal average, where more certain voices count more):
+\[
+\mu_{\text{fused}} = \frac{\sum_i \mu_i/\sigma_i^2}{\sum_i 1/\sigma_i^2},
+\qquad
+\sigma_{\text{fused}} = \Big(\sum_i 1/\sigma_i^2\Big)^{-1/2},
+\qquad
+P(\text{up}) = \Phi\!\left(\frac{\mu_{\text{fused}}}{\sigma_{\text{fused}}}\right).
+\]
+
+\intuition{No hand-offs, no if-then switches. At midnight the futures voice
+dominates because it is the sharpest. If the auction replica comes online at
+9:28 with a tenth of the uncertainty, it automatically takes over. News voices
+have a floor on their uncertainty, so they can nudge and widen but never
+outvote a confident market estimate.}
+
+Trading rules on top: stand down when fused confidence is below 65\%; trade
+against the Polymarket price only when our probability differs from it by at
+least 5 cents.
+
+\section{Current status}
+
+\begin{center}
+\begin{tabular}{llp{6.2cm}}
+\toprule
+Layer & Status & Missing \\
+\midrule
+Market core & live, validated & --- \\
+Confidence filter \& edge rule & live & --- \\
+Auction replica code & built, sample-validated & LSEG credentials (approved, pending) for quirk-day replay; live feed choice \\
+Group A prefetch & live (odds, calendar) & FRED key (free) for CPI/PPI dates; nowcast fetcher \\
+Group A/B prompts \& math & written, fitted & LLM API runner \\
+Group B feeds & designed & Alpaca key (free); Truth Social scraper choice \\
+Replay evaluation (212 news days) & designed & the two keys above \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Open questions --- where suggestions help most}
+
+\begin{enumerate}
+\item \textbf{Sizing.} We currently plan flat stakes above the confidence
+threshold. Kelly-style sizing scaled by (fused confidence $-$ market price) is
+the natural next step --- how aggressive is acceptable?
+\item \textbf{The post-shock widening factor} (1.9) is unstable between sample
+halves (1.3 vs 2.3). More data or a smarter conditioning variable?
+\item \textbf{Conflicted-day sample size} is $n=41$ at 85\%. Enough to trade
+at reduced size, or wait for live confirmation?
+\item \textbf{Quirk-day product.} On tiny-gap days, is the better trade our
+model's honest probability versus the crowd's 94--99 cent overconfidence
+(buying the cheap side), or should we wait for the auction replica before
+touching those days at all?
+\item \textbf{LLM choice and cost.} $\sim$12 runs/night with strict JSON
+outputs; latency matters only for the 08:35 run. Small fast model with strong
+guardrails vs larger model at checkpoints only?
+\item \textbf{Volume decline.} The Polymarket market's daily volume has fallen
+from \$600k+ (January) to \$30--45k. The edge math still works but capacity is
+shrinking --- worth monitoring whether this strategy stays worth the
+infrastructure.
+\end{enumerate}
+
+\appendix
+\section{Fitted constants and provenance}
+
+\begin{center}
+\small
+\begin{tabular}{llll}
+\toprule
+Constant & Value & Meaning & Fitted from \\
+\midrule
+$a_0$ & 0.0092 & regression intercept (\%) & 6 months daily \\
+$k$ (pooled) & $\approx$0.77--0.80 & futures$\to$official attenuation & 465d, train half \\
+$k$ by regime & 0.73 / 0.83 / 0.84 & calm / mid / volatile tercile & 465d, train half \\
+$\sigma$ at midnight & $\approx$0.34\% & residual width & hourly ES, 200d+ \\
+$m_{\text{cal}}$ & 1.29 & release-morning widening & 11 NFP mornings (train) \\
+$m_{\text{shock}}$ & 1.9 (1.3--2.3) & post-shock widening & 76 shock days \\
+$Z_{\text{conflict}}$ & 0.9 & conflicted-day direction weight & 41 days, 85.4\% hit \\
+NOII accuracy & 2--5 bp & indicative vs print, mega-caps & free ITCH sample \\
+Ceiling & 96.3\% & perfect-market-data accuracy & 81 unseen days \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\section{Reproducing every number}
+
+All results regenerate from the repository (\texttt{python3 .\ <command>}):
+\texttt{backtest} (model metrics, quirk table), \texttt{news-mistakes}
+(465-day news inventory), \texttt{news-timing} (decisive-hour profile),
+\texttt{news-groupb-fit} (shock/conflict fits), \texttt{news-prefetch}
+(tonight's Group-A block), \texttt{noii-deviation} (auction accuracy from a
+raw ITCH file), \texttt{ground-truth} (official-open source audit).
+
+\end{document}
