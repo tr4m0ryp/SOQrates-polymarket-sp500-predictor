@@ -81,3 +81,25 @@ def fit_conflicted_direction(rows: list[dict], at_hour: int = 9) -> dict:
         else:
             hi = mid
     return {"hit_rate": hit, "n": n, "z": (lo + hi) / 2}
+
+
+# ---- fitted values (2026-07-15, 465d; retrain via `python3 . news-groupb-fit`)
+M_SHOCK = 1.9           # post-shock sigma ratio, pooled (train 1.32 / test 2.28)
+M_SHOCK_BOUNDS = (1.0, 2.5)
+Z_CONFLICT = 0.9        # conservative from 85.4% pooled hit-rate (n=41, z~1.05)
+
+
+def voice(direction: float, confidence: float, gap_now: float,
+          sigma_model: float, recent_shock: bool) -> tuple[float, float, float]:
+    """Group-B fusion voice: (mu_B, sigma_B, sigma_mult).
+
+    Directional term ONLY on conflicted days (|gap| < CONFLICT_GAP) - on
+    repriced days the gap already embeds the news and a voice would
+    double-count. sigma widening applies whenever a recent shock exists.
+    """
+    sigma_mult = M_SHOCK if recent_shock else 1.0
+    if abs(gap_now) >= CONFLICT_GAP or direction == 0:
+        return 0.0, float("inf"), sigma_mult          # no directional voice
+    mu_b = Z_CONFLICT * direction * confidence * sigma_model
+    sigma_b = max(sigma_model / max(confidence, 0.2), 0.25)
+    return mu_b, sigma_b, sigma_mult
