@@ -204,6 +204,12 @@ def main():
     nd.add_argument("--file", required=True,
                     help="path to a NASDAQ_ITCH50.gz full-day file")
     nd.set_defaults(fn=cmd_noii_deviation)
+    lp = sub.add_parser("lseg-pull")
+    lp.add_argument("--date", required=True, help="YYYY-MM-DD quirk day")
+    lp.set_defaults(fn=cmd_lseg_pull)
+    s3 = sub.add_parser("stage3")
+    s3.add_argument("--date", required=True, help="YYYY-MM-DD (needs lseg-pull first)")
+    s3.set_defaults(fn=cmd_stage3)
     for name, fn in (("predict", cmd_predict), ("quirks", cmd_quirks),
                      ("ground-truth", cmd_ground_truth),
                      ("weights", cmd_weights),
