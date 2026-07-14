@@ -1,12 +1,16 @@
 """Argument parsing; command bodies live in market / sources / auction."""
 import argparse
 
-from cli import auction, market, sources
+from cli import auction, market, newscmd, sources
 
 
 def main():
     ap = argparse.ArgumentParser(prog="spx-open")
     sub = ap.add_subparsers(dest="cmd", required=True)
+
+    nm = sub.add_parser("news-mistakes")
+    nm.add_argument("--rebuild", action="store_true")
+    nm.set_defaults(fn=newscmd.cmd_news_mistakes)
 
     bt = sub.add_parser("backtest")
     bt.add_argument("--rebuild", action="store_true")
