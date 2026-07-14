@@ -3,3 +3,7 @@ __pycache__/
 .playwright-mcp/
 *.pdf
 *.b64
+*.aux
+*.toc
+docs/*.log
+docs/*.out
