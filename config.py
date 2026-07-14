@@ -13,7 +13,8 @@ K_DEFAULT = 0.767    # pooled futures->official attenuation
 EWMA_LAMBDA = 0.94   # decay for overnight gap^2 EWMA
 SMALL_GAP = 0.25     # |gap| %-threshold below which small-gap k applies
 SMALL_GAP_HOURS = (0, 1, 2, 3, 4)
-NFP_SIGMA_MULT = 1.3     # sigma widening before 8:30 on release mornings
+NFP_SIGMA_MULT = 1.3     # fallback release-morning widening (used when too few samples to fit)
+RELEASE_MULT_BOUNDS = (1.0, 2.5)   # clamp for the fitted release multiplier
 CONF_COMMIT = 0.65       # below this confidence = coin-flip / no-bet
 LOOKBACK_DAYS = 720      # hourly futures history window (Yahoo 60m cap ~730d)
 DATASET_DAYS = 480       # trading days kept in the backtest dataset

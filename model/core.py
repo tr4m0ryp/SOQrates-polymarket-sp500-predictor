@@ -2,7 +2,7 @@
 import math
 
 from config import (A0, K_DEFAULT, SMALL_GAP, SMALL_GAP_HOURS,
-                      NFP_SIGMA_MULT)
+                      NFP_SIGMA_MULT, RELEASE_MULT_BOUNDS)
 from model.regime import RegimeScaler, terciles, tercile_of
 
 HOURS = range(10)
@@ -75,7 +75,22 @@ class ModelV12:
                              default=0.0)
                 for h in HOURS}
         self.sigma = _sigma_by_hour(train, self._mu, lambda r: self.scaler.mult(r))
+        self.m_release = self._fit_release_mult(train)
         return self
+
+    def _fit_release_mult(self, train):
+        rel, base = [], []
+        for r in train:
+            for h in (0, 4, 7):
+                if h not in r["es"]:
+                    continue
+                e = (r["off"] - self._mu(r, h)) / (self.scaler.mult(r) * self.sigma[h])
+                (rel if r.get("release_morning") else base).append(e * e)
+        if len(rel) < 8:
+            return NFP_SIGMA_MULT
+        ratio = math.sqrt((sum(rel) / len(rel)) / (sum(base) / len(base)))
+        lo, hi = RELEASE_MULT_BOUNDS
+        return min(max(ratio, lo), hi)
 
     def _k(self, row, h):
         if h in SMALL_GAP_HOURS and abs(row["es"][h]) < SMALL_GAP:
@@ -94,7 +109,7 @@ class ModelV12:
     def predict(self, row, h):
         mult = self.scaler.mult(row)
         if row.get("release_morning") and h < 8.5:
-            mult *= NFP_SIGMA_MULT
+            mult *= self.m_release
         mu = self._mu(row, h)
         sig = self.sigma[h] * mult
         return mu, sig, phi(mu / sig)
