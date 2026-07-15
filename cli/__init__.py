@@ -45,6 +45,9 @@ def main():
     lp.add_argument("--date", required=True, help="YYYY-MM-DD quirk day")
     lp.set_defaults(fn=auction.cmd_lseg_pull)
 
+    rs = sub.add_parser("replica-sim")
+    rs.set_defaults(fn=auction.cmd_replica_sim)
+
     s3 = sub.add_parser("stage3")
     s3.add_argument("--date", required=True,
                     help="YYYY-MM-DD (needs lseg-pull first)")
