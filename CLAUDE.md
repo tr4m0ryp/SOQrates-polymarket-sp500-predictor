@@ -22,8 +22,9 @@ market. Model background, validated numbers, and roadmap live in project memory
   from the FRED release-dates API into `.cache/releases.json`.
 - `model/` regime scaler + model cores (v1.2 ES-only, v1.3 adds
   VIX1D sigma + NQ spread) + inverse-variance fusion.
-- `replica/` stage-3 auction first-tick assembly; Databento wrapper
-  reads `DATABENTO_API_KEY` env (untested until a key is provided).
+- `replica/` stage-3 auction assembly: montecarlo (distributional first
+  tick + pivotal names + print filtering), timing (per-stock print-delay
+  model, venue priors until LSEG labels), LSEG/Databento/feed clients.
 - `pm/` Polymarket gamma-api client + edge calculator.
 - `backtest/` dataset builder (`.cache/dataset.json`) + metric runner.
 
