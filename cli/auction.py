@@ -98,11 +98,17 @@ def cmd_stage3(args):
             continue
     closes = {t: c for t, c in closes.items() if c}
     rep = pipeline.replica_estimate(pred, closes)
+    dist = pipeline.replica_distribution(pred, closes)
     official = (spx[args.date][0] / spx[prior][1] - 1) * 100
     print(f"replica gap {rep['replica_gap_pct']:+.3f}% "
-          f"(live weight {rep['live_weight_pct']:.0f}%, sigma {rep['sigma_pct']:.3f}%)")
+          f"(live weight {rep['live_weight_pct']:.0f}%)")
+    print(f"distribution: mean {dist['mean']:+.3f}% sigma {dist['sigma']:.3f}% "
+          f"P(up) {dist['p_up']:.2f} [q05 {dist['q05']:+.3f} q95 {dist['q95']:+.3f}]")
+    for pv in dist["pivotal"][:4]:
+        print(f"  pivotal: {pv['ticker']} p_live {pv['p_live']} "
+              f"swings P(up) {pv['p_up_swing']:+.2f}")
     print(f"official gap {official:+.3f}%  -> direction "
-          f"{'MATCH' if (rep['replica_gap_pct'] > 0) == (official > 0) else 'MISS'}")
+          f"{'MATCH' if (dist['mean'] > 0) == (official > 0) else 'MISS'}")
 
 
 def cmd_replica_sim(_args):
