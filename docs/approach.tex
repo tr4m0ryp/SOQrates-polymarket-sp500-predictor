@@ -229,6 +229,79 @@ authority to it in the final two minutes --- no thresholds to tune --- and the
 same code path runs live later with a commercial feed (NCDS/dxFeed for Nasdaq,
 Massive for NYSE) without modification.
 
+\subsection{What exactly is unknown at 9:30:00 --- the 505 stocks, precisely}
+
+A common misreading is that ``which stocks are in the index'' varies. It does
+not: \textbf{the membership and the weights are published and fixed} --- the
+index is always the weighted sum of all $\sim$505 names. What varies, second
+by second, is \emph{which price each stock contributes} to the first
+calculation:
+
+\begin{itemize}
+\item a stock whose opening auction has already printed contributes its
+\textbf{fresh opening price} (a ``live'' voice);
+\item a stock whose auction has not finished contributes
+\textbf{yesterday's close} (a ``stale'' voice).
+\end{itemize}
+
+The Nasdaq half ($\sim$250 names, 45--57\% of weight) is nearly
+deterministic: the opening cross fires at exactly 9:30:00, so those names are
+essentially always live. \textbf{The NYSE half is the stochastic part}:
+DMM-run auctions straggle by seconds to minutes, and which NYSE names make it
+into the first tick changes day by day and stock by stock. Our fitted
+attenuation $k\approx0.78$ implies that on an average day roughly 20--25\% of
+index weight \emph{beyond} the Nasdaq names does sneak into the first tick
+--- the fast-opening NYSE mega-caps --- which our current replica models with
+the blunt rule ``NYSE = always stale''. On the tiniest quirk days (decided by
+$\pm$0.1--0.2 index points), whether three fast NYSE giants like JPM or LLY
+are counted live can be the whole answer.
+
+\subsection{Planned machine-learning upgrade of the replica}
+
+The project has deliberately avoided machine learning so far: the day-level
+problem offers only $\sim$500 observations (one open per day), where a
+flexible model would memorise regimes instead of learning structure. LSEG
+data breaks that constraint --- not by adding sources, but by changing the
+observation unit. Per-second auction messages make the sample a
+\emph{(stock, second)} pair: $505 \times \sim 120$ pre-open seconds
+$\times$ 30 days $\approx$ \textbf{2 million samples}, which is genuine ML
+territory. Two models, both trained from the same LSEG pulls:
+
+\paragraph{Model 1: auction-residual model.} Predicts, per stock and per
+morning, how far the final print will land from the current indicative price
+--- replacing the single default correction and uncertainty with a
+\textbf{dedicated per-stock value}. Features: near--far spread,
+imbalance-to-paired ratio, price-variation indicator, seconds to the cross,
+indicative-price velocity, and the stock's own historical auction noise.
+Target: $\text{print} - \text{indicative}$ in basis points. Output: a bias
+correction and a per-stock $\sigma_i$, which tighten the index-level
+$\sigma_R$ and hence the replica's authority in the fusion.
+
+\paragraph{Model 2: NYSE fast-open classifier.} Predicts, for each NYSE
+stock each morning, the probability that its opening print exists in time to
+be counted in the first tick. Features from the imbalance feed (size and
+stability of the imbalance since 8:00, indicative-price volatility, the
+stock's open-delay history, that morning's gap size); labels come free from
+the print timestamps in the same data. The output enters the assembly not as
+a hard switch but as an \emph{expected contribution}:
+\[
+\text{contribution}_i \;=\; w_i \Big[\, p_{\text{live},i}\cdot g_i \;+\;
+(1-p_{\text{live},i})\cdot 0 \,\Big],
+\]
+so a stock that is 70\% likely to be counted contributes 70\% of its
+predicted gap. This replaces the current constants ($p_{\text{live}}=1$ for
+Nasdaq, $0$ for NYSE) with calibrated per-stock, per-morning probabilities.
+
+\paragraph{Three guardrails.} (i) \emph{No end-to-end model}: a learner
+trained on $\sim$500 day-level labels (``all data in, open direction out'')
+would overfit and destroy the calibration the fusion depends on; the
+day-level core stays linear. (ii) \emph{Tooling quarantine}: ML libraries
+live in a research directory that produces fitted constants; the runtime
+stays stdlib-only. (iii) \emph{License inheritance}: models trained on
+academically-licensed data answer the research question (does the ML-boosted
+replica beat the plain one, in basis points?); the production versions are
+retrained on commercially-licensed data before live use.
+
 \section{The news layer}
 
 \subsection{The key empirical fact}
