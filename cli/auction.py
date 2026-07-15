@@ -103,3 +103,35 @@ def cmd_stage3(args):
           f"(live weight {rep['live_weight_pct']:.0f}%, sigma {rep['sigma_pct']:.3f}%)")
     print(f"official gap {official:+.3f}%  -> direction "
           f"{'MATCH' if (rep['replica_gap_pct'] > 0) == (official > 0) else 'MISS'}")
+
+
+def cmd_replica_sim(_args):
+    """Synthetic self-test: validates the MC assembly today, without data."""
+    import math
+    from replica.montecarlo import McConstituent, simulate, apply_prints
+    from replica.timing import TimingModel
+
+    # independent-case check vs analytic normal approximation
+    cons = [McConstituent(f"S{i}", 1.0, 0.5, 0.7, 0.0) for i in range(50)]
+    res = simulate(cons)
+    mu_a = 0.7 * 0.5
+    var_a = sum((1/50)**2 * 0.5**2 * 0.7 * 0.3 for _ in range(50))
+    p_a = 0.5 * (1 + math.erf((mu_a / math.sqrt(var_a)) / math.sqrt(2)))
+    print(f"independent check: MC mean {res['mean']:.3f} (analytic {mu_a:.3f}), "
+          f"MC P(up) {res['p_up']:.3f} (analytic ~{p_a:.3f})")
+
+    # lumpy quirk-day scenario: flat photo, one pivotal fast-NYSE giant
+    cons = ([McConstituent("NAS", 55.0, +0.02, 1.0, 0.05)] +
+            [McConstituent("JPM", 1.5, -0.90, 0.85, 0.30)] +
+            [McConstituent("LLY", 1.2, +0.80, 0.60, 0.30)] +
+            [McConstituent(f"NY{i}", 0.8, 0.0, 0.10, 0.30) for i in range(40)])
+    res = simulate(cons)
+    print(f"\nquirk scenario: mean {res['mean']:+.3f}% sigma {res['sigma']:.3f}% "
+          f"P(up) {res['p_up']:.2f} (uncertain names: {res['n_uncertain']})")
+    for pv in res["pivotal"]:
+        print(f"  pivotal: {pv['ticker']} p_live {pv['p_live']} "
+              f"swings P(up) by {pv['p_up_swing']:+.2f}")
+
+    # filtering: JPM prints at -0.9 -> distribution collapses
+    res2 = simulate(apply_prints(cons, {"JPM": -0.90}))
+    print(f"after JPM prints: P(up) {res['p_up']:.2f} -> {res2['p_up']:.2f}")

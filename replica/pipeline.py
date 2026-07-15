@@ -12,6 +12,8 @@ credible instant open - the measured NYSE indicative noise (~29bp at
 from data import weights as wmod
 from model import fusion
 from replica.assembly import Constituent, first_tick_gap, replica_sigma
+from replica.montecarlo import McConstituent, simulate
+from replica.timing import TimingModel
 
 NYSE_TRUST_DEFAULT = False       # flip per-name once live data proves timing
 
@@ -48,3 +50,31 @@ def fused_p_up(replica: dict, futures_mu: float, futures_sigma: float) -> dict:
     ])
     return {"mu": mu, "sigma": sigma, "p_up": fusion.prob_up(mu, sigma),
             "replica_weight_pct": replica["live_weight_pct"]}
+
+
+PREVIEW_SIGMA = {"NASDAQ": 0.05, "NYSE": 0.30}   # measured NOII / NYSE noise, %
+
+
+def replica_distribution(pred_opens: dict[str, float],
+                         prior_closes: dict[str, float],
+                         timing: TimingModel | None = None) -> dict:
+    """Distributional assembly: full photo-gap distribution + pivotal names.
+
+    Uses the timing model's per-stock p_live when fitted (LSEG print
+    timestamps), venue priors otherwise. Supersedes replica_estimate for
+    decision-making; the (mean, sigma, p_up) feed fusion directly.
+    """
+    rows = wmod.load()
+    venues = {r["ticker"]: r["exchange"] for r in rows}
+    timing = timing or TimingModel.load(venues)
+    timing.venues = timing.venues or venues
+    cons = []
+    for r in rows:
+        t = r["ticker"]
+        pc = prior_closes.get(t)
+        po = pred_opens.get(t)
+        gap = ((po / pc - 1) * 100) if (po and pc) else 0.0
+        p = timing.p_live(t) if (po and pc) else 0.0
+        cons.append(McConstituent(t, r["weight"], gap, p,
+                                  PREVIEW_SIGMA.get(r["exchange"], 0.30)))
+    return simulate(cons)
