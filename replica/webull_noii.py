@@ -73,7 +73,8 @@ _ALIASES = {
 }
 _SIDE_KEYS = ("imbalanceside", "imbalancedirection", "imbalancesidename",
               "side", "direction")
-_SYMBOL_KEYS = ("symbol", "ticker", "instrument", "disexchangecode")
+_SYMBOL_KEYS = ("symbol", "ticker", "instrument")
+_NEST_KEYS = ("noii", "imbalance", "auction", "openimbalance")
 _BUY = {"B", "BUY", "BUY_SIDE", "BUYSIDE", "BID"}
 _SELL = {"S", "SELL", "SELL_SIDE", "SELLSIDE", "ASK"}
 
