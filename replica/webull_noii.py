@@ -171,17 +171,21 @@ def _records(payload) -> list[dict]:
     return []
 
 
+def _nk(key: str) -> str:
+    """Compact key: lowercase with separators removed (near_price -> nearprice)."""
+    return key.lower().replace("_", "").replace("-", "").replace(" ", "")
+
+
 def _flatten(raw: dict) -> dict:
-    """Lowercase-key view, merging a nested 'noii'/'imbalance' sub-object if any."""
+    """Compact-key view, merging a nested 'noii'/'imbalance' sub-object if any."""
     flat = {}
     for k, v in raw.items():
-        lk = k.lower()
-        if isinstance(v, dict) and lk in ("noii", "imbalance", "auction",
-                                          "openimbalance"):
+        ck = _nk(k)
+        if isinstance(v, dict) and ck in _NEST_KEYS:
             for ik, iv in v.items():
-                flat.setdefault(ik.lower(), iv)
+                flat.setdefault(_nk(ik), iv)
         else:
-            flat.setdefault(lk, v)
+            flat.setdefault(ck, v)
     return flat
 
 
