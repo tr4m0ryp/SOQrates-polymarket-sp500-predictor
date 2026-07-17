@@ -166,7 +166,7 @@ def _records(payload) -> list[dict]:
             inner = payload.get(key)
             if isinstance(inner, list):
                 return [r for r in inner if isinstance(r, dict)]
-        if any(k.lower() in _SYMBOL_KEYS for k in payload):
+        if any(_nk(k) in _SYMBOL_KEYS for k in payload):
             return [payload]
     return []
 
