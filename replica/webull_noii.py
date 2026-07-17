@@ -254,25 +254,15 @@ def poll_opening(symbols, on_snapshot, *, category: str = CATEGORY,
     if now < start_dt:
         sleep_fn((start_dt - now).total_seconds())
     ticks = 0
-    tick = start_dt
-    while True:
-        now = now_fn()
-        if now >= end_dt:
-            break
-        if now > tick:
-            # realign to the next future grid point after a slow fetch
-            missed = int((now - tick).total_seconds() // interval_s) + 1
-            tick = start_dt.fromtimestamp(
-                start_dt.timestamp() + max(ticks, missed) * interval_s, tz=NY)
+    while now_fn() < end_dt:
         try:
-            records = [normalize_noii(r) for r in _records(snapshot(
-                symbols, category=category))]
+            records = [normalize_noii(r) for r in
+                       _records(snapshot(symbols, category=category))]
             on_snapshot(records, now_fn())
         except WebullError:
             on_snapshot([], now_fn())
         ticks += 1
-        nxt = start_dt.fromtimestamp(
-            start_dt.timestamp() + ticks * interval_s, tz=NY)
+        nxt = start_dt + timedelta(seconds=ticks * interval_s)
         if nxt >= end_dt:
             break
         sleep_fn(max(0.0, (nxt - now_fn()).total_seconds()))
