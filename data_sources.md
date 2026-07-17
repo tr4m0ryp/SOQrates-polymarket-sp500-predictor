@@ -29,7 +29,7 @@ incomplete · `No` = not yet wired (Source column names the chosen one to build)
 | **Nasdaq NOII — live** | No | Webull OpenAPI NOII snapshot | **Free** |
 | **NYSE opening imbalance — historical** | Partial | Free NYSE TAQ samples (ftp.nyse.com) via `nyse_taq.py` — sample dates only | **Free** |
 | **NYSE opening imbalance — live** | No | Massive NYSE NOI WebSocket | **$49/mo** |
-| **Per-stock opening cross print + ts** | No | Alpaca `/v2/stocks/auctions` / ITCH samples | Free hist · $99/mo live SIP |
+| **Per-stock opening cross print + ts** | No | Massive/Polygon `/v1/open-close` + grouped-daily (free Basic key) · Alpaca `/v2/stocks/auctions` fallback | **Free** (2yr hist, all tickers/1 call) |
 | **Constituent quote midpoints (pre-open NBBO)** | No | Alpaca free IEX quotes / reconstruct from ITCH | Free (IEX) · $99/mo full SIP |
 
 ## Cost to operate

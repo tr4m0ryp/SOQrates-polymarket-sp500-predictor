@@ -44,7 +44,10 @@ _PREFIXES = ("EQY_US_NYSE_REF_IMBALANCES_", "NYSE_IMBALANCES_")
 
 # nginx autoindex row:
 #   <a href="NAME">NAME</a>   01-Jul-2026 00:09   18349213
-_ROW = re.compile(r'<a href="([^"?/][^"]*)">[^<]*</a>\s+\S+\s+\S+\s+(\d+)', re.I)
+# The DD-Mon-YYYY HH:MM date anchor keeps a match on its own row (so the
+# "../" parent link and any line cannot bleed into the next).
+_ROW = re.compile(
+    r'<a href="([^"]+)">[^<]*</a>\s+\d{2}-[A-Za-z]{3}-\d{4}\s+\d{2}:\d{2}\s+(\d+)')
 
 
 class NyseTaqSampleError(RuntimeError):
