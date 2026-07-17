@@ -106,8 +106,15 @@ def list_available(noii: bool = False) -> list[dict]:
     for size, name in _ROW.findall(html):
         if name.endswith(".md5sum"):
             continue
-        is_noii = "-NOII." in name
-        if is_noii != noii:
+        if noii:
+            if "-NOII." not in name:
+                continue
+        # Binary listing: only the canonical `.NASDAQ_ITCH50.gz` files are
+        # guaranteed ITCH-5.0 binary + date-parseable. The same folder also
+        # carries other historical dumps (`S*-v50.txt.gz`, `itch50_*.gz`,
+        # `tvagg.gz`) of unverified format - fetch those by exact filename
+        # via `download(filename)` if you know one is binary ITCH.
+        elif not name.endswith(_ITCH_SUFFIX):
             continue
         out.append({
             "filename": name,
