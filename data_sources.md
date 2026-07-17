@@ -47,6 +47,11 @@ incomplete · `No` = not yet wired (Source column names the chosen one to build)
   sample dates are free.
 - No fully-free option covers **live NYSE imbalance** — mitigated by Nasdaq-listed mega-caps
   dominating SPX weight (the free Webull Nasdaq-NOII leg captures the highest-signal names).
+- **Massive free Basic tier confirmed (2026-07-18):** REST only, **no websocket**, so the NOI
+  imbalance feed is unreachable — verified live (`auth_failed: "Your plan doesn't include
+  websocket access"`). The NOI feed is the **Imbalances Expansion $49/mo** add-on, real-time
+  only (no imbalance history at any tier). BUT the free Basic REST key *does* return official
+  per-stock daily opens (`/v1/open-close`, grouped-daily) with 2yr history — a free source for #3.
 - Databento would be the clean all-in-one (Nasdaq + NYSE, hist + live) but is card-blocked;
   its $125 free-credit "workaround" was adversarially refuted — do not rely on it.
 - Kaggle / Hugging Face / Zenodo / GitHub public-dataset avenue surfaced nothing verified —
