@@ -1,0 +1,64 @@
+# Data sources — coverage, cost, and implementation status
+
+Reference for the SPX official-open predictor. Rows above the divider are the core
+model (running today); the **bold** rows are the auction layer (Track 3), the reason
+we went looking at LSEG. Sources for the auction layer were selected by the
+2026-07-17 deep-research run (104 agents, 22 sources, 20 verified claims).
+
+**Legend — Sourced & runnable:** `Yes` = wired and running · `Partial` = running but
+incomplete · `No` = not yet wired (Source column names the chosen one to build).
+
+| Data we need | Sourced & runnable | Source | Price |
+|---|---|---|---|
+| S&P 500 futures (ES) level/gap | Yes | Yahoo chart API | Free |
+| Nasdaq futures (NQ) — NQ–ES spread | Yes | Yahoo chart API | Free |
+| Dow futures (YM) | Yes | Yahoo chart API | Free |
+| S&P 500 index (^GSPC) open/close | Yes | Yahoo chart API | Free |
+| 1-day VIX (^VIX1D) — sigma input | Yes | Yahoo chart API | Free |
+| Independent official-open cross-check | Yes | stooq | Free |
+| Index constituent weights | Yes | Slickcharts + nasdaqlisted.txt | Free |
+| Per-constituent venue tag (Nas/NYSE) | Yes | nasdaqlisted.txt | Free |
+| Polymarket prices / odds | Yes | Polymarket gamma-api | Free |
+| News headlines + event timestamps | Yes | GDELT DOC 2.0 (keyless) | Free |
+| LLM news classifier (direction/shock) | Yes | GitHub Models (gpt-4.1) / NVIDIA NIM | Free tier |
+| Macro release calendar (CPI/PPI/GDP) | Partial | FRED release-dates API (NFP-rule fallback) | Free (key) |
+| Earnings-tonight flag (heavyweights) | No | *unwired — prefetch slot TODO* | Free (TBD) |
+| Nowcast + analyst consensus | No | *unwired — Cleveland Fed / consensus TODO* | Free |
+| Real-time news wire stream | No | Alpaca news websocket (free key) | Free |
+| **Nasdaq NOII — historical** | No | Free Nasdaq ITCH samples (emi.nasdaq.com) + `itch.py` | **Free** |
+| **Nasdaq NOII — live** | No | Webull OpenAPI NOII snapshot | **Free** |
+| **NYSE opening imbalance — historical** | Partial | Free NYSE TAQ samples (ftp.nyse.com) via `nyse_taq.py` — sample dates only | **Free** |
+| **NYSE opening imbalance — live** | No | Massive NYSE NOI WebSocket | **$49/mo** |
+| **Per-stock opening cross print + ts** | No | Alpaca `/v2/stocks/auctions` / ITCH samples | Free hist · $99/mo live SIP |
+| **Constituent quote midpoints (pre-open NBBO)** | No | Alpaca free IEX quotes / reconstruct from ITCH | Free (IEX) · $99/mo full SIP |
+
+## Cost to operate
+
+- **Validation / backtest:** $0 — free ITCH + NYSE TAQ samples cover the historical legs.
+- **Go live:** **$49/mo** — Massive is the only unavoidable paid leg (live NYSE imbalance).
+- **+$99/mo optional** — Alpaca Algo Trader Plus, only if full-tape (SIP) real-time quotes
+  are needed instead of the free IEX subset.
+
+## Known gaps / caveats
+
+- Free `emi.nasdaq.com` ITCH sample dates are fixed and scattered (mostly 2019/2022) and
+  rotate — they may not align with the specific quirk days the backtest wants.
+- No free source of **arbitrary-date** historical NYSE imbalance; only the published NYSE
+  sample dates are free.
+- No fully-free option covers **live NYSE imbalance** — mitigated by Nasdaq-listed mega-caps
+  dominating SPX weight (the free Webull Nasdaq-NOII leg captures the highest-signal names).
+- Databento would be the clean all-in-one (Nasdaq + NYSE, hist + live) but is card-blocked;
+  its $125 free-credit "workaround" was adversarially refuted — do not rely on it.
+- Kaggle / Hugging Face / Zenodo / GitHub public-dataset avenue surfaced nothing verified —
+  unexplored, not ruled out.
+
+## Implementation map (new/updated modules)
+
+| Source | Module | State before |
+|---|---|---|
+| Alpaca auctions (#3) + quotes (#4) | `data/alpaca.py` | new |
+| Webull live NOII (#1) | `replica/webull_noii.py` | new |
+| Nasdaq ITCH sample fetcher (#1 hist) | `replica/itch_samples.py` | new (parser `itch.py` exists) |
+| NYSE TAQ sample fetcher (#2 hist) | `replica/nyse_taq_samples.py` | new (parser `nyse_taq.py` exists) |
+| Massive live NYSE imbalance (#2 live) | `replica/feeds.py` | stub to finish |
+| Alpaca news stream (news wire) | `news/alpaca_stream.py` | new |
