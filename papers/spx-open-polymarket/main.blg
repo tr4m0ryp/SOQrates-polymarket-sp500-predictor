@@ -3,10 +3,6 @@ Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
 The top-level auxiliary file: main.aux
 The style file: plainnat.bst
 Database file #1: references.bib
-I was expecting a `{' or a `('---line 4 of file references.bib
- : % Web sources are @misc 
- :                         with howpublished = {\url{...}} for natbib/plainnat
-I'm skipping whatever remains of this entry
 You've used 23 entries,
             2773 wiz_defined-function locations,
             700 strings with 8069 characters,
@@ -48,4 +44,3 @@ warning$ -- 0
 while$ -- 79
 width$ -- 0
 write$ -- 334
-(There was 1 error message)
