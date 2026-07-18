@@ -60,6 +60,29 @@ def main():
                          "DATABENTO_API_KEY set, else lseg)")
     s3.set_defaults(fn=auction.cmd_stage3)
 
+    ph = sub.add_parser("pm-history")
+    ph.add_argument("--refresh", action="store_true")
+    ph.set_defaults(fn=strategy.cmd_pm_history)
+
+    sd = sub.add_parser("strategy-data")
+    sd.add_argument("--rebuild", action="store_true")
+    sd.set_defaults(fn=strategy.cmd_strategy_data)
+
+    sr = sub.add_parser("strategy-run")
+    sr.add_argument("--family", required=True)
+    sr.add_argument("--params", default="{}")
+    sr.add_argument("--half", default="train",
+                    choices=("train", "test", "all"))
+    sr.add_argument("--json", action="store_true")
+    sr.add_argument("--days", action="store_true")
+    sr.set_defaults(fn=strategy.cmd_strategy_run)
+
+    ss = sub.add_parser("strategy-search")
+    ss.add_argument("--half", default="train",
+                    choices=("train", "test", "all"))
+    ss.add_argument("--top", type=int, default=25)
+    ss.set_defaults(fn=strategy.cmd_strategy_search)
+
     for name, fn in (("predict", market.cmd_predict),
                      ("quirks", market.cmd_quirks),
                      ("ground-truth", sources.cmd_ground_truth),
