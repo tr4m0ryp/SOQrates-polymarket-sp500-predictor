@@ -83,10 +83,15 @@ def fit_conflicted_direction(rows: list[dict], at_hour: int = 9) -> dict:
     return {"hit_rate": hit, "n": n, "z": (lo + hi) / 2}
 
 
-# ---- fitted values (2026-07-15, 465d; retrain via `python3 . news-groupb-fit`)
-M_SHOCK = 1.9           # post-shock sigma ratio, pooled (train 1.32 / test 2.28)
+# ---- fitted values (2026-07-18, dataset TRAIN half ONLY, 2024-07-26..
+# 2025-07-22, 232d) — disjoint from every strategy-backtest day, so the
+# strategy harness sees these out-of-sample. Pooled fits (test/pooled rows)
+# are DIAGNOSTIC only: baking them in leaked the backtested days into the
+# constants. Retrain via `python3 . news-groupb-fit`.
+M_SHOCK = 1.32          # post-shock sigma ratio, train half (diag: test 2.28, pooled 1.90)
 M_SHOCK_BOUNDS = (1.0, 2.5)
-Z_CONFLICT = 0.9        # conservative from 85.4% pooled hit-rate (n=41, z~1.05)
+Z_CONFLICT = 0.85       # 1-SE lower bound on train conflicted hit-rate 87.0%
+                        # (n=23, z~1.12; diag pooled 85.4% n=41 z~1.05)
 
 
 def voice(direction: float, confidence: float, gap_now: float,
