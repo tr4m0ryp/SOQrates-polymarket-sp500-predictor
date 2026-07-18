@@ -312,7 +312,9 @@ def first_signal(day, em, prm):
     return []
 
 
+from strategy.composite import full_strategy          # noqa: E402
+
 STRATEGIES = {"hold": hold, "flow_flip": flow_flip, "takeprofit": takeprofit,
               "longshot": longshot, "scale_in": scale_in,
               "convergence": convergence, "dip_buy": dip_buy,
-              "first_signal": first_signal}
+              "first_signal": first_signal, "full_strategy": full_strategy}
