@@ -272,9 +272,28 @@ strategy carries a volume gate.
 
 Execution is modeled, not assumed. Polymarket's Fee Structure V2,
 effective March 30, 2026, makes makers free with a 25\% rebate and charges
-takers $\mathrm{shares} \times \mathrm{feeRate} \times p\,(1-p)$ with
-feeRate 0.04 in the Finance category \citep{polymarket2026orders},
-about \$1 per 100 shares near even odds. The entire test half is fee-era,
+takers
+\begin{equation}
+f = n \, r \, p\,(1-p), \qquad r = 0.04,
+\label{eq:takerfee}
+\end{equation}
+
+\begin{center}
+\small
+\begin{tabular}{ll}
+\toprule
+Symbol & Meaning \\
+\midrule
+$f$ & taker fee in USDC \\
+$n$ & shares filled \\
+$r$ & fee rate of the Finance category \\
+$p$ & price of the traded side, in USDC \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+which peaks at even odds, about \$1 per 100 shares
+\citep{polymarket2026orders}. The entire test half is fee-era,
 a built-in regime stress. From roughly 3,400 real trade prints across six
 days we calibrated an effective half-spread of about 1 cent and a price
 impact of about 0.05 cents per \$100 of stake; the binding constraint is
