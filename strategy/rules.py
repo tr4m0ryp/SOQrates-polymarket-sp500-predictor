@@ -183,7 +183,7 @@ def scale_in(day, em, prm):
                     day["date"], _tok(p_mkt, side), t["shares"]))
             return trades
         if s and (side is None or s == side) \
-                and max(p_model, 1 - p_model) >= prm.get("gate", 0.65):
+                and _tok(p_model, s) >= prm.get("gate", 0.65):
             t = _enter_taker(day, em, s, minute, _base(prm) / len(hours), prm)
             if t:
                 side = s
