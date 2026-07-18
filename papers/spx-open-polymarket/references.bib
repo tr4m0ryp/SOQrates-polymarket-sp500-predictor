@@ -1,3 +1,7 @@
+% references.bib — SPX official-open predictor vs Polymarket daily market.
+% Sources mined from repo docs (data_sources.md, docs/data-sourcing/) and the
+% project's deep-research transcripts; DOIs confirmed against Crossref.
+
 @article{shannon1948,
   author  = {Claude E. Shannon},
   title   = {A Mathematical Theory of Communication},
@@ -7,4 +11,211 @@
   number  = {3},
   pages   = {379--423},
   doi     = {10.1002/j.1538-7305.1948.tb01338.x}
+}
+
+% ---- Academic papers -------------------------------------------------------
+
+@article{hansenlunde2005,
+  author  = {Hansen, Peter Reinhard and Lunde, Asger},
+  title   = {A Realized Variance for the Whole Day Based on Intermittent High-Frequency Data},
+  journal = {Journal of Financial Econometrics},
+  year    = {2005},
+  volume  = {3},
+  number  = {4},
+  pages   = {525--554},
+  doi     = {10.1093/jjfinec/nbi028}
+}
+
+@article{ahoniemilanne2013,
+  author  = {Ahoniemi, Katja and Lanne, Markku},
+  title   = {Overnight stock returns and realized volatility},
+  journal = {International Journal of Forecasting},
+  year    = {2013},
+  volume  = {29},
+  number  = {4},
+  pages   = {592--604},
+  doi     = {10.1016/j.ijforecast.2013.03.006}
+}
+
+@article{ahoniemi2016overnight,
+  author  = {Ahoniemi, Katja and Fuertes, Ana-Maria and Olmo, Jose},
+  title   = {Overnight News and Daily Equity Trading Risk Limits},
+  journal = {Journal of Financial Econometrics},
+  year    = {2016},
+  volume  = {14},
+  number  = {3},
+  pages   = {525--551},
+  doi     = {10.1093/jjfinec/nbu032}
+}
+
+@article{stollwhaley1990,
+  author  = {Stoll, Hans R. and Whaley, Robert E.},
+  title   = {Stock Market Structure and Volatility},
+  journal = {The Review of Financial Studies},
+  year    = {1990},
+  volume  = {3},
+  number  = {1},
+  pages   = {37--71},
+  doi     = {10.1093/rfs/3.1.37}
+}
+
+@article{patton2011ranking,
+  author  = {Patton, Andrew J.},
+  title   = {Data-based ranking of realised volatility estimators},
+  journal = {Journal of Econometrics},
+  year    = {2011},
+  volume  = {161},
+  number  = {2},
+  pages   = {284--303},
+  doi     = {10.1016/j.jeconom.2010.12.010}
+}
+
+% ---- Index methodology and exchange documentation --------------------------
+
+@online{spdji2026indexmath,
+  author       = {{S\&P Dow Jones Indices}},
+  title        = {Index Mathematics Methodology},
+  year         = {2026},
+  url          = {https://www.spglobal.com/spdji/en/documents/methodologies/methodology-index-math.pdf},
+  urldate      = {2026-07-18},
+  organization = {S\&P Global}
+}
+
+@online{cme2026soq,
+  author       = {{CME Group}},
+  title        = {Equity Index Settlement Procedures: Special Opening Quotation},
+  url          = {https://www.cmegroup.com/trading/equity-index/settlement.html},
+  urldate      = {2026-07-18},
+  organization = {CME Group}
+}
+
+@online{nasdaq2026totalview,
+  author       = {{Nasdaq}},
+  title        = {Nasdaq TotalView and the Net Order Imbalance Indicator},
+  url          = {https://www.nasdaq.com/solutions/data/equities/nasdaq-totalview},
+  urldate      = {2026-07-18},
+  organization = {Nasdaq}
+}
+
+@online{nasdaq2026itchsamples,
+  author       = {{Nasdaq}},
+  title        = {TotalView-ITCH Sample Data Files},
+  url          = {https://emi.nasdaq.com/ITCH/},
+  urldate      = {2026-07-18},
+  organization = {Nasdaq}
+}
+
+@online{nyse2026taqimbalances,
+  author       = {{NYSE}},
+  title        = {TAQ Order Imbalances: Historical Market Data},
+  url          = {https://www.nyse.com/market-data/historical/taq-order-imbalances},
+  urldate      = {2026-07-18},
+  organization = {New York Stock Exchange}
+}
+
+% ---- Market and data-source documentation ----------------------------------
+
+@online{polymarket2026clob,
+  author       = {{Polymarket}},
+  title        = {Polymarket CLOB: Introduction (Developer Documentation)},
+  url          = {https://docs.polymarket.com/developers/CLOB/introduction},
+  urldate      = {2026-07-18},
+  organization = {Polymarket}
+}
+
+@online{polymarket2026gamma,
+  author       = {{Polymarket}},
+  title        = {Gamma Markets API: Overview (Developer Documentation)},
+  url          = {https://docs.polymarket.com/developers/gamma-markets-api/overview},
+  urldate      = {2026-07-18},
+  organization = {Polymarket}
+}
+
+@online{polymarket2026orders,
+  author       = {{Polymarket}},
+  title        = {Creating Orders (Trading Documentation)},
+  url          = {https://docs.polymarket.com/trading/orders/create},
+  urldate      = {2026-07-18},
+  organization = {Polymarket}
+}
+
+@online{polymarket2026spxmarket,
+  author       = {{Polymarket}},
+  title        = {SPX Opens Up or Down on July 14, 2026 (Market Page)},
+  url          = {https://polymarket.com/event/spx-opens-up-or-down-on-july-14-2026},
+  urldate      = {2026-07-18},
+  organization = {Polymarket}
+}
+
+@online{databento2026equities,
+  author       = {{Databento}},
+  title        = {US Equities Market Data},
+  url          = {https://databento.com/equities},
+  urldate      = {2026-07-18},
+  organization = {Databento}
+}
+
+@online{lseg2026tickhistory,
+  author       = {{LSEG}},
+  title        = {Tick History (DataScope Select)},
+  url          = {https://www.lseg.com/en/data-analytics/market-data/data-feeds/tick-history},
+  urldate      = {2026-07-18},
+  organization = {London Stock Exchange Group}
+}
+
+@online{wrds2026taq,
+  author       = {{Wharton Research Data Services}},
+  title        = {NYSE Trade and Quote (TAQ)},
+  url          = {https://wrds-www.wharton.upenn.edu/pages/about/data-vendors/nyse-trade-and-quote-taq/},
+  urldate      = {2026-07-18},
+  organization = {Wharton Research Data Services}
+}
+
+@online{fred2026releasedates,
+  author       = {{Federal Reserve Bank of St. Louis}},
+  title        = {FRED API: fred/release/dates},
+  url          = {https://fred.stlouisfed.org/docs/api/fred/release_dates.html},
+  urldate      = {2026-07-18},
+  organization = {Federal Reserve Bank of St. Louis}
+}
+
+@online{yahoo2026chartapi,
+  author       = {{Yahoo Finance}},
+  title        = {Yahoo Finance Chart API (v8 endpoint)},
+  url          = {https://query1.finance.yahoo.com/v8/finance/chart/%5EGSPC},
+  urldate      = {2026-07-18},
+  organization = {Yahoo}
+}
+
+@online{stooq2026spx,
+  author       = {{Stooq}},
+  title        = {Historical Daily Data for \^{}SPX},
+  url          = {https://stooq.com/q/d/l/?s=%5Espx&i=d},
+  urldate      = {2026-07-18},
+  organization = {Stooq}
+}
+
+@online{slickcharts2026sp500,
+  author       = {{Slickcharts}},
+  title        = {S\&P 500 Companies by Weight},
+  url          = {https://www.slickcharts.com/sp500},
+  urldate      = {2026-07-18},
+  organization = {Slickcharts}
+}
+
+@online{nasdaqtrader2026listed,
+  author       = {{Nasdaq Trader}},
+  title        = {Nasdaq-Listed Securities Directory (nasdaqlisted.txt)},
+  url          = {https://www.nasdaqtrader.com/dynamic/SymDir/nasdaqlisted.txt},
+  urldate      = {2026-07-18},
+  organization = {Nasdaq}
+}
+
+@online{gdelt2017doc,
+  author       = {{The GDELT Project}},
+  title        = {GDELT DOC 2.0 API Debuts},
+  year         = {2017},
+  url          = {https://blog.gdeltproject.org/gdelt-doc-2-0-api-debuts/},
+  urldate      = {2026-07-18},
+  organization = {The GDELT Project}
 }
