@@ -77,7 +77,10 @@ def fetch_all(dates: list[str], log=print) -> None:
 
 def main():
     days = json.loads((CACHE / "strategy_days.json").read_text())
-    fetch_all([d["date"] for d in days])
+    dates = [d["date"] for d in days]
+    half = len(dates) // 2
+    # test half first: the walk-forward comparison unblocks sooner
+    fetch_all(dates[half:] + dates[:half])
 
 
 if __name__ == "__main__":
