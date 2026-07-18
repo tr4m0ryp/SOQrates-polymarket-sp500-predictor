@@ -21,7 +21,7 @@ Figure~\ref{fig:spx_open_predictor_misses} shows what survives to 9:29 in
 the minute-level sample: two misses in 37 days, one of each remaining
 kind.
 
-\begin{figure}[h]
+\begin{figure}[htp]
     \centering
     \includegraphics[width=0.92\linewidth]{figures/spx_open_predictor_misses.png}
     \caption{The two 9:29 misses out of 37 days (2026-05-19 to 2026-07-13).
@@ -47,6 +47,9 @@ practical entry hour.
 The sigma decomposition locates the model's boundary precisely. Pure
 mapping and auction noise measure $\pm 0.08$--$0.09\%$, the 9:29 floor;
 the rest of the midnight width is future news:
+% minipage keeps the equation and its Symbol/Meaning table on one page
+\noindent
+\begin{minipage}{\linewidth}
 \begin{equation}
 \sigma_{\mathrm{news}} = \sqrt{\sigma_{00{:}00}^2 - \sigma_{9{:}29}^2}
 = \sqrt{0.34^2 - 0.09^2} \approx 0.33\%.
@@ -65,6 +68,7 @@ $\sigma_{\mathrm{news}}$ & the share of midnight width that is future news \\
 \bottomrule
 \end{tabular}
 \end{center}
+\end{minipage}
 
 About 94\% of midnight
 uncertainty is events that have not happened yet. Therefore a perfect
