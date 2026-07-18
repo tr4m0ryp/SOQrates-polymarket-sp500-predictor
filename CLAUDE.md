@@ -38,8 +38,10 @@ python3 . weights                # index weights / Nasdaq share
 python3 . calendar-refresh       # FRED release dates (FRED_API_KEY)
 python3 . noii-deviation --file  # NOII-vs-print stats from raw ITCH
 python3 . lseg-status            # check DSS_USERNAME/DSS_PASSWORD
-python3 . lseg-pull --date D     # pull one day, cache, discover FIDs
-python3 . stage3 --date D        # replica-vs-official for cached day
+python3 . lseg-pull --date D     # LSEG fallback: pull one day, cache, discover FIDs
+python3 . databento-status       # check DATABENTO_API_KEY (metadata ping)
+python3 . databento-pull --date D  # primary: pull one day, cache raw JSON, discover fields
+python3 . stage3 --date D [--source {databento,lseg}]  # replica-vs-official (default databento if keyed)
 ```
 
 ## Environment keys (all optional until the corresponding feature is used)
