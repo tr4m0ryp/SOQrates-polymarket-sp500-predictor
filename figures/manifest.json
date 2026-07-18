@@ -3,63 +3,63 @@
     "id": "spx_open_predictor",
     "file": "plots/spx_open_predictor.png",
     "status": "made",
-    "caption_draft": "",
+    "caption_draft": "Model P(official open = UP) trajectories and direction accuracy by prediction time. Top: one line per day over 37 trading days (2026-05-19 to 2026-07-13), x-axis time of day (ET, 00:00 to 9:29), y-axis model P(up); green lines are days that officially opened up, red opened down, with dots at the right edge marking the official outcome. The two 9:29 misses are highlighted: 2026-07-10 (official +4.00 pts) and 2026-06-22 (official -0.14 pts). Bottom: direction accuracy (%) versus prediction time -- the hourly sample (n=134 days) rises from about 74% at midnight to 92% at 9:00, and the minute-level sample (n=18 days) reaches about 94% near 9:29, against a 96.3% ceiling attainable with perfect 9:30 market data (residual auction noise) and the 50% coin-flip floor.",
     "producing_script": null,
-    "data_source": null,
-    "notes": ""
+    "data_source": "Yahoo v8 chart API (ES=F hourly/minute, ^GSPC daily opens) + backtest dataset; analysis JSONs were session-scratchpad (ephemeral)",
+    "notes": "Producer script not retained; caption written from the plot image and project memory (spx-open-predictor-roadmap.md). No vector regeneration possible."
   },
   {
     "id": "spx_open_predictor_0000_200d",
     "file": "plots/spx_open_predictor_0000_200d.png",
     "status": "made",
-    "caption_draft": "",
+    "caption_draft": "Midnight (00:00 ET) direction calls over 200 trading days (2025-09-09 to 2026-07-13). Each line is one day's model P(official open = UP) trajectory from 00:00 to 09:00 ET (x-axis time of day, y-axis P(up)); the dashed vertical line at 00:00 marks when the call is fixed, and dots at the right edge show the official outcome. Grey lines are days the midnight call was correct (145), red lines wrong (55), giving 72.5% midnight accuracy. Many red trajectories start near the 0.5 line, previewing the coin-toss filter.",
     "producing_script": null,
-    "data_source": null,
-    "notes": ""
+    "data_source": "Yahoo v8 chart API (ES=F hourly, ^GSPC daily opens) + backtest dataset (200-day window Sep 2025 - Jul 2026)",
+    "notes": "Producer script not retained; caption written from the plot image and project memory. No vector regeneration possible."
   },
   {
     "id": "spx_open_predictor_0000_confident",
     "file": "plots/spx_open_predictor_0000_confident.png",
     "status": "made",
-    "caption_draft": "",
+    "caption_draft": "Midnight prediction with coin-toss days removed. Days with midnight confidence below 65% (the shaded P(up) band around 0.5) are excluded: 88 of 200 days. On the remaining 112 confident days, 92 calls are correct (grey) and 20 wrong (red), lifting midnight accuracy from 72.5% to 82.1%. Axes as in the 200-day midnight figure: time of day (ET, 00:00 to 09:00) versus model P(official open = UP), dashed line at 00:00 marking prediction time, right-edge dots the official outcome. The exclusion filter is itself the trading rule: no bet on coin-toss days.",
     "producing_script": null,
-    "data_source": null,
-    "notes": ""
+    "data_source": "Yahoo v8 chart API (ES=F hourly, ^GSPC daily opens) + backtest dataset (200-day window Sep 2025 - Jul 2026)",
+    "notes": "Producer script not retained; caption written from the plot image and project memory. No vector regeneration possible."
   },
   {
     "id": "spx_open_predictor_0400_200d",
     "file": "plots/spx_open_predictor_0400_200d.png",
     "status": "made",
-    "caption_draft": "",
+    "caption_draft": "04:00 ET direction calls over 200 trading days (2025-09-18 to 2026-07-13). Same construction as the midnight figure -- one model P(official open = UP) trajectory per day (x-axis time of day ET, y-axis P(up)), right-edge dots the official outcome -- but the call is fixed at the dashed 04:00 line: 154 correct (grey) versus 46 wrong (red), 77.0% accuracy, versus 72.5% at midnight.",
     "producing_script": null,
-    "data_source": null,
-    "notes": ""
+    "data_source": "Yahoo v8 chart API (ES=F hourly, ^GSPC daily opens) + backtest dataset (200-day window Sep 2025 - Jul 2026)",
+    "notes": "Producer script not retained; caption written from the plot image and project memory. No vector regeneration possible."
   },
   {
     "id": "spx_open_predictor_misses",
     "file": "plots/spx_open_predictor_misses.png",
     "status": "made",
-    "caption_draft": "",
+    "caption_draft": "The two 9:29 misses out of 37 days (2026-05-19 to 2026-07-13). Grey trajectories are days predicted correctly at 9:29; the colored pair are the misses: 2026-06-22 (red, predicted UP, official opened DOWN by -0.14 pts -- a near-tie auction quirk) and 2026-07-10 (orange, predicted DOWN, official opened UP by +4.00 pts -- a quirk day where futures held the opposite direction). Axes: time of day (ET, 00:00 to 9:29) versus model P(official open = UP); dots at the right edge mark the official outcome (top = up, bottom = down).",
     "producing_script": null,
-    "data_source": null,
-    "notes": ""
+    "data_source": "Yahoo v8 chart API (ES=F hourly/minute, ^GSPC daily opens) + backtest dataset",
+    "notes": "Producer script not retained; caption written from the plot image and project memory. No vector regeneration possible."
   },
   {
     "id": "stake_sweep",
     "file": "plots/stake_sweep.png",
     "status": "made",
-    "caption_draft": "",
+    "caption_draft": "Stake economics for the first_signal rule (0.70 confidence gate): flat stakes swept from $25 to $2,000 with the calibrated execution model, bankroll unbound. Left: total PnL versus intended stake per trade -- test half (58 days, blue) reaches about $5.0k and all 115 days (green) about $13.2k at $2,000; the shaded region above roughly $400 marks where the impact model leaves its validated $100-500 calibration range. Middle: ROI per dollar staked -- flat at about 15.5% from $25 to $300, peaking near 19.6% (test) around $750, then declining. Right: effective stake actually placed versus intended -- fills bend away from the 1:1 line and asymptote to roughly $1,000, the liquidity ceiling of about 1% of a day's traded volume.",
     "producing_script": null,
-    "data_source": null,
-    "notes": ""
+    "data_source": "strategy-lab simulation (strategy/data.py dataset + strategy/execution.py calibrated impact model; Polymarket clob prices-history books)",
+    "notes": "Producer script not retained (strategy-lab sweep driver was ephemeral); numbers cross-checked against docs/approach.tex 'Sizing' subsection. No vector regeneration possible."
   },
   {
     "id": "strategy_bankroll_50",
     "file": "plots/strategy_bankroll_50.png",
     "status": "made",
-    "caption_draft": "",
+    "caption_draft": "Bankroll trajectories for the $50-stake daily strategy on the test half (Apr 16 - Jul 14, 2026): hour-4 hold rule (enter at 04:00 ET when model edge >= 5c and traded-side confidence >= 0.60, hold to resolution), 21 trades, 19 wins - 2 losses, execution modeled with 1c half-spread and 0.1% impact per $100. Raw $50/day (blue) grows $100 to $264; the guarded variant staking min($50, 20% of bankroll) (green) grows $100 to $176. Dots mark the two losing days -- Jul 2 (news reversal) and Jul 10 (quirk day). Axes: date versus bankroll (USDC); dashed line at the $100 start.",
     "producing_script": "strategy/plot.py",
-    "data_source": null,
-    "notes": ""
+    "data_source": "strategy/data.py build() test-half dataset via strategy/sim.py (hold rule; Polymarket books + model signals)",
+    "notes": "Vector PDF regenerated from strategy/plot.py (plots/strategy_bankroll_50.pdf). Both PNG and PDF copied to the paper figures dir."
   }
 ]
