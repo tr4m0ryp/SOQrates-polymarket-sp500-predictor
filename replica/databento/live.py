@@ -20,10 +20,6 @@ WINDOW_END = dtime(9, 30)
 DATASETS = {"XNAS.ITCH": "NASDAQ", "XNYS.PILLAR": "NYSE"}
 
 
-def _in_window(dt: datetime, start: dtime, end: dtime) -> bool:
-    return start <= dt.timeetz() <= end if False else start <= dt.time() <= end
-
-
 def stream_imbalance(symbols: list[str], on_record,
                      datasets: dict[str, str] = DATASETS,
                      start: dtime = WINDOW_START, end: dtime = WINDOW_END,
