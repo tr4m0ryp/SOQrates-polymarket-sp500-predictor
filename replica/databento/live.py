@@ -1,17 +1,20 @@
 """Live opening-auction imbalance stream (9:28-9:30 ET, one prediction/day).
 
-Subscribes to the 'imbalance' schema on XNAS.ITCH + XNYS.PILLAR through the
-official `databento.Live` client (lazy import, via client.live_client). Every
-record is normalized by the SAME schemas.normalize_imbalance the historical
-path uses, so live and backtest yield identical dicts. Live DBN records are
-objects, not dicts; normalize_imbalance reads them via attribute access, and
-this module tracks the instrument_id -> symbol mapping the live feed streams
-as SymbolMappingMsg records so each imbalance carries its ticker.
+Databento live sessions are single-dataset, so each dataset (XNAS.ITCH
+Nasdaq NOII, XNYS.PILLAR NYSE) gets its OWN `databento.Live` client, pumped
+on a daemon thread into one queue. Every record is normalized by the SAME
+schemas.normalize_imbalance the historical path uses, so live and backtest
+yield identical dicts. Live DBN records are objects, not dicts;
+normalize_imbalance reads them via attribute access (with an `hd` header
+fallback), and each pump tracks its feed's instrument_id -> symbol mapping
+from SymbolMappingMsg records so every imbalance carries its ticker.
 """
-from datetime import datetime, time as dtime
+import queue
+import threading
+from datetime import time as dtime
 
 from config import NY
-from replica.databento.client import live_client
+from replica.databento.client import DatabentoError, live_client
 from replica.databento.schemas import normalize_imbalance
 
 WINDOW_START = dtime(9, 28)
@@ -26,51 +29,81 @@ def stream_imbalance(symbols: list[str], on_record,
                      stype_in: str = "raw_symbol") -> None:
     """Stream normalized imbalance dicts over the pre-open window.
 
-    Calls `on_record(dict)` for every imbalance whose ET timestamp is within
-    [start, end]. Records before the window are used only to keep the
-    symbol map warm; the first record at/after `end` stops the stream (one
-    prediction/day). Blocks until the window closes or the feed ends. Needs
-    the optional `pip install databento` (raised by live_client()).
+    Calls `on_record(dict)` for every imbalance whose ET timestamp falls in
+    [start, end]. Records before the window only keep the symbol map warm;
+    a record past `end` closes that feed (one prediction/day). Blocks until
+    every feed's window closes or its stream ends; a feed ErrorMsg or pump
+    crash re-raises here. Needs the optional `pip install databento`
+    (raised by live_client()).
     """
-    client = live_client()
-    for dataset, _venue in datasets.items():
+    q: queue.Queue = queue.Queue()
+    clients = []
+    for dataset, venue in datasets.items():
+        client = live_client()               # one client per dataset
         client.subscribe(dataset=dataset, schema="imbalance",
                          symbols=symbols, stype_in=stype_in)
+        clients.append(client)
+        threading.Thread(target=_pump, args=(client, venue, q, start, end),
+                         daemon=True).start()
+    try:
+        open_feeds = len(clients)
+        while open_feeds:
+            kind, payload = q.get()
+            if kind == "rec":
+                on_record(payload)
+            elif kind == "err":
+                raise payload
+            else:                            # "done"
+                open_feeds -= 1
+    finally:
+        for client in clients:
+            try:
+                client.stop()
+            except Exception:
+                pass
 
-    venue_by_dataset = dict(datasets)
+
+def _pump(client, venue: str, q: queue.Queue,
+          start: dtime, end: dtime) -> None:
+    """One dataset's feed: iterate, map symbols, normalize, filter window."""
     symbol_map: dict[int, str] = {}
-    for record in client:
-        rtype = type(record).__name__
-        if rtype == "SymbolMappingMsg":
-            iid = getattr(record, "instrument_id", None)
-            sym = (getattr(record, "stype_out_symbol", None)
-                   or getattr(record, "raw_symbol", None))
-            if iid is not None and sym:
-                symbol_map[iid] = str(sym)
-            continue
-        if rtype != "ImbalanceMsg":
-            continue
-
-        venue = _record_venue(record, venue_by_dataset)
-        sym = symbol_map.get(getattr(record, "instrument_id", None))
-        rec = normalize_imbalance(record, venue=venue, symbol=sym)
-        ts = rec.get("ts")
-        if ts is not None:
-            local = ts.astimezone(NY)
-            if local.time() < start:
+    try:
+        for record in client:
+            rtype = type(record).__name__
+            if rtype == "ErrorMsg":
+                q.put(("err", DatabentoError(
+                    f"{venue} live: {getattr(record, 'err', record)}")))
+                return
+            if rtype == "SymbolMappingMsg":
+                iid = _instrument_id(record)
+                sym = (getattr(record, "stype_out_symbol", None)
+                       or getattr(record, "raw_symbol", None))
+                if iid is not None and sym:
+                    symbol_map[iid] = str(sym)
                 continue
-            if local.time() > end:
-                break
-        on_record(rec)
+            if rtype != "ImbalanceMsg":
+                continue
+            rec = normalize_imbalance(
+                record, venue=venue,
+                symbol=symbol_map.get(_instrument_id(record)))
+            ts = rec.get("ts")
+            if ts is not None:
+                local = ts.astimezone(NY).time()
+                if local < start:
+                    continue
+                if local > end:
+                    break
+            q.put(("rec", rec))
+    except Exception as e:                   # surfaced in the caller's thread
+        q.put(("err", e))
+        return
+    q.put(("done", None))
 
 
-def _record_venue(record, venue_by_dataset: dict[str, str]) -> str | None:
-    """Best-effort venue tag from the record's publisher/dataset."""
-    ds = getattr(record, "dataset", None)
-    if ds in venue_by_dataset:
-        return venue_by_dataset[ds]
-    pub = getattr(record, "publisher_id", None)
-    # publisher_id namespaces are venue-specific; resolved on first live run.
-    if pub is not None and len(venue_by_dataset) == 1:
-        return next(iter(venue_by_dataset.values()))
-    return None
+def _instrument_id(record):
+    iid = getattr(record, "instrument_id", None)
+    if iid is None:
+        hd = getattr(record, "hd", None)
+        if hd is not None:
+            iid = getattr(hd, "instrument_id", None)
+    return iid
