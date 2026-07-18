@@ -34,10 +34,20 @@ incomplete · `No` = not yet wired (Source column names the chosen one to build)
 
 ## Cost to operate
 
-- **Validation / backtest:** $0 — free ITCH + NYSE TAQ samples cover the historical legs.
-- **Go live:** **$49/mo** — Massive is the only unavoidable paid leg (live NYSE imbalance).
-- **+$99/mo optional** — Alpaca Algo Trader Plus, only if full-tape (SIP) real-time quotes
-  are needed instead of the free IEX subset.
+- **Validation / backtest:** **$0** — WRDS (NYSE Daily TAQ) covers NYSE imbalance + cross-prints
+  + NBBO free for arbitrary dates; only Nasdaq NOII history needs free ITCH samples / Databento.
+- **Go live:** **~$17–40/mo (IBKR)** — tick 225 gives both venues live, EU-reachable; or the
+  free-ish Webull(Nasdaq)+Massive($49) stitch. WRDS is research-only and cannot power live trading.
+
+## WRDS (access confirmed)
+
+- **NYSE Daily TAQ** → Order-Imbalance file (#2 NYSE imbalance, arbitrary dates, ~2003+, ms),
+  trades (#3 cross prints w/ exact ts + venue), NBBO (#4 quotes). Free, all constituents.
+- **Caveats:** historical + **research-only** (academic license, no live, no production trading);
+  **Nasdaq NOII is NOT in WRDS TAQ** (TAQ imbalance = NYSE-group only) — check the institution's
+  dataset list for any Nasdaq TotalView/ITCH product, else samples/Databento/self-record.
+- **TODO:** wire a small WRDS fetcher (WRDS Python/Postgres API) → feed stage3/timing like the
+  Databento adapter does.
 
 ## Known gaps / caveats
 
