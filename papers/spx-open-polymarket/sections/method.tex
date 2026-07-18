@@ -308,9 +308,31 @@ fills, and look-ahead in the news-overlay constants, which were refit on
 disjoint data. In a thin market, execution assumptions are as load-bearing
 as the signal.
 
-Candidates read the model through one edge module: minimum price
-divergence 0.05, and below 65\% confidence the module answers coin-flip
-zone, stand down. The deployed rule is seven steps:
+Candidates read the model through one edge module:
+\begin{equation}
+c = \max(p_m,\, 1 - p_m), \qquad
+e_{\mathrm{up}} = p_m - q, \qquad
+e_{\mathrm{down}} = q - p_m.
+\label{eq:edge}
+\end{equation}
+
+\begin{center}
+\small
+\begin{tabular}{ll}
+\toprule
+Symbol & Meaning \\
+\midrule
+$p_m$ & model probability of an up open \\
+$q$ & market price of the UP side, in USDC \\
+$c$ & model confidence \\
+$e_{\mathrm{up}}, e_{\mathrm{down}}$ & edge of buying the UP or DOWN side \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+A side is bought only when its edge reaches the 0.05 minimum price
+divergence; below $c = 0.65$ the module answers coin-flip zone, stand
+down. The deployed rule is seven steps:
 \begin{enumerate}
   \item at 00:05, run the Group-A briefing;
   \item re-fuse the voices at every checkpoint and event trigger;
