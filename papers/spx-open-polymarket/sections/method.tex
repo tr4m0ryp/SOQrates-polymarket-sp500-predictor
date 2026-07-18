@@ -24,9 +24,9 @@ release-dates API, with a keyless NFP first-Friday rule as fallback
 \citep{fred2026releasedates}. Yahoo's history caps set the windows: a
 720-day lookback (hourly bars stop near 730 days), a 480-day dataset window,
 and only about 30 days of ES minute bars. The runtime is Python~3.12
-standard library only: no pandas or numpy in core paths, no compiled
-components. The system is network-bound and makes one prediction per day,
-so nothing faster is needed.
+standard library only, no pandas or numpy in core paths and no compiled
+components, because the system is network-bound and makes one prediction
+per day.
 
 The train/test split is chronological halves. Nothing is ever fitted on the
 test half.
