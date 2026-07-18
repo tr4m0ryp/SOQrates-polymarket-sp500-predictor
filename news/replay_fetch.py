@@ -14,7 +14,8 @@ from news import gdelt
 
 OUT_DIR = CACHE / "news_llm_replay"
 CHECKPOINTS = {"04:00": 9.0, "07:00": 3.0, "08:35": 2.0}   # ET -> hours back
-PAUSE = 8.0
+PAUSE = 20.0        # GDELT serves its rate-limit page as HTTP 200 with no
+EMPTY_RETRIES = 2   # articles - so empty results are retried, not trusted
 
 
 def _utc_str(date: str, et_hhmm: str, hours_back: float = 0.0) -> str:
