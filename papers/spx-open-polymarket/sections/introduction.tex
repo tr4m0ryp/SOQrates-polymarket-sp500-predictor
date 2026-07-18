@@ -1,1 +1,95 @@
-% introduction: drafted by the paper workflow
+% introduction: drafted by the paper workflow (style-engine protocol).
+% Claims and numbers from .harvest/context.md via the outline's introduction block.
+\label{sec:introduction}
+
+Polymarket runs a daily binary market on whether the S\&P 500 opens up or
+down \parencite{polymarket2026spxmarket}. The market (series 10945, slug
+\texttt{spx-open-daily-up-or-down}) resolves on the official opening print
+--- the first index value published at 9:30:00~ET --- against the prior
+official close; ties resolve 50/50. Volume ran near \$664k per day in
+January 2026 and declined to roughly \$30--48k per day by July 2026. Nearly
+everyone in it watches the same thing: the overnight E-mini futures gap. We
+built a system that predicts the official print itself, ahead of that
+crowd, and this paper reports what that print actually is, how well it can
+be predicted, and what trading the difference was worth.
+
+The official open is a calculation, not a traded price. S\&P computes the
+index on a fixed interval of roughly five seconds from each constituent's
+last price; stocks that have not opened yet are carried at their prior
+close, and the first published value is never restated
+\parencite{spdji2026indexmath}. It is not the SOQ, the settlement quotation
+for index futures, which waits until every stock has opened
+\parencite{cme2026soq}. Opening speed therefore decides what the first tick
+contains. Nasdaq stocks cross at exactly 9:30:00 and print immediately;
+NYSE opens are run by designated market makers and lag by seconds to
+minutes, so the NYSE half of the index enters the first tick stale. Of the
+roughly 505 constituents, 57.5\% of index weight is Nasdaq-listed.
+Membership and weights are fixed and published --- what varies second by
+second is which price each stock contributes, and on days decided by
+0.1--0.2 index points, whether JPM or LLY was counted live can be the whole
+answer.
+
+The crowd's core error is that it prices the market as if the official open
+realizes the futures gap in full: pass-through one, noise zero. Measured,
+the official open realizes only about 80\% of the overnight gap, and the
+noise around that mapping is real but structured --- it shrinks on a fitted
+schedule as 9:30 approaches. That 20\% spread, plus the predictable shape
+of the noise, is the entire edge this paper measures and trades. The cost
+of the error concentrates on auction-quirk days, roughly one per month,
+when ES holds its direction and the official print lands opposite or nearly
+flat; twelve such days sit in our sample. On all six days where SPY and SPX
+opened on opposite sides of the prior close, across 116 markets measured,
+the crowd held the losing side at 94--99 cents. The comment threads record
+what that felt like: median comment volume is 3 per day, January 29 drew
+68, and one bettor wrote ``lost 5k, literally half of my money''. Hedging
+with ETFs or futures does not save them --- both are flawed proxies, and
+June 22 showed the ETF leg breaking around a dividend date.
+
+None of the ingredients are new. Stale constituent prices at the open, and
+the cash index lagging its own futures because of them, are documented
+since \textcite{stollwhaley1990}. Overnight returns as a distinct,
+information-bearing component of daily volatility are treated by
+\textcite{ahoniemilanne2013}, and \textcite{ahoniemi2016overnight} show
+overnight news raising daily trading risk differently across volatility
+regimes. How to fold the overnight gap into realized-variance measurement
+is the subject of \textcite{hansenlunde2005}; \textcite{patton2011ranking}
+ranks the resulting estimators. The index arithmetic and the SOQ
+distinction come straight from exchange methodology documents
+\parencite{spdji2026indexmath,cme2026soq}. The novelty is not any single
+component. It is the composition, and its validation against the prices of
+one specific market.
+
+Our approach stays deliberately small. A linear map from the E-mini futures
+gap to the official gap, fitted once and frozen, plus a time-decaying width
+that turns the map into a probability, is the entire day-level core.
+Everything else in the paper tests that core against reality: an accuracy
+ladder over 200 out-of-sample days, and a strategy laboratory that models
+fees and execution before claiming a single dollar. This paper makes five
+contributions:
+\begin{itemize}
+  \item a frozen linear model of the official open --- predicted gap
+    $a_0 + k\,g$, with $g$ the E-mini futures gap, $a_0 = 0.0092\%$, and
+    pooled $k \approx 0.767$--$0.797$ --- under a fitted width
+    $\sigma(\tau)$ decaying from $\pm0.344\%$ at midnight to $\pm0.083\%$
+    at 9:29;
+  \item an out-of-sample accuracy ladder over 200 trading days: 72.5\% at
+    midnight, 77.0\% at 04:00 (154/200), roughly 94\% at 9:29;
+  \item a strategy laboratory over 115 resolved market days (57 train, 58
+    test, chronological) with modeled fees and execution, independently
+    audited: four look-ahead and fill defects were found and removed before
+    any conclusion was drawn;
+  \item a validated trading rule: the sole survivor of 15 candidates
+    (hour-4 hold, \$100 $\to$ \$135.92 on the test half at
+    10\%-of-bankroll stakes) and its first-signal upgrade, 26W--2L over the
+    58 test days, \$100 $\to$ \$321.53 at flat \$50 stakes and \$850.69
+    under the compounding rule $\min(\text{half balance}, \$400,
+    1\%~\text{of day volume})$;
+  \item a complete miss attribution --- of 55 midnight misses, 33\% coin
+    tosses, 51\% overnight news, 16\% auction quirks, zero unexplained ---
+    plus a catalogue of negative results.
+\end{itemize}
+
+The remainder of the paper follows the IMRAD structure: Section~2 gives the
+data, the model, and the strategy laboratory; Section~3 the results;
+Section~4 the discussion, misses and limitations included; Section~5
+concludes.
