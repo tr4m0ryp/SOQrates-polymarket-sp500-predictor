@@ -109,16 +109,12 @@ def _to_ns(v):
     if s.lstrip("-").isdigit():
         return int(s)
     iso = s.replace("Z", "+00:00")
-    if "." in iso:                           # trim ns fraction to us for parse
-        head, _, tail = iso.partition(".")
-        frac = "".join(c for c in tail if c.isdigit())[:6]
-        off = tail[len(tail) - (len(tail) - len(tail.rstrip("+-0123456789:"))):]
-        tz = ""
-        for sign in ("+", "-"):
-            if sign in tail:
-                tz = sign + tail.split(sign, 1)[1]
-                break
-        iso = f"{head}.{frac}{tz}" if frac else head + tz
+    if "." in iso:                           # trim ns fraction to us, keep tz
+        dot = iso.index(".")
+        j = dot + 1
+        while j < len(iso) and iso[j].isdigit():
+            j += 1
+        iso = iso[:dot + 1] + iso[dot + 1:j][:6] + iso[j:]
     try:
         dt = datetime.fromisoformat(iso)
     except ValueError:
