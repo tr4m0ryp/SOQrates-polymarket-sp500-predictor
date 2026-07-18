@@ -239,6 +239,46 @@ def convergence(day, em, prm):
     return [t]
 
 
+def dip_buy(day, em, prm):
+    """Decide the side early, buy the DIP: at hour decide_h take the side
+    the signal favours (edge/gate as in hold); then from that minute scan
+    for the token trading disc below its decide-time price and enter there
+    (taker, so spread+impact still apply). If no dip prints by deadline_h,
+    fall back to a taker entry at the deadline (fallback=0 skips instead).
+    Hold to resolution."""
+    minute = int(prm.get("decide_h", 0)) * 60
+    p_model, p_mkt = _sig(day, minute, prm), market_p_at(day, minute)
+    if p_model is None or p_mkt is None:
+        return []
+    side = _edge_side(p_model, p_mkt, prm.get("edge", 0.05))
+    if side is None or _tok(p_model, side) < prm.get("gate", 0.60):
+        return []
+    trigger = _tok(p_mkt, side) - prm.get("disc", 0.04)
+    deadline = int(prm.get("deadline_h", 9)) * 60
+    entry_min = None
+    for m, p in day["curve"]:
+        if m <= minute:
+            continue
+        if m > deadline:
+            break
+        if _tok(p, side) <= trigger:
+            entry_min = m
+            break
+    if entry_min is None:
+        if not prm.get("fallback", 1):
+            return []
+        entry_min = deadline
+        p_gate = _sig(day, entry_min, prm)      # re-check signal at fallback
+        if p_gate is None or _tok(p_gate, side) < prm.get("gate", 0.60):
+            return []
+    t = _enter_taker(day, em, side, entry_min, _base(prm), prm)
+    if t is None:
+        return []
+    t.update(exit_min=LAST_MINUTE + 1,
+             proceeds=_resolve(day, side, t["shares"]))
+    return [t]
+
+
 STRATEGIES = {"hold": hold, "flow_flip": flow_flip, "takeprofit": takeprofit,
               "longshot": longshot, "scale_in": scale_in,
-              "convergence": convergence}
+              "convergence": convergence, "dip_buy": dip_buy}
