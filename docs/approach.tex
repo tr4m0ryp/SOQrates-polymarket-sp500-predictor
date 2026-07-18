@@ -372,6 +372,43 @@ construction} --- the gap has the news in it, and adding it again would count
 the same evidence twice.
 \end{itemize}
 
+\subsection{The replay verdict: measured, and negative for now}
+
+The LLM leg was put through a complete historical replay rather than being
+trusted on design. For each of the 58 out-of-sample days we archived exactly
+what production would have seen --- global-sweep headlines in windows ending
+at the 04:00, 07:00 and 08:35 checkpoints, no hindsight, no market data ---
+and ran each day through the verbatim Group-B prompt (a frontier model
+standing in for the production LLM). The voices were then fused and the full
+strategy re-run with only the signal swapped.
+
+The result is a clean negative: test-half profit fell from \$224 to \$62 per
+\$50 staking. The voice suppressed twelve winning entries outright, delayed
+three more to worse prices, and avoided \emph{neither} of the period's two
+losses. The mechanism is visible in the outputs: the prompt instructs that
+``most runs see nothing new'' with $\text{sigma\_mult} = 1.0$, but against
+mid-2026's permanent Iran/Hormuz headline backdrop the classifier emitted an
+elevated multiplier on 61\% of all checkpoints. Chronic widening acts as a
+standing confidence tax --- the fused probability is squeezed under the
+entry gate on precisely the calm mornings the strategy earns its living ---
+while contributing nothing on the mornings that actually go wrong.
+
+\intuition{The classifier was not wrong that the world was risky. It was
+useless about \emph{which mornings} the risk would bite, and an entry gate
+can only use the second thing.}
+
+Two caveats keep the verdict provisional. The replay under-feeds the design:
+no wire feed, and --- most importantly --- no actual 8:30 release values
+against consensus at the 08:35 checkpoint, the one slot where the
+interpretation role has teeth. And the stand-in model is not the production
+model. But the failure mode is over-activity, which richer feeds would
+amplify rather than cure. The consequence for now: production entries run on
+the market core alone; the LLM voice is confined to the narrow contract the
+mathematics always intended --- conflicted-day direction and release-morning
+interpretation --- pending a recalibration pass (fitted on the train half
+once its headline backfill completes) that ignores ambient risk unless an
+event is both flagged as a shock and fresh.
+
 \section{Putting it together: the fusion rule}
 
 Every layer produces an estimate with an uncertainty: the market core
