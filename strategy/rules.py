@@ -155,7 +155,7 @@ def longshot(day, em, prm):
             p_tok = _tok(p_mkt, side)
             p_mod = p_model if side == "up" else 1 - p_model
             if p_tok <= prm.get("px_max", 0.15) and p_mod >= prm.get("p_min", 0.30):
-                t = _enter_taker(day, em, side, minute, STAKE)
+                t = _enter_taker(day, em, side, minute, _base(prm), prm)
                 if t is None:
                     return []
                 t.update(exit_min=LAST_MINUTE + 1,
