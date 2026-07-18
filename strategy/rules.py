@@ -56,7 +56,7 @@ def hold(day, em, prm):
     hold to resolution. maker=1 posts a resting limit `maker_disc` inside."""
     h = int(prm.get("hour", 7))
     minute = h * 60
-    p_model, p_mkt = model_p_at(day, minute), market_p_at(day, minute)
+    p_model, p_mkt = _sig(day, minute, prm), market_p_at(day, minute)
     if p_model is None or p_mkt is None:
         return []
     if max(p_model, 1 - p_model) < prm.get("gate", 0.65):
@@ -69,11 +69,12 @@ def hold(day, em, prm):
         fm = em.maker_fill(day["curve"], minute, limit, side)
         if fm is None:
             return []
-        shares = STAKE / limit
+        stake = min(_base(prm), prm.get("_avail", _base(prm)))
+        shares = stake / limit
         t = {"side": side, "entry_min": fm, "px": limit,
-             "stake": STAKE, "shares": shares}
+             "stake": stake, "shares": shares}
     else:
-        t = _enter_taker(day, em, side, minute, STAKE)
+        t = _enter_taker(day, em, side, minute, _base(prm), prm)
         if t is None:
             return []
     t.update(exit_min=LAST_MINUTE + 1, proceeds=_resolve(day, t["side"], t["shares"]))
@@ -84,7 +85,7 @@ def flow_flip(day, em, prm):
     """Ride the market favourite when the model agrees; from `flip_from` on,
     if the model diverges by >= flip_edge against the market, reverse."""
     m0 = int(prm.get("h0", 1)) * 60
-    p_model, p_mkt = model_p_at(day, m0), market_p_at(day, m0)
+    p_model, p_mkt = _sig(day, m0, prm), market_p_at(day, m0)
     if p_model is None or p_mkt is None:
         return []
     trades = []
@@ -92,9 +93,9 @@ def flow_flip(day, em, prm):
     fav = "up" if p_mkt >= 0.5 else "down"
     agree = (p_model >= prm.get("agree_min", 0.55)) == (fav == "up")
     if agree and abs(p_mkt - 0.5) >= prm.get("min_lean", 0.05):
-        pos = _enter_taker(day, em, fav, m0, STAKE)
+        pos = _enter_taker(day, em, fav, m0, _base(prm), prm)
     for minute in range(int(prm.get("flip_from", 7)) * 60, LAST_MINUTE + 1, 5):
-        p_model, p_mkt = model_p_at(day, minute), market_p_at(day, minute)
+        p_model, p_mkt = _sig(day, minute, prm), market_p_at(day, minute)
         if p_model is None or p_mkt is None:
             continue
         side = _edge_side(p_model, p_mkt, prm.get("flip_edge", 0.25))
@@ -103,7 +104,7 @@ def flow_flip(day, em, prm):
                 pos.update(exit_min=minute, proceeds=em.sell_taker(
                     day["date"], _tok(p_mkt, pos["side"]), pos["shares"]))
                 trades.append(pos)
-            pos = _enter_taker(day, em, side, minute, STAKE)
+            pos = _enter_taker(day, em, side, minute, _base(prm), prm)
             break
     if pos is not None:
         pos.update(exit_min=LAST_MINUTE + 1,
@@ -132,7 +133,7 @@ def takeprofit(day, em, prm):
 def longshot(day, em, prm):
     """Buy the cheap side when the model says it is not that unlikely."""
     for minute in range(int(prm.get("h_min", 0)) * 60, LAST_MINUTE + 1, 5):
-        p_model, p_mkt = model_p_at(day, minute), market_p_at(day, minute)
+        p_model, p_mkt = _sig(day, minute, prm), market_p_at(day, minute)
         if p_model is None or p_mkt is None:
             continue
         for side in ("up", "down"):
@@ -154,7 +155,7 @@ def scale_in(day, em, prm):
     trades, side = [], None
     for h in hours:
         minute = h * 60
-        p_model, p_mkt = model_p_at(day, minute), market_p_at(day, minute)
+        p_model, p_mkt = _sig(day, minute, prm), market_p_at(day, minute)
         if p_model is None or p_mkt is None:
             continue
         s = _edge_side(p_model, p_mkt, prm.get("edge", 0.05))
@@ -165,7 +166,7 @@ def scale_in(day, em, prm):
             return trades
         if s and (side is None or s == side) \
                 and max(p_model, 1 - p_model) >= prm.get("gate", 0.65):
-            t = _enter_taker(day, em, s, minute, STAKE / len(hours))
+            t = _enter_taker(day, em, s, minute, _base(prm) / len(hours), prm)
             if t:
                 side = s
                 trades.append(t)
