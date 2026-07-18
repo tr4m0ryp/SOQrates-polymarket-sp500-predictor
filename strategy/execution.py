@@ -43,10 +43,16 @@ class ExecModel:
         return shares * px - taker_fee(date, px, shares)
 
     def maker_fill(self, curve: list, minute: int, limit: float,
-                   side: str = "up") -> int | None:
+                   side: str = "up", volume: float | None = None) -> int | None:
         """First minute >= `minute` where a resting buy of `side`'s token at
-        `limit` fills: the print must trade through the limit by maker_eps.
-        Curve prices are UP-token; a DOWN buy at L needs p_up >= 1-L+eps."""
+        `limit` COULD fill. The curve holds CLOB midpoints, not prints, so a
+        midpoint dipping through limit - maker_eps is only an optimistic
+        upper bound on a real fill — no trade need have occurred there.
+        When `volume` (the day's traded volume) is given, zero-volume days
+        never fill: no prints existed at all. Curve prices are UP-token; a
+        DOWN buy at L needs p_up >= 1-L+eps."""
+        if volume is not None and volume <= 0:
+            return None
         for m, p in curve:
             p_tok = p if side == "up" else 1 - p
             if m >= minute and p_tok <= limit - self.maker_eps:
