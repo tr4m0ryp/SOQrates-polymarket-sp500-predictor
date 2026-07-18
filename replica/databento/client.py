@@ -1,6 +1,6 @@
 """Databento transport: historical HTTP+JSON (stdlib) + live entrypoint.
 
-Historical is pure stdlib (urllib/json/base64) against the Tick History
+Historical is pure stdlib (urllib/json/base64) against the timeseries
 REST endpoint. Live is the one allowed exception: the DBN binary protocol
 over TCP is impractical in stdlib, so `live_client()` lazily imports the
 official `databento` package (`pip install databento`).
