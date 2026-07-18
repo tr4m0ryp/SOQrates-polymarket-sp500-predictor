@@ -3,6 +3,7 @@ closed trades: {side, entry_min, px, stake, shares, exit_min, proceeds}.
 Curve prices are UP-token; DOWN token trades at 1-p. Stakes in USDC.
 """
 from strategy.data import LAST_MINUTE, market_p_at, model_p_at
+from strategy.sizing import optimal_stake
 
 STAKE = 100.0
 
@@ -11,15 +12,32 @@ def _tok(p_up: float, side: str) -> float:
     return p_up if side == "up" else 1 - p_up
 
 
+def _sig(day, minute, prm):
+    return model_p_at(day, minute, prm.get("signal", "model"))
+
+
 def _resolve(day: dict, side: str, shares: float) -> float:
     won = day["outcome_up"] == (side == "up")
     return shares if won else 0.0
 
 
-def _enter_taker(day, em, side, minute, stake):
+def _enter_taker(day, em, side, minute, stake, prm=None):
+    """sizing='optimal' in prm overrides `stake` with the EV-maximizing
+    (highest realizable multiplier) stake; skips the trade if no stake
+    has positive EV under the execution model."""
     p = market_p_at(day, minute)
     if p is None:
         return None
+    if prm and prm.get("sizing") == "optimal":
+        p_sig = _sig(day, minute, prm)
+        if p_sig is None:
+            return None
+        p_true = p_sig if side == "up" else 1 - p_sig
+        best = optimal_stake(p_true, _tok(p, side), em, day["date"],
+                             hi=prm.get("max_stake", 500))
+        if best is None:
+            return None
+        stake = best["stake"]
     fill = em.buy_taker(day["date"], _tok(p, side), stake)
     return {"side": side, "entry_min": minute, "px": fill["px"],
             "stake": fill["cost"], "shares": fill["shares"]}
