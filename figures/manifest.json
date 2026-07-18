@@ -1,0 +1,65 @@
+[
+  {
+    "id": "spx_open_predictor",
+    "file": "plots/spx_open_predictor.png",
+    "status": "made",
+    "caption_draft": "",
+    "producing_script": null,
+    "data_source": null,
+    "notes": ""
+  },
+  {
+    "id": "spx_open_predictor_0000_200d",
+    "file": "plots/spx_open_predictor_0000_200d.png",
+    "status": "made",
+    "caption_draft": "",
+    "producing_script": null,
+    "data_source": null,
+    "notes": ""
+  },
+  {
+    "id": "spx_open_predictor_0000_confident",
+    "file": "plots/spx_open_predictor_0000_confident.png",
+    "status": "made",
+    "caption_draft": "",
+    "producing_script": null,
+    "data_source": null,
+    "notes": ""
+  },
+  {
+    "id": "spx_open_predictor_0400_200d",
+    "file": "plots/spx_open_predictor_0400_200d.png",
+    "status": "made",
+    "caption_draft": "",
+    "producing_script": null,
+    "data_source": null,
+    "notes": ""
+  },
+  {
+    "id": "spx_open_predictor_misses",
+    "file": "plots/spx_open_predictor_misses.png",
+    "status": "made",
+    "caption_draft": "",
+    "producing_script": null,
+    "data_source": null,
+    "notes": ""
+  },
+  {
+    "id": "stake_sweep",
+    "file": "plots/stake_sweep.png",
+    "status": "made",
+    "caption_draft": "",
+    "producing_script": null,
+    "data_source": null,
+    "notes": ""
+  },
+  {
+    "id": "strategy_bankroll_50",
+    "file": "plots/strategy_bankroll_50.png",
+    "status": "made",
+    "caption_draft": "",
+    "producing_script": "strategy/plot.py",
+    "data_source": null,
+    "notes": ""
+  }
+]
