@@ -1,1 +1,311 @@
-% method: drafted by the paper workflow
+% method: drafted by the paper workflow (style-engine protocol).
+% Claims and numbers from .harvest/context.md via the outline's method block.
+% No figures assigned to this section (equations and parameter tables only).
+\label{sec:method}
+
+\subsection{Data and ground truth}
+\label{sec:data}
+
+Ground truth is the Yahoo \texttt{\^{}GSPC} daily open, cross-checked against
+stooq \parencite{yahoo2026chartapi,stooq2026spx}. Over 330 days the two
+sources agree on every official open within 0.75 index points, which settled
+an early scare: September 17 and December 3, 2025 were real auction-quirk
+days, not data bugs. Days on which the sources disagree are listed by an
+audit command and excluded from fits. All timestamps are ET, and gaps are
+expressed in percent of the prior close.
+
+Every input is free. Futures and index series (ES, NQ and YM futures,
+\texttt{\^{}GSPC}, \texttt{\^{}VIX1D}) come from the Yahoo chart API; index
+weights and venue tags from Slickcharts and Nasdaq's listed-securities file
+\parencite{slickcharts2026sp500,nasdaqtrader2026listed}; market odds from
+Polymarket's gamma API \parencite{polymarket2026gamma}; news from GDELT DOC
+2.0 \parencite{gdelt2017doc}; the macro release calendar from the FRED
+release-dates API, with a keyless NFP first-Friday rule as fallback
+\parencite{fred2026releasedates}. Yahoo's history caps set the windows: a
+720-day lookback (hourly bars stop near 730 days), a 480-day dataset window,
+and only about 30 days of ES minute bars. The runtime is Python~3.12
+standard library only --- no pandas or numpy in core paths, no compiled
+components --- because the system is network-bound and makes one prediction
+per day.
+
+The train/test split is chronological halves. Nothing is ever fitted on the
+test half.
+
+\subsection{Core model}
+\label{sec:core_model}
+
+The day-level core is one linear map plus a clock:
+\begin{equation}
+\hat g = a_0 + k\,g, \qquad
+P(\mathrm{up}) = \Phi\!\left(\frac{a_0 + k\,g}{\sigma(\tau)}\right), \qquad
+\sigma(\tau)^2 \approx 0.0066 + 0.0002\,\tau .
+\label{eq:core}
+\end{equation}
+
+\begin{center}
+\small
+\begin{tabular}{ll}
+\toprule
+Symbol & Meaning \\
+\midrule
+$g$ & overnight E-mini futures gap, in \% of prior close \\
+$\hat g$ & predicted official-open gap, same units \\
+$a_0$ & fitted intercept, $0.0092\%$ \\
+$k$ & gap pass-through, pooled $0.767$--$0.797$ (default $0.767$) \\
+$\tau$ & minutes remaining before 9:30~ET \\
+$\sigma(\tau)$ & prediction width in \% units, fitted intraday \\
+$\Phi$ & standard normal CDF \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The fitted $k$ says the official open realizes only about 80\% of the
+futures gap. The width follows the fitted schedule and shrinks toward the
+open; measured hourly it runs $\pm0.344\%$ at midnight, $\pm0.30\%$ at
+04:00, $\pm0.15\%$ at 09:00 and $\pm0.083\%$ at 9:29. Every constant was
+fitted once on the train half and frozen.
+
+For open positions we also score the risk that the effective gap changes
+sign before 9:30. The center drifts about $0.014\%$ per square-root minute,
+so
+\begin{equation}
+P(\mathrm{flip}) = \Phi\!\left(\frac{-\,\lvert 0.83\,g\rvert}
+{0.014\%\,\sqrt{\tau}}\right).
+\label{eq:flip}
+\end{equation}
+
+\begin{center}
+\small
+\begin{tabular}{ll}
+\toprule
+Symbol & Meaning \\
+\midrule
+$g$ & current futures gap, in \% of prior close \\
+$0.83$ & effective pass-through used in the drift model \\
+$0.014\%$ & fitted drift of the center per $\sqrt{\text{minute}}$ \\
+$\tau$ & minutes remaining before 9:30~ET \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The scale matters more than the formula. A $+0.40\%$ gap at 7:00 carries
+about 1\% flip risk; a $+0.10\%$ gap at the same hour carries about 30\%.
+
+\subsection{Regime and news extensions}
+\label{sec:extensions}
+
+Model v1.2, the final day-level fit, keeps Equation~\ref{eq:core} and
+conditions its constants. The pass-through becomes tercile-$k$: 0.733,
+0.827 and 0.839 for the calm, mid and volatile trailing-volatility
+terciles, so spillover rises with volatility, matching the post-Lehman
+pattern of \textcite{ahoniemi2016overnight}. Gaps under the $0.25\%$
+small-gap threshold carry nearly one-for-one ($k \approx 1.0$) through hour
+1, decaying over $0.68$--$0.90$ across hours 1--4 --- consistent with
+reported large-gap reversal effects --- and all gap sizes converge to
+$k \approx 0.78$--$0.80$ by 7:00. A regime multiplier widens $\sigma$ from
+a no-lookahead blend of the EWMA of squared 9:00 gaps
+($\lambda = 0.94$) and the prior day's ES realized variance. On NFP
+mornings $\sigma$ is multiplied by 1.29 before 8:30, fitted on the 11
+training NFP mornings with clamp bounds $(1.0, 2.5)$.
+
+Model v1.3 adds \texttt{\^{}VIX1D} to the $\sigma$ blend and an NQ--ES
+spread term. Production runs v1.3 before 5:00 and v1.2 from 5:00 on. One
+guardrail is deliberate: no end-to-end machine learning on roughly 500
+day-level labels, which would overfit and destroy calibration. The
+day-level core stays linear; learned models are reserved for the per-stock
+replica sample, about two million (stock, second) rows once real auction
+data lands.
+
+\paragraph{News design rules.}
+On our own event days, news publication and market reaction are
+simultaneous within one 15-minute GDELT indexing cycle: the March 23 Iran
+story was first indexed at 12:00 UTC, the same hour ES swung $+2\%$. Two
+rules follow. The LLM can never front-run headlines, and the LLM never
+sees market data --- market moves only trigger runs.
+
+\paragraph{Schedule.}
+Checkpoints run at 02:30, 04:30, 07:00, 08:00, 08:35 (mandatory,
+post-release) and 09:15, plus an event trigger on any $0.15\%$ gap move
+within 15 minutes; LLM runs are capped at $6+6$ per night. The calendar
+itself is thin: BLS blocks scripted schedule fetches, so without a FRED
+key only the NFP first-Friday rule applies, flagging 20 of 465 days.
+
+\paragraph{Group A: midnight briefing.}
+At 00:05 an LLM briefing reads the calendar, earnings, nowcast-versus-
+consensus and prediction-market structural odds; measured over 30 days,
+structural odds move only about 0.2 points overnight, so one snapshot
+stays fresh. Output is a variance multiplier $m_A \in [1, 2.5]$ anchored
+at the fitted 1.29, and a directional tilt $\lvert d_A \rvert \le 0.3$
+allowed only on nowcast--consensus disagreement. The primary model is
+GitHub Models gpt-4.1, about 12 calls per night with 1--2K-token payloads.
+
+\paragraph{Group B: fitted effects.}
+Two deterministic effects are fitted from data. After a gap move of at
+least $0.35\%$ in one hour within the last two hours, the official-open
+residual is wider: pooled ratio 1.90 over 76 shock days, with unstable
+halves. On conflicted days --- a shock happened but the gap sits under
+$0.15\%$ --- the shock's sign predicts the official open 85.4\% of the
+time ($n = 41$), encoded as $\mu_B = 0.9\,d_B\,c\,\sigma_m$ with the 0.9
+chosen conservatively; the term is zero by construction on already-repriced
+days. For the strategy backtest these constants were refit train-only
+(shock 1.32, conflict 0.85) after the audit described below caught
+pooled-fit look-ahead.
+
+Table~\ref{tab:fitted_constants} collects the fitted constants with their
+fitting windows.
+
+\begin{table}[h]
+\centering
+\caption{Every fitted constant in the pipeline with the data that fitted
+it. All were frozen before evaluation; the three sigma multipliers (1.29,
+1.32, 1.9) are distinct constants with distinct scopes and are never
+merged.}
+\label{tab:fitted_constants}
+\small
+\begin{tabular}{lll}
+\toprule
+Constant & Value & Fitted on \\
+\midrule
+$a_0$ & $0.0092\%$ & 6 months of daily data \\
+pooled $k$ & $0.77$--$0.80$ & 465-day train half \\
+$k$ by volatility tercile & $0.733\;/\;0.827\;/\;0.839$ & calm / mid / volatile \\
+$\sigma$ at midnight & $\approx 0.34\%$ & intraday fit \\
+release-morning multiplier & $1.29$ & 11 NFP mornings \\
+post-shock multiplier & $1.9$ (range $1.3$--$2.3$) & 76 shock days \\
+lab refit (shock, train-only) & $1.32$ & train half only \\
+conflicted-day $Z$ & $0.9$ & 41 days, 85.4\% hit \\
+NOII accuracy & 2--5 bp & free ITCH sample day \\
+accuracy ceiling & 96.3\% & 81 unseen days \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Fusion}
+\label{sec:fusion}
+
+The voices --- futures core, news groups, later the replica --- combine by
+inverse-variance pooling:
+\begin{equation}
+\mu_F = \frac{\sum_i \mu_i / \sigma_i^2}{\sum_i 1/\sigma_i^2}, \qquad
+\frac{1}{\sigma_F^2} = \sum_i \frac{1}{\sigma_i^2}, \qquad
+P(\mathrm{up}) = \Phi\!\left(\frac{\mu_F}{\sigma_F}\right).
+\label{eq:fusion}
+\end{equation}
+
+\begin{center}
+\small
+\begin{tabular}{ll}
+\toprule
+Symbol & Meaning \\
+\midrule
+$\mu_i, \sigma_i$ & voice $i$'s gap estimate and its uncertainty \\
+$\mu_F, \sigma_F$ & fused estimate and uncertainty \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+News voices carry floors on $\sigma_i$, so they nudge the fused estimate
+but never outvote the market voice. The sharpest voice dominates
+automatically.
+
+\subsection{Auction replica}
+\label{sec:replica}
+
+The replica assembles the first tick from per-stock auction previews
+instead of futures:
+\begin{equation}
+\mu_R = \sum_i w_i \left( \frac{\hat P_i}{C_i} - 1 \right)
+\mathbf{1}[\,i \in \mbox{first tick}\,].
+\label{eq:replica}
+\end{equation}
+
+\begin{center}
+\small
+\begin{tabular}{ll}
+\toprule
+Symbol & Meaning \\
+\midrule
+$w_i$ & stock $i$'s prior-close capitalization weight \\
+$\hat P_i$ & predicted first print of stock $i$ \\
+$C_i$ & stock $i$'s prior close \\
+$\mathbf{1}[\cdot]$ & one when stock $i$ opens in time for the first tick \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Stale stocks contribute zero, which keeps the whole computation in
+divisor-free weighted-gap space. A Monte Carlo layer treats the first tick
+as a random variable: certain-live names are pooled analytically,
+certain-stale names sit at zero, and uncertain names are simulated under a
+common slowness factor (a logit shift, $\beta = 1.0$) with per-stock
+preview noise of $0.05\%$ for Nasdaq and $0.30\%$ for NYSE names, both
+measured. The simulation outputs mean, sigma, $P(\mathrm{up})$, quantiles,
+and the pivotal names --- those whose inclusion swings $P(\mathrm{up})$
+most, scored as $P(\mathrm{up} \mid \mathrm{in}) - P(\mathrm{up} \mid
+\mathrm{out})$. A print filter conditions on crosses observed after
+9:30:00, and the seed is fixed. Print timing uses venue priors --- Nasdaq
+$p_{\mathrm{live}} \approx 0.97$, NYSE $\approx 0.15$ --- until real cross
+timestamps allow a per-stock fit, with a Bayes update for names still
+silent.
+
+Inputs are Nasdaq's Net Order Imbalance Indicator and NYSE order
+imbalances \parencite{nasdaq2026totalview,nyse2026taqimbalances}. The ITCH
+parser streams a raw $\sim$3.5~GB gzipped TotalView-ITCH day file and
+finishes a full day in 27 seconds. Development ran on free full-day
+samples: seven ITCH days from 2019--2020 \parencite{nasdaq2026itchsamples}
+and NYSE TAQ imbalance samples including April 1--2, 2026
+\parencite{nyse2026taqimbalances}. Those dates mostly miss the 2026 quirk
+days, so they validate parsers, not the days that matter. The replica
+machinery is validated on synthetic data only.
+
+\subsection{Strategy laboratory}
+\label{sec:strategy_lab}
+
+The laboratory replays every candidate strategy against all 120 resolved
+markets since the series began on January 22, 2026, fetched with full
+minute-level price curves; 115 of them join to the model's hourly
+probabilities. The model was fitted only on pre-2026 data, so every
+strategy day is out of sample. The split is chronological: 57 train days
+through April 15, then 58 test days from April 16 to July 14. The curves
+are CLOB midpoints, not prints \parencite{polymarket2026clob}, so every
+strategy carries a volume gate.
+
+Execution is modeled, not assumed. Polymarket's Fee Structure V2,
+effective March 30, 2026, makes makers free with a 25\% rebate and charges
+takers $\mathrm{shares} \times \mathrm{feeRate} \times p\,(1-p)$ with
+feeRate 0.04 in the Finance category \parencite{polymarket2026orders} ---
+about \$1 per 100 shares near even odds. The entire test half is fee-era,
+a built-in regime stress. From roughly 3,400 real trade prints across six
+days we calibrated an effective half-spread of about 1 cent and a price
+impact of about 0.05 cents per \$100 of stake; the binding constraint is
+depth, not slope. Maker fills are modeled pessimistically: the price must
+trade through the limit.
+
+An independent audit of the harness found four defects, and all four were
+fixed before any conclusion was drawn: fictional fills on zero-volume days
+(one such fill carried 46\% of an early result's profit), an entry gate
+that admitted bets against the model's own view, over-optimistic maker
+fills, and look-ahead in the news-overlay constants, which were refit on
+disjoint data. In a thin market, execution assumptions are as load-bearing
+as the signal.
+
+Candidates read the model through one edge module: minimum price
+divergence 0.05, and below 65\% confidence the module answers coin-flip
+zone, stand down. The deployed rule is seven steps:
+\begin{enumerate}
+  \item at 00:05, run the Group-A briefing;
+  \item re-fuse the voices at every checkpoint and event trigger;
+  \item enter at the first hour in 4--9 with edge $\ge 5$ cents,
+    traded-side probability $\ge 0.70$ and price $\le 95$ cents, as an
+    immediate taker;
+  \item stake $\min(\mbox{half balance}, \$400, 1\%\ \mbox{of day
+    volume})$, and skip days below \$1k volume;
+  \item at 08:35 and 9:00, run position monitors: sell if the traded
+    side's fused probability drops below 0.5, flip if the other side
+    fully qualifies;
+  \item at 9:28, re-check against live futures: enter remaining edges
+    $\ge 3$ cents, sell-and-flip on contradiction (the replica replaces
+    this voice when live);
+  \item at 9:30, log fills against the resolution and refit monthly,
+    walk-forward.
+\end{enumerate}
