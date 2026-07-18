@@ -191,5 +191,48 @@ def scale_in(day, em, prm):
     return trades
 
 
+def convergence(day, em, prm):
+    """Two-legged: our model finds the mispricing, the CROWD model predicts
+    the market's own repricing path. Enter on edge at `hour`; exit into the
+    forecast convergence instead of carrying resolution risk (hold_ok=1
+    keeps the position when the target never prints)."""
+    from strategy import crowd
+    fitted = crowd.load()
+    if not fitted:
+        return []
+    minute = int(prm.get("hour", 4)) * 60
+    p_model, p_mkt = _sig(day, minute, prm), market_p_at(day, minute)
+    if p_model is None or p_mkt is None:
+        return []
+    side = _edge_side(p_model, p_mkt, prm.get("edge", 0.05))
+    if side is None or max(p_model, 1 - p_model) < prm.get("gate", 0.60):
+        return []
+    target_up = crowd.forecast(day, minute, int(prm.get("exit_h", 9)), fitted)
+    if target_up is None:
+        return []
+    tok_target = _tok(target_up, side)
+    if tok_target - _tok(p_mkt, side) < prm.get("min_move", 0.05):
+        return []                       # forecast convergence won't pay costs
+    t = _enter_taker(day, em, side, minute, _base(prm), prm)
+    if t is None:
+        return []
+    margin = prm.get("margin", 0.02)
+    for m in range(t["entry_min"] + 1, LAST_MINUTE + 1):
+        p = market_p_at(day, m)
+        if p is not None and _tok(p, side) >= tok_target - margin:
+            t.update(exit_min=m, proceeds=em.sell_taker(
+                day["date"], _tok(p, side), t["shares"]))
+            return [t]
+    if prm.get("hold_ok", 1):
+        t.update(exit_min=LAST_MINUTE + 1,
+                 proceeds=_resolve(day, side, t["shares"]))
+    else:
+        p = market_p_at(day, LAST_MINUTE)
+        t.update(exit_min=LAST_MINUTE, proceeds=em.sell_taker(
+            day["date"], _tok(p, side), t["shares"]) if p is not None else 0.0)
+    return [t]
+
+
 STRATEGIES = {"hold": hold, "flow_flip": flow_flip, "takeprofit": takeprofit,
-              "longshot": longshot, "scale_in": scale_in}
+              "longshot": longshot, "scale_in": scale_in,
+              "convergence": convergence}
