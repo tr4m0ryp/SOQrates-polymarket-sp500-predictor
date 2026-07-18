@@ -7,7 +7,7 @@
 \label{sec:data}
 
 Ground truth is the Yahoo \texttt{\^{}GSPC} daily open, cross-checked against
-stooq \parencite{yahoo2026chartapi,stooq2026spx}. Over 330 days the two
+stooq \citep{yahoo2026chartapi,stooq2026spx}. Over 330 days the two
 sources agree on every official open within 0.75 index points, which settled
 an early scare: September 17 and December 3, 2025 were real auction-quirk
 days, not data bugs. Days on which the sources disagree are listed by an
@@ -17,11 +17,11 @@ expressed in percent of the prior close.
 Every input is free. Futures and index series (ES, NQ and YM futures,
 \texttt{\^{}GSPC}, \texttt{\^{}VIX1D}) come from the Yahoo chart API; index
 weights and venue tags from Slickcharts and Nasdaq's listed-securities file
-\parencite{slickcharts2026sp500,nasdaqtrader2026listed}; market odds from
-Polymarket's gamma API \parencite{polymarket2026gamma}; news from GDELT DOC
-2.0 \parencite{gdelt2017doc}; the macro release calendar from the FRED
+\citep{slickcharts2026sp500,nasdaqtrader2026listed}; market odds from
+Polymarket's gamma API \citep{polymarket2026gamma}; news from GDELT DOC
+2.0 \citep{gdelt2017doc}; the macro release calendar from the FRED
 release-dates API, with a keyless NFP first-Friday rule as fallback
-\parencite{fred2026releasedates}. Yahoo's history caps set the windows: a
+\citep{fred2026releasedates}. Yahoo's history caps set the windows: a
 720-day lookback (hourly bars stop near 730 days), a 480-day dataset window,
 and only about 30 days of ES minute bars. The runtime is Python~3.12
 standard library only --- no pandas or numpy in core paths, no compiled
@@ -98,7 +98,7 @@ Model v1.2, the final day-level fit, keeps Equation~\ref{eq:core} and
 conditions its constants. The pass-through becomes tercile-$k$: 0.733,
 0.827 and 0.839 for the calm, mid and volatile trailing-volatility
 terciles, so spillover rises with volatility, matching the post-Lehman
-pattern of \textcite{ahoniemi2016overnight}. Gaps under the $0.25\%$
+pattern of \citet{ahoniemi2016overnight}. Gaps under the $0.25\%$
 small-gap threshold carry nearly one-for-one ($k \approx 1.0$) through hour
 1, decaying over $0.68$--$0.90$ across hours 1--4 --- consistent with
 reported large-gap reversal effects --- and all gap sizes converge to
@@ -249,12 +249,12 @@ timestamps allow a per-stock fit, with a Bayes update for names still
 silent.
 
 Inputs are Nasdaq's Net Order Imbalance Indicator and NYSE order
-imbalances \parencite{nasdaq2026totalview,nyse2026taqimbalances}. The ITCH
+imbalances \citep{nasdaq2026totalview,nyse2026taqimbalances}. The ITCH
 parser streams a raw $\sim$3.5~GB gzipped TotalView-ITCH day file and
 finishes a full day in 27 seconds. Development ran on free full-day
-samples: seven ITCH days from 2019--2020 \parencite{nasdaq2026itchsamples}
+samples: seven ITCH days from 2019--2020 \citep{nasdaq2026itchsamples}
 and NYSE TAQ imbalance samples including April 1--2, 2026
-\parencite{nyse2026taqimbalances}. Those dates mostly miss the 2026 quirk
+\citep{nyse2026taqimbalances}. Those dates mostly miss the 2026 quirk
 days, so they validate parsers, not the days that matter. The replica
 machinery is validated on synthetic data only.
 
@@ -267,13 +267,13 @@ minute-level price curves; 115 of them join to the model's hourly
 probabilities. The model was fitted only on pre-2026 data, so every
 strategy day is out of sample. The split is chronological: 57 train days
 through April 15, then 58 test days from April 16 to July 14. The curves
-are CLOB midpoints, not prints \parencite{polymarket2026clob}, so every
+are CLOB midpoints, not prints \citep{polymarket2026clob}, so every
 strategy carries a volume gate.
 
 Execution is modeled, not assumed. Polymarket's Fee Structure V2,
 effective March 30, 2026, makes makers free with a 25\% rebate and charges
 takers $\mathrm{shares} \times \mathrm{feeRate} \times p\,(1-p)$ with
-feeRate 0.04 in the Finance category \parencite{polymarket2026orders} ---
+feeRate 0.04 in the Finance category \citep{polymarket2026orders} ---
 about \$1 per 100 shares near even odds. The entire test half is fee-era,
 a built-in regime stress. From roughly 3,400 real trade prints across six
 days we calibrated an effective half-spread of about 1 cent and a price

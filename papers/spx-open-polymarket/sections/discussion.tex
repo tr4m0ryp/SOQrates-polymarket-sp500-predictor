@@ -38,7 +38,7 @@ kind.
 The misses also cluster. Eight of the 20 confident midnight misses came
 from volatile March 2026 alone: a sigma calibrated on average conditions
 turns nominal 85\% days into real 70\% days once the regime shifts. That
-is the regime-dependent overnight risk \textcite{ahoniemi2016overnight}
+is the regime-dependent overnight risk \citet{ahoniemi2016overnight}
 document, and the clustering, not any single miss, motivated the
 regime-aware sigma in v1.2. The timing is just as lopsided: 24 of the 27
 news-miss days had their last flip in the 8:30--9:30 window, after every
@@ -81,7 +81,7 @@ the baseline does. What it improves is the confidence held on the wrong
 side: Mar 10 from 84\% to 66\%, Apr 9 from 84\% to 70\%.
 
 The residual is the auction mechanism itself, the modern descendant of
-the stale-open effect \parencite{stollwhaley1990}. Even at 9:29 the
+the stale-open effect \citep{stollwhaley1990}. Even at 9:29 the
 futures error floor is $\pm 6$ index points; on Jun 22 (official $-0.14$
 points) every model version said $+1.7$ to $+5.7$. Inside the floor, no
 price data helps.
@@ -103,7 +103,7 @@ market-price data, and the one priced path past it is the auction
 replica: assemble the official first tick from the exchanges' own
 pre-open feeds instead of inferring it from futures. Nasdaq's NOII,
 ``the best predictor of the opening price available to the public''
-\parencite{nasdaq2026totalview}, runs at one-second cadence from 9:28 on
+\citep{nasdaq2026totalview}, runs at one-second cadence from 9:28 on
 the post-2021 feed. Measured on sample days, it implies an index-level
 replica error near 1.7 points at 9:29 and 0.75 at 9:29:50, against the
 $\pm 6$-point futures floor: 3--8$\times$ sharper in the final minute.
@@ -166,7 +166,7 @@ arrived on Mar 30, and the profitable entry window has been drifting
 earlier. Monthly re-validation is mandatory, not hygiene. Execution
 shapes the rest. Our \$20--500 clips on a \$30--48k/day book are the
 price impact, so the stale-book edge is structurally a maker strategy
-\parencite{polymarket2026orders}. A 5-cent modeled edge is not 5 cents of
+\citep{polymarket2026orders}. A 5-cent modeled edge is not 5 cents of
 capturable edge on a taker fill.
 
 \subsection{Negative results}
@@ -236,13 +236,13 @@ fill-monitoring semantics on the live CLOB are unmeasured. Paper trading
 against the live book answers each of them.
 
 \paragraph{Research licenses do not cover production.} The affordable
-auction data is academic: WRDS TAQ \parencite{wrds2026taq} is
-research-only, LSEG Tick History \parencite{lseg2026tickhistory} is
+auction data is academic: WRDS TAQ \citep{wrds2026taq} is
+research-only, LSEG Tick History \citep{lseg2026tickhistory} is
 research-only and IP-allowlisted, and the historical Nasdaq NOII gap is
-metered \parencite{databento2026equities}. Validation can stay free;
+metered \citep{databento2026equities}. Validation can stay free;
 going live needs commercially licensed feeds, either a live broker feed at
 roughly \$17--40 per month or commercial imbalance data
-\parencite{nyse2026taqimbalances}.
+\citep{nyse2026taqimbalances}.
 
 \paragraph{The macro calendar is thin.} BLS blocks scripted schedule
 fetches, so without a FRED key the calendar reduces to the NFP

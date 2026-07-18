@@ -3,7 +3,7 @@
 \label{sec:introduction}
 
 Polymarket runs a daily binary market on whether the S\&P 500 opens up or
-down \parencite{polymarket2026spxmarket}. The market (series 10945, slug
+down \citep{polymarket2026spxmarket}. The market (series 10945, slug
 \texttt{spx-open-daily-up-or-down}) resolves on the official opening print
 --- the first index value published at 9:30:00~ET --- against the prior
 official close; ties resolve 50/50. Volume ran near \$664k per day in
@@ -18,9 +18,9 @@ The official open is a calculation, not a traded price. S\&P computes the
 index on a fixed interval of roughly five seconds from each constituent's
 last price; stocks that have not opened yet are carried at their prior
 close, and the first published value is never restated
-\parencite{spdji2026indexmath}. It is not the SOQ, the settlement quotation
+\citep{spdji2026indexmath}. It is not the SOQ, the settlement quotation
 for index futures, which waits until every stock has opened
-\parencite{cme2026soq}. Opening speed therefore decides what the first tick
+\citep{cme2026soq}. Opening speed therefore decides what the first tick
 contains. Nasdaq stocks cross at exactly 9:30:00 and print immediately;
 NYSE opens are run by designated market makers and lag by seconds to
 minutes, so the NYSE half of the index enters the first tick stale. The
@@ -48,15 +48,15 @@ June 22 showed the ETF leg breaking around a dividend date.
 
 None of the ingredients are new. Stale constituent prices at the open, and
 the cash index lagging its own futures because of them, are documented
-since \textcite{stollwhaley1990}. Overnight returns as a distinct,
+since \citet{stollwhaley1990}. Overnight returns as a distinct,
 information-bearing component of daily volatility are treated by
-\textcite{ahoniemilanne2013}, and \textcite{ahoniemi2016overnight} show
+\citet{ahoniemilanne2013}, and \citet{ahoniemi2016overnight} show
 overnight news raising daily trading risk differently across volatility
 regimes. How to fold the overnight gap into realized-variance measurement
-is the subject of \textcite{hansenlunde2005}; \textcite{patton2011ranking}
+is the subject of \citet{hansenlunde2005}; \citet{patton2011ranking}
 ranks the resulting estimators. The index arithmetic and the SOQ
 distinction come straight from exchange methodology documents
-\parencite{spdji2026indexmath,cme2026soq}. The novelty is not any single
+\citep{spdji2026indexmath,cme2026soq}. The novelty is not any single
 component. It is the composition, and its validation against the prices of
 one specific market.
 
