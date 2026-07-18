@@ -54,7 +54,8 @@ QUOTE_LEVEL_FIELDS = {"bid_px": "bid", "ask_px": "ask",
 
 def _field(rec, key):
     """Read `key` from a JSON dict (checking the nested `hd` header) or a
-    live DBN object (attribute). One accessor => one normalize path."""
+    live DBN object (attribute, falling back to the `hd` header object where
+    the bindings keep ts_event/instrument_id). One accessor => one path."""
     if isinstance(rec, dict):
         if key in rec:
             return rec[key]
@@ -62,20 +63,41 @@ def _field(rec, key):
         if isinstance(hd, dict) and key in hd:
             return hd[key]
         return None
-    return getattr(rec, key, None)
+    v = getattr(rec, key, None)
+    if v is None:
+        hd = getattr(rec, "hd", None)
+        if hd is not None:
+            return getattr(hd, key, None)
+    return v
 
 
 def _px(v):
-    """Fixed-point nanodollar int -> float dollars; sentinel/None -> None."""
+    """Price -> float dollars. Raw fixed-point nanodollar ints (the JSON/DBN
+    default) scale by 1e-9; decimal strings (pretty_px, contain '.') are
+    already dollars and pass through. Sentinel/None -> None."""
     if v is None:
         return None
-    try:
-        n = int(v)
-    except (TypeError, ValueError):
-        try:
-            n = int(float(v))
-        except (TypeError, ValueError):
+    if isinstance(v, str):
+        s = v.strip()
+        if not s:
             return None
+        if "." in s or "e" in s.lower():         # pretty_px decimal dollars
+            try:
+                return float(s)
+            except ValueError:
+                return None
+        try:
+            n = int(s)
+        except ValueError:
+            return None
+    elif isinstance(v, float):
+        if not v.is_integer():
+            return v                             # already decimal dollars
+        n = int(v)
+    elif isinstance(v, int):
+        n = v
+    else:
+        return None
     if abs(n) >= UNDEF_PRICE:
         return None
     return n / _SCALE
