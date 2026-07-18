@@ -282,6 +282,37 @@ def dip_buy(day, em, prm):
     return [t]
 
 
+def first_signal(day, em, prm):
+    """Enter at the FIRST hour the signal leaves the coin-flip zone (edge
+    met AND traded-side confidence >= gate), scanning h_start..h_end; hold
+    to resolution. fresh_only=1 skips days that already qualified at
+    h_start — isolating the late-clarifiers a fixed-hour entry misses."""
+    h0, h1 = int(prm.get("h_start", 4)), int(prm.get("h_end", 9))
+
+    def qualifies(minute):
+        pm, pk = _sig(day, minute, prm), market_p_at(day, minute)
+        if pm is None or pk is None:
+            return None
+        side = _edge_side(pm, pk, prm.get("edge", 0.05))
+        if side and _tok(pm, side) >= prm.get("gate", 0.60):
+            return side
+        return None
+
+    if prm.get("fresh_only") and qualifies(h0 * 60):
+        return []
+    for h in range(h0, h1 + 1):
+        side = qualifies(h * 60)
+        if side:
+            t = _enter_taker(day, em, side, h * 60, _base(prm), prm)
+            if t is None:
+                return []
+            t.update(exit_min=LAST_MINUTE + 1,
+                     proceeds=_resolve(day, side, t["shares"]))
+            return [t]
+    return []
+
+
 STRATEGIES = {"hold": hold, "flow_flip": flow_flip, "takeprofit": takeprofit,
               "longshot": longshot, "scale_in": scale_in,
-              "convergence": convergence, "dip_buy": dip_buy}
+              "convergence": convergence, "dip_buy": dip_buy,
+              "first_signal": first_signal}
