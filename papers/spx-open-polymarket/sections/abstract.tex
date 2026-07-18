@@ -1,37 +1,19 @@
 % abstract: drafted by the paper workflow (style-engine)
-% Hero figure fig:spx_open_predictor is placed here as a [b] float so it lands
-% at the bottom of page 1, under the abstract (shinyhunter hero pattern).
-% It renders outside the abstract text; the first in-prose reference is in
-% Results, the re-reference in Discussion. Compile agent: if the float drifts
-% off page 1, move the figure environment to main.tex directly after
-% \end{abstract} -- do not change its label.
+% Hero figure fig:spx_open_predictor lives in sections/results.tex, directly
+% after the paragraph carrying its first in-prose reference (figure-adjacency
+% rule, user 2026-07-18).
 Polymarket's daily ``SPX Opens Up or Down'' market asks one question: does the
-official S\&P 500 open --- the first index tick at 9:30 ET --- print above or
+official S\&P 500 open, the first index tick at 9:30 ET, print above or
 below the prior close? The crowd prices it as if the overnight futures gap
 carries over in full ($k=1$, $\sigma=0$). It does not. Measured over 200
 trading days, only about 80\% of the gap survives into the official open
 ($k \approx 0.77$--$0.80$). We trade that spread with a frozen linear model,
 fitted once and never refit on the test half. Out of sample, accuracy is a
 ladder, not a number: 72.5\% at midnight, rising to roughly 94\% at 9:29.
-Standing down on coin-toss days --- midnight confidence below 65\% --- lifts
-committed midnight accuracy to 82.1\%. A fee- and execution-audited backtest
-leaves one survivor of 15 strategy candidates: entering at the first confident
-hour turns \$100 into \$321.53 at flat \$50 stakes, 26 wins against 2 losses;
-the hour-4 hold variant reaches \$135.92 staking 10\% of bankroll per trade.
-The caveats stand: one market regime, 58 test days, a thinning market, a crowd
-that can learn.
-
-\begin{figure}[b]
-    \centering
-    \includegraphics[width=0.95\linewidth]{figures/spx_open_predictor.png}
-    \caption{Model $P(\text{official open} = \text{UP})$ trajectories and
-    direction accuracy by prediction time. Top: one line per day over 37
-    trading days (2026-05-19 to 2026-07-13), green for days that officially
-    opened up, red for down, with the two 9:29 misses highlighted: 2026-07-10
-    (official $+4.00$ pts) and 2026-06-22 (official $-0.14$ pts). Bottom:
-    direction accuracy rises from about 74\% at midnight (hourly sample,
-    $n=134$ days) to 92\% at 9:00 and about 94\% near 9:29 (minute-level
-    sample, $n=18$ days), against the 96.3\% ceiling attainable with perfect
-    9:30 market data and the 50\% coin-flip floor.}
-    \label{fig:spx_open_predictor}
-\end{figure}
+Standing down on coin-toss days, those with midnight confidence below 65\%,
+lifts committed midnight accuracy to 82.1\%. A fee- and execution-audited
+backtest leaves one survivor of 15 strategy candidates: entering at the first
+confident hour turns \$100 into \$321.53 at flat \$50 stakes, 26 wins against
+2 losses; the hour-4 hold variant reaches \$135.92 staking 10\% of bankroll
+per trade. The caveats stand: one market regime, 58 test days, a thinning
+market, a crowd that can learn.
