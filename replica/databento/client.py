@@ -34,13 +34,15 @@ def get_range(dataset: str, schema: str, symbols: list[str],
               start: str, end: str) -> list[dict]:
     """timeseries.get_range with JSON encoding; returns decoded records.
 
-    Newline-delimited JSON; each line is one DBN record. Behaviour preserved
-    from the original single-file client - normalization happens downstream
-    in schemas.py, not here.
+    Newline-delimited JSON; each line is one DBN record. `map_symbols=true`
+    makes every record carry a `symbol` key (JSON otherwise has only
+    hd.instrument_id, which cannot join the weights tickers downstream).
+    Normalization happens in schemas.py, not here.
     """
     params = urllib.parse.urlencode({
         "dataset": dataset, "schema": schema, "symbols": ",".join(symbols),
         "start": start, "end": end, "encoding": "json",
+        "map_symbols": "true",
     })
     auth = base64.b64encode(f"{_key()}:".encode()).decode()
     req = urllib.request.Request(
