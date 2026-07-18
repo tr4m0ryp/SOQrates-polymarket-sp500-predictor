@@ -6,17 +6,19 @@
 % off page 1, move the figure environment to main.tex directly after
 % \end{abstract} -- do not change its label.
 Polymarket's daily ``SPX Opens Up or Down'' market asks one question: does the
-official S\&P 500 open (the first index tick at 9:30 ET) print above or below
-the prior close? The crowd prices it as if the overnight futures gap realizes
-in full ($k=1$, $\sigma=0$). It does not: measured over 200 trading days, only
-about 80\% of the gap survives into the official open
-($k \approx 0.77$--$0.80$). We exploit that spread with a frozen linear model,
-fitted once and never refit on test data. Out of sample, accuracy is a ladder,
-not a number: 72.5\% at midnight, rising to roughly 94\% at 9:29. Standing down
-on coin-toss days -- midnight confidence below 65\% -- lifts committed midnight
-accuracy to 82.1\%. A fee- and execution-audited backtest turns the ladder into
-money: 26 wins against 2 losses on the test half, \$100 grown to \$321.53 at
-flat \$50 stakes. The caveats stand: one market regime, 58 test days, a crowd
+official S\&P 500 open --- the first index tick at 9:30 ET --- print above or
+below the prior close? The crowd prices it as if the overnight futures gap
+carries over in full ($k=1$, $\sigma=0$). It does not. Measured over 200
+trading days, only about 80\% of the gap survives into the official open
+($k \approx 0.77$--$0.80$). We trade that spread with a frozen linear model,
+fitted once and never refit on the test half. Out of sample, accuracy is a
+ladder, not a number: 72.5\% at midnight, rising to roughly 94\% at 9:29.
+Standing down on coin-toss days --- midnight confidence below 65\% --- lifts
+committed midnight accuracy to 82.1\%. A fee- and execution-audited backtest
+leaves one survivor of 15 strategy candidates: entering at the first confident
+hour turns \$100 into \$321.53 at flat \$50 stakes, 26 wins against 2 losses;
+the hour-4 hold variant reaches \$135.92 staking 10\% of bankroll per trade.
+The caveats stand: one market regime, 58 test days, a thinning market, a crowd
 that can learn.
 
 \begin{figure}[b]
