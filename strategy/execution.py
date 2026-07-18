@@ -42,10 +42,13 @@ class ExecModel:
         px = self._sell_px(p_token, shares * p_token)
         return shares * px - taker_fee(date, px, shares)
 
-    def maker_fill(self, curve: list, minute: int, limit: float) -> int | None:
-        """First minute >= `minute` where a resting buy at `limit` fills:
-        requires the printed price to trade through the limit by maker_eps."""
+    def maker_fill(self, curve: list, minute: int, limit: float,
+                   side: str = "up") -> int | None:
+        """First minute >= `minute` where a resting buy of `side`'s token at
+        `limit` fills: the print must trade through the limit by maker_eps.
+        Curve prices are UP-token; a DOWN buy at L needs p_up >= 1-L+eps."""
         for m, p in curve:
-            if m >= minute and p <= limit - self.maker_eps:
+            p_tok = p if side == "up" else 1 - p
+            if m >= minute and p_tok <= limit - self.maker_eps:
                 return m
         return None
