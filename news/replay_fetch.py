@@ -38,12 +38,20 @@ def fetch_day(date: str) -> dict:
     for cp, back in CHECKPOINTS.items():
         end = _utc_str(date, cp)
         start = _utc_str(date, cp, hours_back=back)
-        time.sleep(PAUSE)
-        try:
-            heads = gdelt.query(gdelt.MARKET_QUERY, start=start, end=end,
-                                max_records=25)
-        except Exception as e:
-            day["checkpoints"][cp] = {"error": str(e)[:120]}
+        heads, err = [], None
+        for attempt in range(1 + EMPTY_RETRIES):
+            time.sleep(PAUSE * (attempt + 1))
+            try:
+                heads = gdelt.query(gdelt.MARKET_QUERY, start=start, end=end,
+                                    max_records=25)
+                err = None
+            except Exception as e:
+                err = str(e)[:120]
+                continue
+            if heads:
+                break                # non-empty = real answer
+        if err is not None:
+            day["checkpoints"][cp] = {"error": err}
             continue
         day["checkpoints"][cp] = {"headlines": [
             {"id": f"{cp}-h{i}", "ts": a["ts"], "source": a["domain"],
