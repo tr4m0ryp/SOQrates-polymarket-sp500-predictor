@@ -622,9 +622,11 @@ Replay evaluation (212 news days) & designed & the two keys above \\
 \section{Open questions --- where suggestions help most}
 
 \begin{enumerate}
-\item \textbf{Sizing.} We currently plan flat stakes above the confidence
-threshold. Kelly-style sizing scaled by (fused confidence $-$ market price) is
-the natural next step --- how aggressive is acceptable?
+\item \textbf{Sizing --- now answered empirically} (Section 7.6): half the
+balance per trade, capped at \$400 and at 1\% of day volume. The open
+residual: is the half-fraction's volatility (each loss halves the balance)
+acceptable, or should live trading run at $\frac{1}{3}$ for the first
+quarter?
 \item \textbf{The post-shock widening factor} (1.9) is unstable between sample
 halves (1.3 vs 2.3). More data or a smarter conditioning variable?
 \item \textbf{Conflicted-day sample size} is $n=41$ at 85\%. Enough to trade
