@@ -607,7 +607,10 @@ Layer & Status & Missing \\
 \midrule
 Market core & live, validated & --- \\
 Confidence filter \& edge rule & live & --- \\
-Auction replica code & built, sample-validated & LSEG credentials (approved, pending) for quirk-day replay; live feed choice \\
+Trading strategy (Section 7) & backtested, walk-forward validated & live order client (py-sdk); paper-trade period \\
+Execution microstructure & researched, calibrated from real prints & live-fill recalibration beyond \$400 stakes \\
+Strategy backtest lab & built (115 days, minute curves, audited) & extends automatically as new days resolve \\
+Auction replica code & built, sample-validated & Databento key (primary) or LSEG credentials (approved, pending); live feed choice \\
 Group A prefetch & live (odds, calendar) & FRED key (free) for CPI/PPI dates; nowcast fetcher \\
 Group A/B prompts \& math & written, fitted & LLM API runner \\
 Group B feeds & designed & Alpaca key (free); Truth Social scraper choice \\
