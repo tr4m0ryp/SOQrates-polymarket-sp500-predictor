@@ -17,8 +17,11 @@ def _sig(day, minute, prm):
 
 
 def _base(prm) -> float:
-    """Per-trade stake: a bankroll fraction when compounding (bet_frac set
-    and the engine injected _bankroll), else the flat $100 research stake."""
+    """Per-trade stake: fixed dollars (stake_abs), a bankroll fraction
+    (bet_frac + engine-injected _bankroll), else the flat $100 research
+    stake. stake_abs is still capped by the bankroll via _avail."""
+    if prm.get("stake_abs"):
+        return float(prm["stake_abs"])
     if prm.get("bet_frac") and "_bankroll" in prm:
         return max(1.0, prm["_bankroll"] * prm["bet_frac"])
     return STAKE
