@@ -27,7 +27,7 @@ def run(family: str, days: list[dict], params: dict, em: ExecModel | None = None
                             ("half_spread", "impact_per_100", "maker_eps")
                             if k in params})
     fn = STRATEGIES[family]
-    compound = bool(params.get("bet_frac"))
+    compound = bool(params.get("bet_frac") or params.get("stake_abs"))
     bankroll = params.get("start_bankroll", START_BANKROLL)
     min_vol = params.get("min_volume", MIN_VOLUME)
     liq_frac = params.get("liq_frac", LIQ_FRAC)
