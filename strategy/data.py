@@ -1,0 +1,96 @@
+"""Per-day strategy records: market minute curve joined with model P(up)."""
+import datetime as dt
+import json
+
+from config import CACHE, NY
+from pm import history
+
+_CACHE_FILE = CACHE / "strategy_days.json"
+LAST_MINUTE = 9 * 60 + 29           # 9:29 ET, last tradeable minute
+
+
+def _minute_curve(day: str, points: list[dict]) -> list[list]:
+    """[(minute_of_day_ET, p_up)] for 00:00-9:29 on the market date."""
+    d = dt.date(*map(int, day.split("-")))
+    out = []
+    for pt in points:
+        ts = dt.datetime.fromtimestamp(pt["t"], dt.timezone.utc).astimezone(NY)
+        if ts.date() != d:
+            continue
+        m = ts.hour * 60 + ts.minute
+        if m <= LAST_MINUTE:
+            out.append([m, pt["p"]])
+    dedup = {}
+    for m, p in out:                # last quote wins within a minute
+        dedup[m] = p
+    return sorted([m, p] for m, p in dedup.items())
+
+
+def build(rebuild: bool = False) -> list[dict]:
+    if not rebuild and _CACHE_FILE.exists():
+        return json.loads(_CACHE_FILE.read_text())
+
+    from backtest import dataset
+    from model.core import ModelProd
+    rows = dataset.load()
+    train, _ = dataset.split(rows)
+    model = ModelProd().fit(train)
+    by_date = {r["date"]: r for r in rows}
+
+    days = []
+    for date, rec in history.load_all().items():
+        row = by_date.get(date)
+        if row is None:
+            continue
+        curve = _minute_curve(date, rec["history"])
+        if len(curve) < 60:
+            continue
+        model_p, model_mu, model_sig = {}, {}, {}
+        for h in range(10):
+            if h not in row["es"]:
+                continue
+            mu, sig, p = model.predict(row, h)
+            model_p[h], model_mu[h], model_sig[h] = round(p, 4), mu, sig
+        if not model_p:
+            continue
+        days.append({
+            "date": date,
+            "outcome_up": rec["meta"]["outcome_up"],
+            "official_gap": row["off"],
+            "volume": rec["meta"]["volume"],
+            "release_morning": row["release_morning"],
+            "curve": curve,
+            "model_p": model_p,
+            "model_mu": model_mu,
+            "model_sigma": model_sig,
+        })
+    days.sort(key=lambda r: r["date"])
+    _CACHE_FILE.write_text(json.dumps(days))
+    return days
+
+
+def split(days: list[dict]) -> tuple[list[dict], list[dict]]:
+    half = len(days) // 2
+    return days[:half], days[half:]
+
+
+def model_p_at(day: dict, minute: int) -> float | None:
+    """Model P(up) in force at a given minute (hourly refresh, hold last)."""
+    best = None
+    for h, p in day["model_p"].items():
+        if int(h) * 60 <= minute:
+            best = p if best is None or int(h) > best[0] else best
+            if best is None or int(h) >= best[0]:
+                best = (int(h), p)
+    return best[1] if best else None
+
+
+def market_p_at(day: dict, minute: int) -> float | None:
+    """Latest market quote at or before a minute."""
+    best = None
+    for m, p in day["curve"]:
+        if m <= minute:
+            best = p
+        else:
+            break
+    return best
