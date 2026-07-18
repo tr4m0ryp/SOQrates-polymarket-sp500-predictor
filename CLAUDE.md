@@ -51,7 +51,9 @@ python3 . stage3 --date D [--source {databento,lseg}]  # replica-vs-official (de
 - `FRED_API_KEY` - release calendar (CPI/PPI/NFP/GDP); free from FRED.
   Without it the calendar falls back to the NFP first-Friday rule.
 - `MASSIVE_API_KEY` - live NYSE imbalance websocket leg.
-- `DATABENTO_API_KEY` - optional alternative historical/live source.
+- `DATABENTO_API_KEY` - primary auction source (stage-3 default): historical
+  NOII/imbalance/prints/NBBO via stdlib HTTP+JSON; live via optional
+  `pip install databento`. LSEG + the free-stitch modules are fallbacks.
 - Weights come from Slickcharts + nasdaqlisted.txt (no key); iShares CSV is
   the fallback and currently serves a bot-wall.
 
