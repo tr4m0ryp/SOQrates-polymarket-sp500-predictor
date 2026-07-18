@@ -397,6 +397,207 @@ Trading rules on top: stand down when fused confidence is below 65\%; trade
 against the Polymarket price only when our probability differs from it by at
 least 5 cents.
 
+\section{How the trading strategy was chosen: an execution-realistic backtest}
+
+The layers above produce a probability. Turning that probability into orders
+--- when to enter, at what price, at what size, when to bail out --- was
+decided empirically, on the full history of the Polymarket market itself,
+under an execution model calibrated from real trade prints. This section
+documents that derivation: what was tested, what died, what survived, and the
+analysis behind each choice. Nothing here is hand-tuned on the evaluation
+data: every parameter was selected on the first (chronological) half of the
+history and validated once on the untouched second half.
+
+\subsection{The laboratory}
+
+The daily market has existed since January 22, 2026. We fetched all 120
+resolved markets with their full minute-level price curves and joined 115 of
+them to the model's hourly out-of-sample probabilities (the model is fitted
+only on pre-2026 futures data, so \emph{every} strategy day is out of
+sample for the model). Chronological split: 57 train days (through April 15),
+58 test days (April 16 -- July 14). Polymarket's taker fee
+($0.04\,p(1-p)$ per share) began March 30, so the entire test half is
+fee-era --- a built-in regime stress.
+
+Execution realism was calibrated, not assumed. From $\sim$3{,}400 real trade
+prints sampled across six days: effective half-spread $\approx$ 1 cent,
+price impact $\approx$ 0.05 cents per \$100 of stake --- mild, because the
+binding constraint turns out to be \emph{depth}, not slope (below). Maker
+fills are modelled pessimistically (the resting price must trade
+\emph{through} the limit), and an independent audit of the harness found and
+fixed four critical defects before any conclusion was drawn: fictional fills
+on zero-volume days (the price curve is book midpoints, which exist even
+when nobody traded --- one such ``fill'' was 46\% of an early result's
+profit), an entry gate that accidentally admitted bets \emph{against} the
+model's own view, over-optimistic maker fills, and a look-ahead in the news
+overlay's fitted constants (since refit on disjoint data). The lesson is
+general: \textbf{in a thin market, the backtest's execution assumptions are
+as load-bearing as the signal.}
+
+\subsection{The graveyard: what 15 verified candidates taught us}
+
+Six strategy families were designed and swept by independent optimizers on
+the train half, then walk-forwarded. The result is brutal and informative:
+
+\begin{center}
+\begin{tabular}{lccl}
+\toprule
+Family & Train (\$100 start) & Test (walk-forward) & Verdict \\
+\midrule
+Ride crowd, flip late & profitable & \$100 $\to$ \$36 & dead \\
+Cheap-side longshots & \$100 $\to$ \$129 & near ruin (\$5--7) & dead \\
+Sell-into-convergence & \$100 $\to$ \$200 & \$100 $\to$ \$96 & dead \\
+Fixed entry, hour $\ge 5$ & strong & negative & window closed by fees \\
+Maker-limit entries & strong & unverifiable & midpoint fictions \\
+Fixed entry at hour 4 & \$100 $\to$ \$155 & \$100 $\to$ \$136 & \textbf{sole survivor} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\intuition{Everything that monetized the January--March regime --- huge
+volumes, fee-free, lazy repricing --- evaporated out of sample. The only
+edge that survived the market's own evolution is the simplest one: the model
+knows the direction hours before the crowd finishes pricing it.}
+
+\subsection{Entry trigger: the first hour confidence arrives}
+
+The surviving fixed-hour entry leaves information on the table: days that are
+coin flips at 4:00 but \emph{clarify later} (a release resolves, the gap
+firms up). Replacing ``enter at hour 4'' with ``enter at the \emph{first}
+hour in 4--9 at which the fused probability leaves the coin-flip zone''
+(edge $\ge$ 5 cents \emph{and} traded-side probability $\ge$ 0.70) added
+eight late entries on the test half --- all eight won (+\$108 per \$50
+staked) --- lifting the walk-forward from \$136 to \$145 per \$100 flat, and
+to \$322 per \$100 under compounding. Two warnings came with it: at a 0.60
+gate the same idea goes to \emph{ruin} (days that clarify weakly are traps
+--- fake post-release certainty at already-converged prices), and late
+entries at 86--95 cents need a $\sim$90\% win rate just to break even, so
+the gate is load-bearing, not cosmetic.
+
+\subsection{Entry timing: why ``buy immediately'' beats hunting the dip}
+
+The obvious objection --- surely one should wait for a better price after
+the signal --- was tested three ways and closed with an attribution
+analysis. For every train-half signal day we located the post-signal price
+minimum of our side and asked \emph{why the market was lowest there}:
+
+\begin{itemize}
+\item On \textbf{winning days} the median post-signal dip is \textbf{2
+cents}. The deep dips (up to 47 cents) are, in 12 of 26 cases,
+\emph{futures-adverse}: ES genuinely moved against the position mid-morning
+--- at the moment of the dip our own signal had degraded below the gate, so
+the ``discount'' was correctly-priced worse odds, not a bargain.
+\item On \textbf{losing days} the median ``dip'' is \textbf{62 cents}: the
+minimum is simply the crash to zero. A resting buy order below the market is
+\emph{guaranteed} to fill on these days.
+\end{itemize}
+
+That asymmetry is adverse selection in its purest form, and it shows up in
+every rule we derived from it: dip-triggered taker entries, resting maker
+limits at $-1/-2/-3$ cents with timed fallbacks, and 50/50 splits all
+underperform immediate entry on \emph{both} halves (train +\$257 immediate
+vs +\$184 best variant; test +\$214 vs +\$168). The conclusion is
+structural, not parametric: \textbf{after a valid signal the market
+converges away from you; the only reliably available discounts are moments
+when the signal is invalid, or days when it is wrong.} Entry is therefore
+immediate, as taker --- the 1-cent spread and the fee are the price of
+being early, and being early is the entire edge.
+
+\subsection{The price gate}
+
+Immediacy exposed one genuine flaw: at very high prices the trade shape
+degenerates (risk \$400 to win \$18 at 95.4 cents --- one quirk-day loss at
+such prices costs 22 wins to repay). A price cap on entries was swept on the
+train half: rejecting entries above 95 cents removes exactly these
+last-cent trades at zero cost, while a 90-cent cap overshoots (it deletes
+profitable low-90s days, $-\$27$ on train). The gate is asymmetric by
+design: expensive entries have capped reward and uncapped (100\%) loss;
+cheap entries have the opposite shape, which is why the same 0.70
+confidence gate that protects 90-cent entries is allowed to pass 50-cent
+ones.
+
+\subsection{Sizing: the half-rule, the cap, and the market's own ceiling}
+
+Stake economics were measured by sweeping flat stakes from \$25 to \$2{,}000
+with the calibrated execution model. Three facts emerged. First, return per
+dollar is \emph{flat} ($\sim$15.5\%) from \$25 to \$300: no soft bottleneck.
+Second, above $\sim$\$400 the simulation leaves its validated region (the
+impact model was calibrated on \$100--500 prints). Third --- the real
+ceiling --- stakes are capped by \emph{depth}: at most $\sim$1\% of a day's
+traded volume can be taken without fiction, and intended stakes asymptote to
+an effective $\sim$\$1{,}000 regardless of intent. The sizing rule is
+therefore
+\[
+\text{stake} \;=\; \min\bigl(\tfrac{1}{2}\,\text{balance},\; \$400,\;
+1\%\times\text{day volume}\bigr),
+\]
+with sub-\$1k-volume days skipped entirely. Walk-forward from \$100: test
+half \$851 (\$669 with all execution costs doubled), peak \$1{,}308,
+maximum drawdown \$477. The half-rule's danger is stated plainly: each
+resolution loss halves the balance. The same rule on the \emph{train} half
+(five losses rather than two) turns \$100 into only \$212 --- the outcome
+is hostage to loss frequency, and a losses-first ordering of the test trades
+survives only at \$24 at the trough. Halving the fraction roughly halves
+both the growth and the violence; the choice is risk appetite, not
+mathematics.
+
+\subsection{Position monitors: sell the corpse, sometimes flip}
+
+Because resolution losses are total, the position is re-examined when new
+information arrives: at the 08:35 checkpoint (after the 8:30 release) and
+the 9:00 model refresh. If the traded side's fused probability has fallen
+below 0.5, the position is sold at market; if the \emph{other} side then
+clears the full entry test, the proceeds flip into it. Quantified on our two
+test losses: the July 2 news reversal was recoverable at 8:29 for \$77 of
+the \$296 lost (and nothing later --- the market repriced within minutes);
+the July 10 loss was fully invertible (sell + flip at 8:29 yields
+\emph{+\$347} against $-\$307$ held) --- but only with information the
+hourly futures did not have. Which leads to the final two layers.
+
+\subsection{The last-minute futures leg}
+
+Minute-level futures history only survives $\sim$30 days back, so this leg
+was validated on the 13 available days (June 25 -- July 14): the 9:29 gap,
+scored as $\Phi(0.79\,\text{gap}/0.083)$, called the official open
+\textbf{13 of 13} times. Two tradeable patterns appeared immediately: days
+where the crowd lags a late futures move (June 30: market at 0.35 while
+9:29 futures implied 0.80 --- worth +\$88 per \$50), and --- critically ---
+July 10 itself, previously classified as an unknowable quirk, turned out to
+be a \emph{late futures flip} (gap $-0.03$ at 9:00 $\to$ $+0.08$ at 9:29)
+that a 9:28 check would have converted from $-\$307$ into a win via the
+sell-and-flip. A live 9:28--9:29 leg costs nothing (one live quote) and is
+now part of the strategy; it cannot be backtested further for lack of
+historical minute data, so it runs paper-first. True auction quirks (June 1,
+where the winning side traded at 1.8 cents at 9:29; June 22 at 3 cents)
+remain invisible to futures at \emph{any} minute --- capturing those is
+precisely Layer~R's job, and the measured ceiling there (+\$1{,}734 on a
+single \$50 stake on June 1) dwarfs everything else in this section.
+
+\subsection{The resulting strategy, in one place}
+
+\begin{enumerate}
+\item \textbf{00:05} Group-A briefing $\to$ $(m_A, d_A)$; first fusion.
+\item \textbf{02:30--09:15} Re-fuse at each checkpoint and on triggers
+(gap/odds/wire); Group-B voice per Section 5.
+\item \textbf{Entry} at the first hour in 4--9 with edge $\ge$ 5c,
+traded-side $P \ge 0.70$, and price $\le$ 95c: immediate taker buy.
+\item \textbf{Stake} $= \min(\frac{1}{2}\text{balance}, \$400, 1\%\times
+\text{volume})$; skip days below \$1k volume.
+\item \textbf{Monitors} at 08:35 and 9:00: sell below $P=0.5$ on the traded
+side; flip when the other side fully qualifies.
+\item \textbf{9:28} live-futures re-check: enter edges $\ge$ 3c; sell-and-flip
+positions the minute-gap contradicts. (Layer~R replaces this voice when live.)
+\item \textbf{9:30} resolution; log fills for execution recalibration;
+monthly walk-forward refit.
+\end{enumerate}
+
+Validated expectation (58 out-of-sample fee-era days): \$100 $\to$ \$851
+base / \$669 stressed; 26W--2L at 93\% win rate; both losses understood
+(one news reversal, partially recoverable; one late futures flip, fully
+recoverable with the 9:28 leg). Threats to validity, stated honestly: one
+market regime, 58 evaluation days, midpoint price curves (maker-side
+untrustworthy), a declining-volume market, and a crowd that can learn.
+
 \section{Current status}
 
 \begin{center}
