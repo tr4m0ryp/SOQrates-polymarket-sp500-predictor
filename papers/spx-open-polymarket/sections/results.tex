@@ -167,7 +167,7 @@ but it has never seen real auction data.
 \paragraph{Strategy backtest.}
 Of 15 verified strategy candidates, exactly one survives out of sample.
 Table~\ref{tab:strategy_graveyard} lists the graveyard. The survivor enters
-at 04:00~ET when the model's edge over the crowd price is at least 5 cents
+at 04:00~ET when the edge of Equation~\ref{eq:edge} is at least 5 cents
 and the traded side's probability is at least 0.60, takes the taker fill,
 and holds to resolution. Staking 10\% of bankroll per trade it turns \$100
 into \$135.92 on the test half (\$131.83 with all execution costs doubled),
