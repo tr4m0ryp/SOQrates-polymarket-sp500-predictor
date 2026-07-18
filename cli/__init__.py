@@ -65,6 +65,7 @@ def main():
                      ("ground-truth", sources.cmd_ground_truth),
                      ("weights", sources.cmd_weights),
                      ("lseg-status", auction.cmd_lseg_status),
+                     ("databento-status", auction.cmd_databento_status),
                      ("calendar-refresh", sources.cmd_calendar_refresh)):
         sub.add_parser(name).set_defaults(fn=fn)
 
