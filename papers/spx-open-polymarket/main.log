@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.5.9)  19 JUL 2026 00:36
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.5.9)  19 JUL 2026 00:46
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -540,28 +540,18 @@ File: figures/spx_open_predictor.png Graphic file (type png)
 Package pdftex.def Info: figures/spx_open_predictor.png  used on input line 48.
 
 (pdftex.def)             Requested size: 377.60951pt x 289.90126pt.
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
 <figures/spx_open_predictor_0000_200d.png, id=202, 807.015pt x 516.9714pt>
 File: figures/spx_open_predictor_0000_200d.png Graphic file (type png)
 <use figures/spx_open_predictor_0000_200d.png>
 Package pdftex.def Info: figures/spx_open_predictor_0000_200d.png  used on inpu
 t line 63.
 (pdftex.def)             Requested size: 365.68546pt x 234.25998pt.
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
 <figures/spx_open_predictor_0400_200d.png, id=203, 807.015pt x 516.9714pt>
 File: figures/spx_open_predictor_0400_200d.png Graphic file (type png)
 <use figures/spx_open_predictor_0400_200d.png>
 Package pdftex.def Info: figures/spx_open_predictor_0400_200d.png  used on inpu
 t line 76.
 (pdftex.def)             Requested size: 365.68546pt x 234.25998pt.
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
 <figures/spx_open_predictor_0000_confident.png, id=207, 807.015pt x 516.9714pt>
 
 File: figures/spx_open_predictor_0000_confident.png Graphic file (type png)
@@ -569,46 +559,32 @@ File: figures/spx_open_predictor_0000_confident.png Graphic file (type png)
 Package pdftex.def Info: figures/spx_open_predictor_0000_confident.png  used on
  input line 93.
 (pdftex.def)             Requested size: 365.68546pt x 234.25998pt.
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-[6] [7 <./figures/spx_open_predictor.png>]
-<figures/strategy_bankroll_50.png, id=239, 722.7pt x 390.258pt>
+ [6] [7 <./figures/spx_open_predictor.png>] [8 <./figures/spx_open_predictor_00
+00_200d.png> <./figures/spx_open_predictor_0400_200d.png>]
+<figures/strategy_bankroll_50.png, id=245, 722.7pt x 390.258pt>
 File: figures/strategy_bankroll_50.png Graphic file (type png)
 <use figures/strategy_bankroll_50.png>
 Package pdftex.def Info: figures/strategy_bankroll_50.png  used on input line 2
 03.
 (pdftex.def)             Requested size: 365.68546pt x 197.46877pt.
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-[8 <./figures/spx_open_predictor_0000_200d.png>]
-<figures/stake_sweep.png, id=249, 1011.78pt x 332.442pt>
+ [9 <./figures/spx_open_predictor_0000_confident.png>]
+<figures/stake_sweep.png, id=255, 1011.78pt x 332.442pt>
 File: figures/stake_sweep.png Graphic file (type png)
 <use figures/stake_sweep.png>
 Package pdftex.def Info: figures/stake_sweep.png  used on input line 260.
 (pdftex.def)             Requested size: 365.68546pt x 120.15585pt.
-
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-) [9 <./figures/spx_open_predictor_0400_200d.png>] (./sections/discussion.tex
-<figures/spx_open_predictor_misses.png, id=259, 779.0706pt x 489.027pt>
+) [10 <./figures/strategy_bankroll_50.png>] (./sections/discussion.tex
+<figures/spx_open_predictor_misses.png, id=265, 779.0706pt x 489.027pt>
 File: figures/spx_open_predictor_misses.png Graphic file (type png)
 <use figures/spx_open_predictor_misses.png>
 Package pdftex.def Info: figures/spx_open_predictor_misses.png  used on input l
 ine 26.
 (pdftex.def)             Requested size: 365.68546pt x 229.54424pt.
 
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-[10 <./figures/spx_open_predictor_0000_confident.png>] [11 <./figures/strategy_
-bankroll_50.png> <./figures/stake_sweep.png>]
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
- [12 <./figures/spx_open_predictor_misses.png>]
+ [11 <./figures/stake_sweep.png>] [12 <./figures/spx_open_predictor_misses.png>
+]
 Underfull \vbox (badness 2799) has occurred while \output is active []
 
  [13])
@@ -639,10 +615,10 @@ Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: 9EA6F9A5A198C7586058655C2C80D796;2510.
  ) 
 Here is how much of TeX's memory you used:
- 13491 strings out of 469006
- 211287 string characters out of 5454814
+ 13493 strings out of 469006
+ 211347 string characters out of 5454814
  670499 words of memory out of 5000000
- 41650 multiletter control sequences out of 15000+600000
+ 41652 multiletter control sequences out of 15000+600000
  669931 words of font info for 217 fonts, out of 8000000 for 9000
  319 hyphenation exceptions out of 8191
  75i,11n,79p,1001b,801s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -664,7 +640,7 @@ ist/fonts/type1/public/cm-super/sftt1000.pfb></usr/local/texlive/2026basic/texm
 f-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2026basic/texmf-dis
 t/fonts/type1/urw/times/utmr8a.pfb></usr/local/texlive/2026basic/texmf-dist/fon
 ts/type1/urw/times/utmri8a.pfb>
-Output written on main.pdf (23 pages, 3801609 bytes).
+Output written on main.pdf (23 pages, 3801537 bytes).
 PDF statistics:
  540 PDF objects out of 1000 (max. 8388607)
  460 compressed objects within 5 object streams

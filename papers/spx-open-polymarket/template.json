@@ -1,9 +1,9 @@
 {
-  "name": "plain-article",
-  "venue": "generic",
+  "name": "neurips-2026",
+  "venue": "NeurIPS 2026",
   "language": "en",
-  "engine": "tectonic",
+  "engine": "pdflatex",
   "bib_backend": "bibtex",
   "main": "main.tex",
-  "notes": "Pick when no venue format is imposed: minimal dependency-light article (geometry, graphicx, booktabs, siunitx, hyperref, biblatex) that compiles anywhere with tectonic."
+  "notes": "Pick for NeurIPS 2026 submissions, workshops, or arXiv preprints in that format; switch the style option per track (default is anonymized submission, skeleton uses preprint)."
 }
