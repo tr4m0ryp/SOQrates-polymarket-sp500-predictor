@@ -89,13 +89,17 @@ def cmd_news_groupb_fit(_args):
         s = groupb.fit_shock_sigma(sub, model)
         print(f"{name:6} post-shock sigma ratio {s['m_shock']:.2f} "
               f"(shocked {s['n_shocked']} / quiet {s['n_quiet']})")
-    hits = n = 0
-    for h in (7, 8):
-        d = groupb.fit_conflicted_direction(rows, at_hour=h)
-        print(f"conflicted h={h}: hit {d['hit_rate']:.2f} n={d['n']}")
-        hits += d["hit_rate"] * d["n"]; n += d["n"]
-    print(f"pooled conflicted hit-rate {hits/n*100:.1f}% (n={n}) "
-          f"-> Z_CONFLICT {groupb.Z_CONFLICT} (conservative)")
+    for name, sub in (("train", train), ("pooled", rows)):
+        hits = n = 0
+        for h in (7, 8):
+            d = groupb.fit_conflicted_direction(sub, at_hour=h)
+            print(f"{name:6} conflicted h={h}: hit {d['hit_rate']:.2f} n={d['n']}")
+            if d["n"]:
+                hits += d["hit_rate"] * d["n"]; n += d["n"]
+        print(f"{name:6} conflicted hit-rate {hits/n*100:.1f}% (n={n})")
+    print(f"constants use the TRAIN half only (no look-ahead into strategy "
+          f"days): M_SHOCK {groupb.M_SHOCK}, Z_CONFLICT {groupb.Z_CONFLICT}; "
+          f"test/pooled rows above are diagnostics")
 
 
 def cmd_news_llm_test(_args):
