@@ -35,7 +35,9 @@ def _minute_curve(day: str, points: list[dict]) -> list[list]:
 def _news_p(row: dict, h: int, mu: float, sig: float) -> float:
     """Deterministic Group-B overlay: post-shock sigma widening + the fitted
     conflicted-day direction rule, using only gaps known by hour h. The LLM
-    retrieval leg is NOT simulated — this is the futures-derived subset."""
+    retrieval leg is NOT simulated — this is the futures-derived subset.
+    groupb constants are fitted on the dataset train half only (disjoint
+    from all strategy days), so this signal carries no look-ahead."""
     from math import erf, sqrt
     from news import groupb
     gaps = {k: v for k, v in row["es"].items() if k <= h}
