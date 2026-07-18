@@ -16,6 +16,14 @@ def _sig(day, minute, prm):
     return model_p_at(day, minute, prm.get("signal", "model"))
 
 
+def _base(prm) -> float:
+    """Per-trade stake: a bankroll fraction when compounding (bet_frac set
+    and the engine injected _bankroll), else the flat $100 research stake."""
+    if prm.get("bet_frac") and "_bankroll" in prm:
+        return max(1.0, prm["_bankroll"] * prm["bet_frac"])
+    return STAKE
+
+
 def _resolve(day: dict, side: str, shares: float) -> float:
     won = day["outcome_up"] == (side == "up")
     return shares if won else 0.0
