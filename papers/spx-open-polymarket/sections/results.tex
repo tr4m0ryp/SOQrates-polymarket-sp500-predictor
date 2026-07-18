@@ -8,12 +8,11 @@
 
 Out-of-sample direction accuracy over the 200-day window (September 2025 to
 July 2026) is a ladder, not a number. Table~\ref{tab:accuracy_ladder} reports
-it by prediction hour: 72.5\% at midnight, 77.0\% at 04:00 (154 of 200 days),
-82\% at 06:00, 85\% at 07:00, 90\% at 09:00, and roughly 94\% at 9:29 on the
-minute-level sample ($n=18$). The ceiling with perfect 9:30 market data is
-96.3\%, fitted on 81 unseen days; the last two points are auction noise that
-no futures price contains. Figure~\ref{fig:spx_open_predictor} shows the same
-climb as per-day probability trajectories.
+it by prediction hour: 72.5\% at midnight, rising through 77.0\% at 04:00 to
+roughly 94\% at 9:29 on the minute-level sample, against a ceiling of 96.3\%
+with perfect 9:30 market data --- the rest is auction noise that no futures
+price contains. Figure~\ref{fig:spx_open_predictor} shows the same climb as
+per-day probability trajectories.
 Figures~\ref{fig:spx_open_predictor_0000_200d}
 and~\ref{fig:spx_open_predictor_0400_200d} fix the call at midnight and at
 04:00: 145 against 154 correct days, so four extra hours of futures data buy
