@@ -67,22 +67,69 @@ def cmd_lseg_pull(args):
         print(f"  {name}: {n}")
 
 
+def cmd_databento_status(_args):
+    from replica.databento import source
+    from replica.databento.client import DatabentoError
+    try:
+        datasets = source.ping()
+    except DatabentoError as e:
+        print(f"not ready: {e}")
+        return
+    except Exception as e:
+        print(f"ping failed: {e}")
+        return
+    print(f"DATABENTO_API_KEY OK - {len(datasets)} datasets visible "
+          f"(XNAS.ITCH: {'XNAS.ITCH' in datasets}, "
+          f"XNYS.PILLAR: {'XNYS.PILLAR' in datasets}).")
+
+
+def cmd_databento_pull(args):
+    from replica.databento import source, schemas
+    from replica.databento.client import DatabentoError
+    try:
+        res = source.pull_day(args.date)
+    except DatabentoError as e:
+        print(f"not ready: {e}")
+        return
+    print(f"cached raw JSON under {res['dir']}")
+    for name, n in res["counts"].items():
+        print(f"  {name}: {n} records")
+    for name, err in res["errors"].items():
+        print(f"  {name}: ERROR {err}")
+    print("\nobserved DBN fields (extend schemas maps if any auction "
+          "field is missing):")
+    for name, n in list(schemas.discover(res["records"]).items())[:25]:
+        print(f"  {name}: {n}")
+
+
 def cmd_stage3(args):
+    import os
     from config import CACHE
     from data import yahoo
     from replica import lseg_parse, pipeline
 
-    path = CACHE / "lseg" / f"{args.date}.csv"
-    if not path.exists():
-        print(f"no cached pull for {args.date} - run: lseg-pull --date {args.date}")
-        return
-    snaps = lseg_parse.snapshots(str(path))
+    src = getattr(args, "source", None) or (
+        "databento" if os.environ.get("DATABENTO_API_KEY") else "lseg")
+    if src == "databento":
+        from replica.databento import source
+        if not source.cached(args.date):
+            print(f"no cached databento pull for {args.date} - run: "
+                  f"databento-pull --date {args.date}")
+            return
+        snaps = source.snapshots(args.date)
+    else:
+        path = CACHE / "lseg" / f"{args.date}.csv"
+        if not path.exists():
+            print(f"no cached pull for {args.date} - run: "
+                  f"lseg-pull --date {args.date}")
+            return
+        snaps = lseg_parse.snapshots(str(path))
     pred = {}
     for t, ss in snaps.items():
         last = next((s for s in reversed(ss) if s.get("pred_open")), None)
         if last:
             pred[t] = last["pred_open"]
-    print(f"{len(pred)} tickers with indicative prices")
+    print(f"[{src}] {len(pred)} tickers with indicative prices")
     spx = yahoo.daily_open_close("^GSPC", 400)
     days = sorted(spx)
     if args.date not in spx:
