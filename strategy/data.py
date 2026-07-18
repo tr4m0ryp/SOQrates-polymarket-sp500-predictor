@@ -104,9 +104,60 @@ def split(days: list[dict]) -> tuple[list[dict], list[dict]]:
     return days[:half], days[half:]
 
 
+_VOICES = None                      # date -> {"04:00": voice, ...}
+_CP_MIN = {"04:00": 240, "07:00": 420, "08:35": 515}
+
+
+def _llm_voices() -> dict:
+    global _VOICES
+    if _VOICES is None:
+        f = CACHE / "news_voice.json"
+        _VOICES = json.loads(f.read_text()) if f.exists() else {}
+    return _VOICES
+
+
+def _llm_p(day: dict, minute: int) -> float | None:
+    """Fuse the replayed LLM voice (latest checkpoint <= minute) with the
+    model at the in-force hour, using the production groupb.voice() math.
+    Falls back to the plain model P when no voice exists."""
+    from math import erf, sqrt
+    from news import groupb
+    voices = _llm_voices().get(day["date"])
+    base = model_p_at(day, minute, "model")
+    if not voices or base is None:
+        return base
+    live_cp = [cp for cp, m in sorted(_CP_MIN.items(), key=lambda x: x[1])
+               if m <= minute and cp in voices]
+    if not live_cp:
+        return base
+    v = voices[live_cp[-1]]
+    hours = sorted(int(h) for h in day["model_mu"] if int(h) * 60 <= minute)
+    if not hours:
+        return base
+    h = hours[-1]
+    mu = day["model_mu"][str(h)] if str(h) in day["model_mu"] else day["model_mu"][h]
+    sig = day["model_sigma"][str(h)] if str(h) in day["model_sigma"] else day["model_sigma"][h]
+    gap = day["es"].get(str(h), day["es"].get(h))
+    if gap is None:
+        return base
+    recent = bool(v.get("shock")) or float(v.get("sigma_mult", 1.0)) > 1.0
+    mu_b, sig_b, s_mult = groupb.voice(float(v["direction"]),
+                                       float(v["confidence"]),
+                                       gap, sig, recent)
+    sig_eff = sig * max(s_mult, float(v.get("sigma_mult", 1.0)))
+    w = 1 / sig_eff ** 2
+    wb = 0.0 if sig_b == float("inf") else 1 / sig_b ** 2
+    mu_f = (mu * w + mu_b * wb) / (w + wb)
+    sig_f = (1 / (w + wb)) ** 0.5
+    return 0.5 * (1 + erf(mu_f / sig_f / sqrt(2)))
+
+
 def model_p_at(day: dict, minute: int, signal: str = "model") -> float | None:
     """Signal P(up) in force at a minute (hourly refresh, hold last).
-    signal='model' = futures model alone; 'news' = + Group-B overlay."""
+    signal='model' = futures model alone; 'news' = + deterministic Group-B
+    overlay; 'llm' = + replayed LLM voice (needs .cache/news_voice.json)."""
+    if signal == "llm":
+        return _llm_p(day, minute)
     key = "model_p_news" if signal == "news" else "model_p"
     hours = sorted((int(h), p) for h, p in day.get(key, day["model_p"]).items())
     live = [p for h, p in hours if h * 60 <= minute]
