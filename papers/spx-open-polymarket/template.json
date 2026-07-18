@@ -1,0 +1,9 @@
+{
+  "name": "plain-article",
+  "venue": "generic",
+  "language": "en",
+  "engine": "tectonic",
+  "bib_backend": "bibtex",
+  "main": "main.tex",
+  "notes": "Pick when no venue format is imposed: minimal dependency-light article (geometry, graphicx, booktabs, siunitx, hyperref, biblatex) that compiles anywhere with tectonic."
+}

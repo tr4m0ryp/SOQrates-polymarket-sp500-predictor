@@ -1,0 +1,46 @@
+% Plain article skeleton
+% Compile: tectonic main.tex
+% (biblatex runs backend=bibtex: tectonic's bundled biblatex 3.17 predates
+%  system biber 2.21, which rejects its control files; tectonic runs the
+%  bibtex backend itself, so no external tool is needed)
+
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[margin=2.5cm]{geometry}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{siunitx}
+\usepackage[style=authoryear-comp,backend=bibtex]{biblatex}
+\usepackage{hyperref}
+\addbibresource{references.bib}
+
+\title{Predicting the S\&P 500 Official Opening Print for Polymarket's Daily Open Market}
+\author{Moussa Ouallaf}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+\input{sections/abstract}
+\end{abstract}
+
+\section{Introduction}
+\input{sections/introduction}
+
+\section{Methods}
+\input{sections/method}
+
+\section{Results}
+\input{sections/results}
+
+\section{Discussion}
+\input{sections/discussion}
+
+\section{Conclusion}
+\input{sections/conclusion}
+
+\printbibliography
+
+\end{document}
