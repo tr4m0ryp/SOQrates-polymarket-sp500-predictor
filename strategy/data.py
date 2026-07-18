@@ -96,9 +96,11 @@ def split(days: list[dict]) -> tuple[list[dict], list[dict]]:
     return days[:half], days[half:]
 
 
-def model_p_at(day: dict, minute: int) -> float | None:
-    """Model P(up) in force at a given minute (hourly refresh, hold last)."""
-    hours = sorted((int(h), p) for h, p in day["model_p"].items())
+def model_p_at(day: dict, minute: int, signal: str = "model") -> float | None:
+    """Signal P(up) in force at a minute (hourly refresh, hold last).
+    signal='model' = futures model alone; 'news' = + Group-B overlay."""
+    key = "model_p_news" if signal == "news" else "model_p"
+    hours = sorted((int(h), p) for h, p in day.get(key, day["model_p"]).items())
     live = [p for h, p in hours if h * 60 <= minute]
     return live[-1] if live else None
 
