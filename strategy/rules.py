@@ -21,7 +21,10 @@ def _base(prm) -> float:
     (bet_frac + engine-injected _bankroll), else the flat $100 research
     stake. stake_abs is still capped by the bankroll via _avail."""
     if prm.get("stake_abs"):
-        return float(prm["stake_abs"])
+        s = float(prm["stake_abs"])
+        if prm.get("bet_frac") and "_bankroll" in prm:      # guarded: grow into it
+            s = min(s, prm["_bankroll"] * prm["bet_frac"])
+        return max(1.0, s)
     if prm.get("bet_frac") and "_bankroll" in prm:
         return max(1.0, prm["_bankroll"] * prm["bet_frac"])
     return STAKE
