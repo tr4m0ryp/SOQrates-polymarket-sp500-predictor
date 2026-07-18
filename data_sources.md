@@ -25,12 +25,12 @@ incomplete · `No` = not yet wired (Source column names the chosen one to build)
 | Earnings-tonight flag (heavyweights) | No | *unwired — prefetch slot TODO* | Free (TBD) |
 | Nowcast + analyst consensus | No | *unwired — Cleveland Fed / consensus TODO* | Free |
 | Real-time news wire stream | No | Alpaca news websocket (free key) | Free |
-| **Nasdaq NOII — historical** | No | Free Nasdaq ITCH samples (emi.nasdaq.com) + `itch.py` | **Free** |
-| **Nasdaq NOII — live** | No | Webull OpenAPI NOII snapshot | **Free** |
-| **NYSE opening imbalance — historical** | Partial | Free NYSE TAQ samples (ftp.nyse.com) via `nyse_taq.py` — sample dates only | **Free** |
-| **NYSE opening imbalance — live** | No | Massive NYSE NOI WebSocket | **$49/mo** |
-| **Per-stock opening cross print + ts** | No | Massive/Polygon `/v1/open-close` + grouped-daily (free Basic key) · Alpaca `/v2/stocks/auctions` fallback | **Free** (2yr hist, all tickers/1 call) |
-| **Constituent quote midpoints (pre-open NBBO)** | No | Alpaca free IEX quotes / reconstruct from ITCH | Free (IEX) · $99/mo full SIP |
+| **Nasdaq NOII — historical** | Partial | Free ITCH samples (limited dates); **not in WRDS TAQ** → Databento / self-record for arbitrary dates | Free (limited) |
+| **Nasdaq NOII — live** | No | IBKR tick 225 (both venues, EU-reachable) / Webull | ~$17–40/mo · or free |
+| **NYSE opening imbalance — historical** | **Yes — WRDS** | **WRDS NYSE Daily TAQ · Order-Imbalance file** (arbitrary dates, ~2003+, ms) | **Free** |
+| **NYSE opening imbalance — live** | No | IBKR tick 225 / Massive NOI WebSocket | ~$40/mo · or $49/mo |
+| **Per-stock opening cross print + ts** | **Yes — WRDS (hist)** | **WRDS TAQ trades** (price + ms ts + venue); IBKR/Alpaca live | **Free** |
+| **Constituent quote midpoints (pre-open NBBO)** | **Yes — WRDS (hist)** | **WRDS TAQ NBBO** (ms consolidated); IBKR L1 / free IEX live | **Free** |
 
 ## Cost to operate
 
