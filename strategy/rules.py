@@ -42,11 +42,18 @@ def _enter_taker(day, em, side, minute, stake, prm=None):
             return None
         p_true = p_sig if side == "up" else 1 - p_sig
         best = optimal_stake(p_true, _tok(p, side), em, day["date"],
-                             hi=prm.get("max_stake", 500))
+                             hi=min(prm.get("max_stake", 500),
+                                    prm.get("_avail", 500)))
         if best is None:
             return None
         stake = best["stake"]
+    if prm is not None and "_avail" in prm:       # no leverage
+        stake = min(stake, prm["_avail"])
+        if stake < 1.0:
+            return None
     fill = em.buy_taker(day["date"], _tok(p, side), stake)
+    if prm is not None and "_avail" in prm:
+        prm["_avail"] -= fill["cost"]
     return {"side": side, "entry_min": minute, "px": fill["px"],
             "stake": fill["cost"], "shares": fill["shares"]}
 
