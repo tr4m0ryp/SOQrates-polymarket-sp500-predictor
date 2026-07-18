@@ -1,4 +1,10 @@
-"""Per-day strategy records: market minute curve joined with model P(up)."""
+"""Per-day strategy records: market minute curve joined with model P(up).
+
+The curve comes from Polymarket prices-history, which returns CLOB book
+MIDPOINTS, not trades — a dense curve exists even on days with $0 traded
+volume (e.g. 2026-03-10). Each record carries the day's meta volume so the
+simulator can gate out days where fills would be fictional (sim.MIN_VOLUME)
+and cap stakes by real liquidity (sim.LIQ_FRAC)."""
 import datetime as dt
 import json
 
