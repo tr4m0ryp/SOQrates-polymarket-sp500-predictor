@@ -67,21 +67,24 @@ def _edge_side(p_model, p_mkt, thr):
 
 
 def hold(day, em, prm):
-    """Enter once at hour `hour` on |model-market| >= edge with conf >= gate;
-    hold to resolution. maker=1 posts a resting limit `maker_disc` inside."""
+    """Enter once at hour `hour` on |model-market| >= edge, requiring the
+    model's probability ON THE TRADED SIDE >= gate (an either-direction gate
+    let anti-model longshots through); hold to resolution. maker=1 posts a
+    resting limit `maker_disc` inside."""
     h = int(prm.get("hour", 7))
     minute = h * 60
     p_model, p_mkt = _sig(day, minute, prm), market_p_at(day, minute)
     if p_model is None or p_mkt is None:
         return []
-    if max(p_model, 1 - p_model) < prm.get("gate", 0.65):
-        return []
     side = _edge_side(p_model, p_mkt, prm.get("edge", 0.05))
     if side is None:
         return []
+    if _tok(p_model, side) < prm.get("gate", 0.65):
+        return []
     if prm.get("maker"):
         limit = _tok(p_mkt, side) - prm.get("maker_disc", 0.01)
-        fm = em.maker_fill(day["curve"], minute, limit, side)
+        fm = em.maker_fill(day["curve"], minute, limit, side,
+                           volume=day.get("volume"))
         if fm is None:
             return []
         stake = min(_base(prm), prm.get("_avail", _base(prm)))
