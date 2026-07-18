@@ -1,0 +1,598 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.2 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated as
+% required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+\datalist[entry]{nyt/global//global/global}
+  \entry{hansenlunde2005}{article}{}
+    \name{author}{2}{}{%
+      {{hash=HPR}{%
+         family={Hansen},
+         familyi={H\bibinitperiod},
+         given={Peter\bibnamedelima Reinhard},
+         giveni={P\bibinitperiod\bibinitdelim R\bibinitperiod},
+      }}%
+      {{hash=LA}{%
+         family={Lunde},
+         familyi={L\bibinitperiod},
+         given={Asger},
+         giveni={A\bibinitperiod},
+      }}%
+    }
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2005}
+    \field{labeldatesource}{}
+    \field{sortinit}{A}
+    \field{sortinithash}{A}
+    \verb{doi}
+    \verb 10.1093/jjfinec/nbi028
+    \endverb
+    \field{number}{4}
+    \field{pages}{525\bibrangedash 554}
+    \field{title}{A Realized Variance for the Whole Day Based on Intermittent
+  High-Frequency Data}
+    \field{volume}{3}
+    \field{journaltitle}{Journal of Financial Econometrics}
+    \field{year}{2005}
+  \endentry
+
+  \entry{polymarket2026orders}{online}{}
+    \name{author}{1}{}{%
+      {{hash=P}{%
+         family={{Polymarket}},
+         familyi={P\bibinitperiod},
+      }}%
+    }
+    \list{organization}{1}{%
+      {Polymarket}%
+    }
+    \field{labeltitlesource}{title}
+    \field{labeldatesource}{nodate}
+    \field{sortinit}{C}
+    \field{sortinithash}{C}
+    \field{title}{Creating Orders (Trading Documentation)}
+    \verb{url}
+    \verb https://docs.polymarket.com/trading/orders/create
+    \endverb
+    \field{urlday}{18}
+    \field{urlmonth}{07}
+    \field{urlyear}{2026}
+  \endentry
+
+  \entry{patton2011ranking}{article}{}
+    \name{author}{1}{}{%
+      {{hash=PAJ}{%
+         family={Patton},
+         familyi={P\bibinitperiod},
+         given={Andrew\bibnamedelima J.},
+         giveni={A\bibinitperiod\bibinitdelim J\bibinitperiod},
+      }}%
+    }
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2011}
+    \field{labeldatesource}{}
+    \field{sortinit}{D}
+    \field{sortinithash}{D}
+    \verb{doi}
+    \verb 10.1016/j.jeconom.2010.12.010
+    \endverb
+    \field{number}{2}
+    \field{pages}{284\bibrangedash 303}
+    \field{title}{Data-based ranking of realised volatility estimators}
+    \field{volume}{161}
+    \field{journaltitle}{Journal of Econometrics}
+    \field{year}{2011}
+  \endentry
+
+  \entry{cme2026soq}{online}{}
+    \name{author}{1}{}{%
+      {{hash=C}{%
+         family={{CME Group}},
+         familyi={C\bibinitperiod},
+      }}%
+    }
+    \list{organization}{1}{%
+      {CME Group}%
+    }
+    \field{labeltitlesource}{title}
+    \field{labeldatesource}{nodate}
+    \field{sortinit}{E}
+    \field{sortinithash}{E}
+    \field{title}{Equity Index Settlement Procedures: Special Opening
+  Quotation}
+    \verb{url}
+    \verb https://www.cmegroup.com/trading/equity-index/settlement.html
+    \endverb
+    \field{urlday}{18}
+    \field{urlmonth}{07}
+    \field{urlyear}{2026}
+  \endentry
+
+  \entry{fred2026releasedates}{online}{}
+    \name{author}{1}{}{%
+      {{hash=F}{%
+         family={{Federal Reserve Bank of St. Louis}},
+         familyi={F\bibinitperiod},
+      }}%
+    }
+    \list{organization}{1}{%
+      {Federal Reserve Bank of St. Louis}%
+    }
+    \field{labeltitlesource}{title}
+    \field{labeldatesource}{nodate}
+    \field{sortinit}{F}
+    \field{sortinithash}{F}
+    \field{title}{FRED API: fred/release/dates}
+    \verb{url}
+    \verb https://fred.stlouisfed.org/docs/api/fred/release_dates.html
+    \endverb
+    \field{urlday}{18}
+    \field{urlmonth}{07}
+    \field{urlyear}{2026}
+  \endentry
+
+  \entry{polymarket2026gamma}{online}{}
+    \name{author}{1}{}{%
+      {{hash=P}{%
+         family={{Polymarket}},
+         familyi={P\bibinitperiod},
+      }}%
+    }
+    \list{organization}{1}{%
+      {Polymarket}%
+    }
+    \field{labeltitlesource}{title}
+    \field{labeldatesource}{nodate}
+    \field{sortinit}{G}
+    \field{sortinithash}{G}
+    \field{title}{Gamma Markets API: Overview (Developer Documentation)}
+    \verb{url}
+    \verb https://docs.polymarket.com/developers/gamma-markets-api/overview
+    \endverb
+    \field{urlday}{18}
+    \field{urlmonth}{07}
+    \field{urlyear}{2026}
+  \endentry
+
+  \entry{gdelt2017doc}{online}{}
+    \name{author}{1}{}{%
+      {{hash=T}{%
+         family={{The GDELT Project}},
+         familyi={T\bibinitperiod},
+      }}%
+    }
+    \list{organization}{1}{%
+      {The GDELT Project}%
+    }
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2017}
+    \field{labeldatesource}{}
+    \field{sortinit}{G}
+    \field{sortinithash}{G}
+    \field{title}{GDELT DOC 2.0 API Debuts}
+    \verb{url}
+    \verb https://blog.gdeltproject.org/gdelt-doc-2-0-api-debuts/
+    \endverb
+    \field{year}{2017}
+    \field{urlday}{18}
+    \field{urlmonth}{07}
+    \field{urlyear}{2026}
+  \endentry
+
+  \entry{stooq2026spx}{online}{}
+    \name{author}{1}{}{%
+      {{hash=S}{%
+         family={{Stooq}},
+         familyi={S\bibinitperiod},
+      }}%
+    }
+    \list{organization}{1}{%
+      {Stooq}%
+    }
+    \field{labeltitlesource}{title}
+    \field{labeldatesource}{nodate}
+    \field{sortinit}{H}
+    \field{sortinithash}{H}
+    \field{title}{Historical Daily Data for \^{}SPX}
+    \verb{url}
+    \verb https://stooq.com/q/d/l/?s=%5Espx&i=d
+    \endverb
+    \field{urlday}{18}
+    \field{urlmonth}{07}
+    \field{urlyear}{2026}
+  \endentry
+
+  \entry{spdji2026indexmath}{online}{}
+    \name{author}{1}{}{%
+      {{hash=S}{%
+         family={{S\&P Dow Jones Indices}},
+         familyi={S\bibinitperiod},
+      }}%
+    }
+    \list{organization}{1}{%
+      {S\&P Global}%
+    }
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2026}
+    \field{labeldatesource}{}
+    \field{sortinit}{I}
+    \field{sortinithash}{I}
+    \field{title}{Index Mathematics Methodology}
+    \verb{url}
+    \verb https://www.spglobal.com/spdji/en/documents/methodologies/methodology
+    \verb -index-math.pdf
+    \endverb
+    \field{year}{2026}
+    \field{urlday}{18}
+    \field{urlmonth}{07}
+    \field{urlyear}{2026}
+  \endentry
+
+  \entry{nasdaqtrader2026listed}{online}{}
+    \name{author}{1}{}{%
+      {{hash=N}{%
+         family={{Nasdaq Trader}},
+         familyi={N\bibinitperiod},
+      }}%
+    }
+    \list{organization}{1}{%
+      {Nasdaq}%
+    }
+    \field{labeltitlesource}{title}
+    \field{labeldatesource}{nodate}
+    \field{sortinit}{N}
+    \field{sortinithash}{N}
+    \field{title}{Nasdaq-Listed Securities Directory (nasdaqlisted.txt)}
+    \verb{url}
+    \verb https://www.nasdaqtrader.com/dynamic/SymDir/nasdaqlisted.txt
+    \endverb
+    \field{urlday}{18}
+    \field{urlmonth}{07}
+    \field{urlyear}{2026}
+  \endentry
+
+  \entry{nasdaq2026totalview}{online}{}
+    \name{author}{1}{}{%
+      {{hash=N}{%
+         family={{Nasdaq}},
+         familyi={N\bibinitperiod},
+      }}%
+    }
+    \list{organization}{1}{%
+      {Nasdaq}%
+    }
+    \field{labeltitlesource}{title}
+    \field{labeldatesource}{nodate}
+    \field{sortinit}{N}
+    \field{sortinithash}{N}
+    \field{title}{Nasdaq TotalView and the Net Order Imbalance Indicator}
+    \verb{url}
+    \verb https://www.nasdaq.com/solutions/data/equities/nasdaq-totalview
+    \endverb
+    \field{urlday}{18}
+    \field{urlmonth}{07}
+    \field{urlyear}{2026}
+  \endentry
+
+  \entry{wrds2026taq}{online}{}
+    \name{author}{1}{}{%
+      {{hash=W}{%
+         family={{Wharton Research Data Services}},
+         familyi={W\bibinitperiod},
+      }}%
+    }
+    \list{organization}{1}{%
+      {Wharton Research Data Services}%
+    }
+    \field{labeltitlesource}{title}
+    \field{labeldatesource}{nodate}
+    \field{sortinit}{N}
+    \field{sortinithash}{N}
+    \field{title}{NYSE Trade and Quote (TAQ)}
+    \verb{url}
+    \verb https://wrds-www.wharton.upenn.edu/pages/about/data-vendors/nyse-trad
+    \verb e-and-quote-taq/
+    \endverb
+    \field{urlday}{18}
+    \field{urlmonth}{07}
+    \field{urlyear}{2026}
+  \endentry
+
+  \entry{ahoniemi2016overnight}{article}{}
+    \name{author}{3}{}{%
+      {{hash=AK}{%
+         family={Ahoniemi},
+         familyi={A\bibinitperiod},
+         given={Katja},
+         giveni={K\bibinitperiod},
+      }}%
+      {{hash=FAM}{%
+         family={Fuertes},
+         familyi={F\bibinitperiod},
+         given={Ana-Maria},
+         giveni={A\bibinithyphendelim M\bibinitperiod},
+      }}%
+      {{hash=OJ}{%
+         family={Olmo},
+         familyi={O\bibinitperiod},
+         given={Jose},
+         giveni={J\bibinitperiod},
+      }}%
+    }
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2016}
+    \field{labeldatesource}{}
+    \field{sortinit}{O}
+    \field{sortinithash}{O}
+    \verb{doi}
+    \verb 10.1093/jjfinec/nbu032
+    \endverb
+    \field{number}{3}
+    \field{pages}{525\bibrangedash 551}
+    \field{title}{Overnight News and Daily Equity Trading Risk Limits}
+    \field{volume}{14}
+    \field{journaltitle}{Journal of Financial Econometrics}
+    \field{year}{2016}
+  \endentry
+
+  \entry{ahoniemilanne2013}{article}{}
+    \name{author}{2}{}{%
+      {{hash=AK}{%
+         family={Ahoniemi},
+         familyi={A\bibinitperiod},
+         given={Katja},
+         giveni={K\bibinitperiod},
+      }}%
+      {{hash=LM}{%
+         family={Lanne},
+         familyi={L\bibinitperiod},
+         given={Markku},
+         giveni={M\bibinitperiod},
+      }}%
+    }
+    \field{labeltitlesource}{title}
+    \field{labelyear}{2013}
+    \field{labeldatesource}{}
+    \field{sortinit}{O}
+    \field{sortinithash}{O}
+    \verb{doi}
+    \verb 10.1016/j.ijforecast.2013.03.006
+    \endverb
+    \field{number}{4}
+    \field{pages}{592\bibrangedash 604}
+    \field{title}{Overnight stock returns and realized volatility}
+    \field{volume}{29}
+    \field{journaltitle}{International Journal of Forecasting}
+    \field{year}{2013}
+  \endentry
+
+  \entry{polymarket2026clob}{online}{}
+    \name{author}{1}{}{%
+      {{hash=P}{%
+         family={{Polymarket}},
+         familyi={P\bibinitperiod},
+      }}%
+    }
+    \list{organization}{1}{%
+      {Polymarket}%
+    }
+    \field{labeltitlesource}{title}
+    \field{labeldatesource}{nodate}
+    \field{sortinit}{P}
+    \field{sortinithash}{P}
+    \field{title}{Polymarket CLOB: Introduction (Developer Documentation)}
+    \verb{url}
+    \verb https://docs.polymarket.com/developers/CLOB/introduction
+    \endverb
+    \field{urlday}{18}
+    \field{urlmonth}{07}
+    \field{urlyear}{2026}
+  \endentry
+
+  \entry{slickcharts2026sp500}{online}{}
+    \name{author}{1}{}{%
+      {{hash=S}{%
+         family={{Slickcharts}},
+         familyi={S\bibinitperiod},
+      }}%
+    }
+    \list{organization}{1}{%
+      {Slickcharts}%
+    }
+    \field{labeltitlesource}{title}
+    \field{labeldatesource}{nodate}
+    \field{sortinit}{S}
+    \field{sortinithash}{S}
+    \field{title}{S\&P 500 Companies by Weight}
+    \verb{url}
+    \verb https://www.slickcharts.com/sp500
+    \endverb
+    \field{urlday}{18}
+    \field{urlmonth}{07}
+    \field{urlyear}{2026}
+  \endentry
+
+  \entry{polymarket2026spxmarket}{online}{}
+    \name{author}{1}{}{%
+      {{hash=P}{%
+         family={{Polymarket}},
+         familyi={P\bibinitperiod},
+      }}%
+    }
+    \list{organization}{1}{%
+      {Polymarket}%
+    }
+    \field{labeltitlesource}{title}
+    \field{labeldatesource}{nodate}
+    \field{sortinit}{S}
+    \field{sortinithash}{S}
+    \field{title}{SPX Opens Up or Down on July 14, 2026 (Market Page)}
+    \verb{url}
+    \verb https://polymarket.com/event/spx-opens-up-or-down-on-july-14-2026
+    \endverb
+    \field{urlday}{18}
+    \field{urlmonth}{07}
+    \field{urlyear}{2026}
+  \endentry
+
+  \entry{stollwhaley1990}{article}{}
+    \name{author}{2}{}{%
+      {{hash=SHR}{%
+         family={Stoll},
+         familyi={S\bibinitperiod},
+         given={Hans\bibnamedelima R.},
+         giveni={H\bibinitperiod\bibinitdelim R\bibinitperiod},
+      }}%
+      {{hash=WRE}{%
+         family={Whaley},
+         familyi={W\bibinitperiod},
+         given={Robert\bibnamedelima E.},
+         giveni={R\bibinitperiod\bibinitdelim E\bibinitperiod},
+      }}%
+    }
+    \field{labeltitlesource}{title}
+    \field{labelyear}{1990}
+    \field{labeldatesource}{}
+    \field{sortinit}{S}
+    \field{sortinithash}{S}
+    \verb{doi}
+    \verb 10.1093/rfs/3.1.37
+    \endverb
+    \field{number}{1}
+    \field{pages}{37\bibrangedash 71}
+    \field{title}{Stock Market Structure and Volatility}
+    \field{volume}{3}
+    \field{journaltitle}{The Review of Financial Studies}
+    \field{year}{1990}
+  \endentry
+
+  \entry{nyse2026taqimbalances}{online}{}
+    \name{author}{1}{}{%
+      {{hash=N}{%
+         family={{NYSE}},
+         familyi={N\bibinitperiod},
+      }}%
+    }
+    \list{organization}{1}{%
+      {New York Stock Exchange}%
+    }
+    \field{labeltitlesource}{title}
+    \field{labeldatesource}{nodate}
+    \field{sortinit}{T}
+    \field{sortinithash}{T}
+    \field{title}{TAQ Order Imbalances: Historical Market Data}
+    \verb{url}
+    \verb https://www.nyse.com/market-data/historical/taq-order-imbalances
+    \endverb
+    \field{urlday}{18}
+    \field{urlmonth}{07}
+    \field{urlyear}{2026}
+  \endentry
+
+  \entry{lseg2026tickhistory}{online}{}
+    \name{author}{1}{}{%
+      {{hash=L}{%
+         family={{LSEG}},
+         familyi={L\bibinitperiod},
+      }}%
+    }
+    \list{organization}{1}{%
+      {London Stock Exchange Group}%
+    }
+    \field{labeltitlesource}{title}
+    \field{labeldatesource}{nodate}
+    \field{sortinit}{T}
+    \field{sortinithash}{T}
+    \field{title}{Tick History (DataScope Select)}
+    \verb{url}
+    \verb https://www.lseg.com/en/data-analytics/market-data/data-feeds/tick-hi
+    \verb story
+    \endverb
+    \field{urlday}{18}
+    \field{urlmonth}{07}
+    \field{urlyear}{2026}
+  \endentry
+
+  \entry{nasdaq2026itchsamples}{online}{}
+    \name{author}{1}{}{%
+      {{hash=N}{%
+         family={{Nasdaq}},
+         familyi={N\bibinitperiod},
+      }}%
+    }
+    \list{organization}{1}{%
+      {Nasdaq}%
+    }
+    \field{labeltitlesource}{title}
+    \field{labeldatesource}{nodate}
+    \field{sortinit}{T}
+    \field{sortinithash}{T}
+    \field{title}{TotalView-ITCH Sample Data Files}
+    \verb{url}
+    \verb https://emi.nasdaq.com/ITCH/
+    \endverb
+    \field{urlday}{18}
+    \field{urlmonth}{07}
+    \field{urlyear}{2026}
+  \endentry
+
+  \entry{databento2026equities}{online}{}
+    \name{author}{1}{}{%
+      {{hash=D}{%
+         family={{Databento}},
+         familyi={D\bibinitperiod},
+      }}%
+    }
+    \list{organization}{1}{%
+      {Databento}%
+    }
+    \field{labeltitlesource}{title}
+    \field{labeldatesource}{nodate}
+    \field{sortinit}{U}
+    \field{sortinithash}{U}
+    \field{title}{US Equities Market Data}
+    \verb{url}
+    \verb https://databento.com/equities
+    \endverb
+    \field{urlday}{18}
+    \field{urlmonth}{07}
+    \field{urlyear}{2026}
+  \endentry
+
+  \entry{yahoo2026chartapi}{online}{}
+    \name{author}{1}{}{%
+      {{hash=Y}{%
+         family={{Yahoo Finance}},
+         familyi={Y\bibinitperiod},
+      }}%
+    }
+    \list{organization}{1}{%
+      {Yahoo}%
+    }
+    \field{labeltitlesource}{title}
+    \field{labeldatesource}{nodate}
+    \field{sortinit}{Y}
+    \field{sortinithash}{Y}
+    \field{title}{Yahoo Finance Chart API (v8 endpoint)}
+    \verb{url}
+    \verb https://query1.finance.yahoo.com/v8/finance/chart/%5EGSPC
+    \endverb
+    \field{urlday}{18}
+    \field{urlmonth}{07}
+    \field{urlyear}{2026}
+  \endentry
+\enddatalist
+\endinput
