@@ -150,16 +150,14 @@ but it has never seen real auction data.
 
 \paragraph{Strategy backtest.}
 Of 15 verified strategy candidates, exactly one survives out of sample.
-Table~\ref{tab:strategy_graveyard} lists the graveyard: every family that
-looked strong on the train half died on the test half except the hour-4
-hold. The survivor enters at 04:00~ET when the model's edge over the crowd
-price is at least 5 cents and the traded side's probability is at least
-0.60, takes the taker fill, and holds to resolution. Staking 10\% of
-bankroll per trade it turns \$100 into \$135.92 on the test half (\$131.83
-with all execution costs doubled), 21 trades, 19W--2L, never dipping below
-the \$100 start; at flat \$50 stakes the same rule reaches \$264.30, peak
-\$292. Figure~\ref{fig:strategy_bankroll_50} shows both \$50-stake
-trajectories.
+Table~\ref{tab:strategy_graveyard} lists the graveyard. The survivor enters
+at 04:00~ET when the model's edge over the crowd price is at least 5 cents
+and the traded side's probability is at least 0.60, takes the taker fill,
+and holds to resolution. Staking 10\% of bankroll per trade it turns \$100
+into \$135.92 on the test half (\$131.83 with all execution costs doubled),
+21 trades, 19W--2L, never dipping below the \$100 start; at flat \$50 stakes
+the same rule reaches \$264.30, peak \$292.
+Figure~\ref{fig:strategy_bankroll_50} shows both \$50-stake trajectories.
 
 \begin{table}[h]
     \centering
