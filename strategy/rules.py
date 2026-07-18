@@ -208,7 +208,7 @@ def convergence(day, em, prm):
     if p_model is None or p_mkt is None:
         return []
     side = _edge_side(p_model, p_mkt, prm.get("edge", 0.05))
-    if side is None or max(p_model, 1 - p_model) < prm.get("gate", 0.60):
+    if side is None or _tok(p_model, side) < prm.get("gate", 0.60):
         return []
     target_up = crowd.forecast(day, minute, int(prm.get("exit_h", 9)), fitted)
     if target_up is None:
