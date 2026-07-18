@@ -1,1 +1,255 @@
-% results: drafted by the paper workflow
+% results: drafted by the paper workflow (style-engine protocol).
+% Claims and numbers from .harvest/context.md via the outline's results block.
+% Figures placed here: spx_open_predictor_0000_200d, spx_open_predictor_0400_200d,
+% spx_open_predictor_0000_confident, strategy_bankroll_50, stake_sweep.
+% Hero figure fig:spx_open_predictor (abstract, page 1) gets its formal
+% in-prose reference here; it is re-referenced in Discussion.
+\label{sec:results}
+
+Out-of-sample direction accuracy over the 200-day window (September 2025 to
+July 2026) is a ladder, not a number. Table~\ref{tab:accuracy_ladder} reports
+it by prediction hour: 72.5\% at midnight, 77.0\% at 04:00 (154 of 200 days),
+82\% at 06:00, 85\% at 07:00, 90\% at 09:00, and roughly 94\% at 9:29 on the
+minute-level sample ($n=18$). The ceiling with perfect 9:30 market data is
+96.3\%, fitted on 81 unseen days; the last two points are auction noise that
+no futures price contains. Figure~\ref{fig:spx_open_predictor} shows the same
+climb as per-day probability trajectories.
+Figures~\ref{fig:spx_open_predictor_0000_200d}
+and~\ref{fig:spx_open_predictor_0400_200d} fix the call at midnight and at
+04:00: 145 against 154 correct days, so four extra hours of futures data buy
+4.5 accuracy points.
+
+\begin{table}[h]
+    \centering
+    \small
+    \caption{Out-of-sample direction accuracy by prediction time, 200 trading
+    days (September 2025 -- July 2026). Every hour closer to the open buys
+    accuracy, and the 9:29 value sits about two points under the ceiling that
+    even perfect 9:30 market data would allow.}
+    \label{tab:accuracy_ladder}
+    \begin{tabular}{lll}
+        \toprule
+        Prediction time (ET) & Accuracy & Sample \\
+        \midrule
+        00:00 & 72.5\% & 200 days \\
+        04:00 & 77.0\% & 154/200 \\
+        06:00 & 82\% & 200 days \\
+        07:00 & 85\% & 200 days \\
+        09:00 & 90\% & 200 days \\
+        9:29 & $\sim$94\% & $n=18$, minute-level \\
+        \midrule
+        Ceiling (perfect 9:30 data) & 96.3\% & 81 unseen days \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.92\linewidth]{figures/spx_open_predictor_0000_200d.png}
+    \caption{Midnight (00:00 ET) direction calls over 200 trading days
+    (2025-09-09 to 2026-07-13). Each line is one day's model
+    $P(\text{official open} = \text{UP})$ trajectory; the dashed vertical line
+    marks 00:00, where the call is fixed, and dots at the right edge show the
+    official outcome. Grey lines are correct calls (145), red wrong (55):
+    72.5\% midnight accuracy. Many red trajectories start near 0.5,
+    previewing the coin-toss filter.}
+    \label{fig:spx_open_predictor_0000_200d}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.92\linewidth]{figures/spx_open_predictor_0400_200d.png}
+    \caption{04:00 ET direction calls over the same 200 trading days. Same
+    construction as Figure~\ref{fig:spx_open_predictor_0000_200d}, with the
+    call fixed at the dashed 04:00 line: 154 correct (grey) against 46 wrong
+    (red), 77.0\% accuracy versus 72.5\% at midnight.}
+    \label{fig:spx_open_predictor_0400_200d}
+\end{figure}
+
+Not betting is part of the model. Dropping the days whose midnight confidence
+sits below 65\% removes 88 of 200 days (44\%) and lifts midnight accuracy
+from 72.5\% to 82.1\% (92 of 112), as
+Figure~\ref{fig:spx_open_predictor_0000_confident} shows. The filter is not a
+reporting trick. It is the trading rule: below 65\% the system stands down.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.92\linewidth]{figures/spx_open_predictor_0000_confident.png}
+    \caption{Midnight calls with coin-toss days removed. Days with midnight
+    confidence below 65\% are excluded: 88 of 200. On the remaining 112
+    confident days, 92 calls are correct (grey) and 20 wrong (red), lifting
+    midnight accuracy from 72.5\% to 82.1\%. Axes as in
+    Figure~\ref{fig:spx_open_predictor_0000_200d}. The exclusion filter is
+    itself the trading rule: no bet on coin-toss days.}
+    \label{fig:spx_open_predictor_0000_confident}
+\end{figure}
+
+\paragraph{Calibration.}
+Table~\ref{tab:calibration} compares model versions on the test half
+($n=100$ days). The gains are calibration, not direction: the intermediate
+v1.1 left direction accuracy unchanged while trimming the midnight Brier
+score (mean squared probability error) from 0.1785 to 0.1751. v1.2 cuts
+overconfident misses (wrong at $\geq$80\% confidence) from 6/6/3 at hours
+0/4/9 to 3/3/0 and lifts committed midnight accuracy --- accuracy on days at
+or above the 65\% gate --- from 80.9\% to 81.5\%. Its coin-flip share rises
+from 32\% to 35\% at midnight; that is honest reclassification of days the
+model should not trade, not a defect. The pairing matters: tercile-$k$
+without the widened regime sigma is worse than baseline, at 7 overconfident
+misses. v1.3 sharpens the early hours (midnight Brier 0.1660, coin-flips down
+to 28\%) but is slightly worse late, so production runs v1.3 before 5:00 and
+v1.2 after. The fitted release-morning sigma multiplier of 1.29 (11 train NFP
+mornings) is small but right-signed: NFP-subset midnight Brier 0.1993 to
+0.1971 ($n=9$ test). Quirk days stay beyond futures data: v1.2 keeps 4 of 12
+safe --- right or no-bet at 9:00 --- the same as baseline, but softens the
+wrong-side confidence (Mar 10 from 84\% to 66\%, Apr 9 from 84\% to 70\%),
+and at 9:00 no wrong call at 80\% confidence or above remains. Extending the
+fit window to 465 days degrades late-hour calibration because the train half
+then swallows the tariff-chaos regime; the 200-day numbers remain the
+validated reference.
+
+\begin{table}[h]
+    \centering
+    \small
+    \caption{Test-half calibration by model version ($n=100$ days). v1.2
+    halves the overconfident misses at every hour without changing direction
+    accuracy; v1.3 sharpens the early hours and hands off to v1.2 from 5:00.
+    Dashes mark values not recorded for that run.}
+    \label{tab:calibration}
+    \begin{tabular}{llllll}
+        \toprule
+        Version & Hour (ET) & Brier & Committed acc. & Overconf.\ misses & Coin-flip share \\
+        \midrule
+        baseline & 00:00 & 0.1785 & 80.9\% & 6 & 32\% \\
+        v1.2     & 00:00 & 0.1741 & 81.5\% & 3 & 35\% \\
+        v1.3     & 00:00 & 0.1660 & 81.9\% & 5 & 28\% \\
+        \midrule
+        baseline & 04:00 & --     & --     & 6 & -- \\
+        v1.2     & 04:00 & --     & --     & 3 & -- \\
+        v1.3     & 04:00 & 0.1581 & 84.2\% & -- & 24\% \\
+        \midrule
+        baseline & 09:00 & --     & --     & 3 & 10\% \\
+        v1.2     & 09:00 & --     & --     & 0 & 14\% \\
+        v1.3     & 09:00 & 0.0708 & 94.2\% & 0 & 14\% \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\paragraph{Auction-feed sharpness.}
+The auction feeds were measured on the free sample days available. On the one
+full ITCH day (December 30, 2019; 3{,}086 Nasdaq symbols), the NOII ---
+Nasdaq's published indicative opening price --- deviates from the official
+open by a mean 10.4 basis points at 9:29 and 8.3 at 9:29:50; weighted by the
+top-100 notional names, 4.7 and 3.2. At index level that is a replica error
+near 1.7 points at 9:29 and 0.75 at 9:29:50, against the futures floor of
+roughly 6 points: 3--8$\times$ sharper in the final minute. The NYSE side is
+far noisier. On the free TAQ sample day (April 1, 2026; 21 NYSE mega-caps)
+the median indicative deviation falls from 100 basis points at 9:00 to 43 at
+9:29 and 29 at 9:29:50, with fat tails --- 6--10$\times$ noisier than Nasdaq
+NOII, which validates carrying NYSE names at prior close in the replica. The
+replica machinery passes its self-tests (Monte Carlo matches the analytic
+case; a synthetic quirk correctly reports JPM swinging $P(\text{up})$ by
+$-0.16$), but it has never seen real auction data.
+
+\paragraph{Strategy backtest.}
+Of 15 verified strategy candidates, exactly one survives out of sample.
+Table~\ref{tab:strategy_graveyard} lists the graveyard: every family that
+looked strong on the train half died on the test half except the hour-4
+hold. The survivor enters at 04:00~ET when the model's edge over the crowd
+price is at least 5 cents and the traded side's probability is at least
+0.60, takes the taker fill, and holds to resolution. Staking 10\% of
+bankroll per trade it turns \$100 into \$135.92 on the test half (\$131.83
+with all execution costs doubled), 21 trades, 19W--2L, never dipping below
+the \$100 start; at flat \$50 stakes the same rule reaches \$264.30, peak
+\$292. Figure~\ref{fig:strategy_bankroll_50} shows both \$50-stake
+trajectories.
+
+\begin{table}[h]
+    \centering
+    \small
+    \caption{Strategy families, trained on the first 57 market days and
+    walked forward on the 58 test days from a \$100 start. One family
+    survives; the rest die in ways the train half did not predict. The
+    survivor's \$136 is the 10\%-of-bankroll figure (\$135.92); flat-stake
+    and compounding variants are given in the text.}
+    \label{tab:strategy_graveyard}
+    \begin{tabular}{llll}
+        \toprule
+        Family & Train & Test & Verdict \\
+        \midrule
+        Ride the crowd flip late (flow\_flip) & profitable & \$36 & dead \\
+        Cheap-side longshots & \$129 & \$5--7 & dead (near ruin) \\
+        Sell into convergence & \$200 & \$96 & dead \\
+        Fixed entry hour $\geq 5$ & strong & negative & dead (fee era) \\
+        Maker-limit entries & strong & unverifiable & dead (midpoint fictions) \\
+        Fixed entry hour 4, hold & \$155 & \$136 & sole survivor \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.92\linewidth]{figures/strategy_bankroll_50.png}
+    \caption{Bankroll trajectories for the hour-4 hold rule at \$50 daily
+    stakes on the test half (2026-04-16 to 2026-07-14), execution modeled
+    with a 1-cent half-spread and the calibrated impact model. Raw \$50/day
+    (blue) grows \$100 to \$264.30, peak \$292; the guarded variant staking
+    $\min(\$50, 20\%\ \text{of bankroll})$ (green) reaches \$176. Dots mark
+    the two losing days: Jul 2 (news reversal) and Jul 10 (late futures
+    flip).}
+    \label{fig:strategy_bankroll_50}
+\end{figure}
+
+The first-signal upgrade enters at the first hour in 4--9 where the model
+leaves the coin-flip zone with an edge of at least 5 cents and a traded-side
+probability of at least 0.70. At flat \$50 stakes it runs \$100 to \$321.53
+on the test half (\$300.31 with costs doubled), 28 trades, 26W--2L; its 8
+late-clarifier entries went 8 for 8. Under the compounding rule
+$\min(\text{half balance}, \$400, 1\%\ \text{of day volume})$, skipping days
+under \$1k volume, the same 28 trades run \$100 to \$850.69 (\$669.44
+stressed), peak \$1{,}307.76, maximum drawdown \$477.38; capping stakes at
+\$1{,}000 instead reaches only \$901.02, because the market's own 1\%
+ceiling binds first. The 0.70 gate is load-bearing: at 0.60 the late slice
+goes to ruin on train, and late entries at 86--95 cents need roughly a 90\%
+win rate just to break even. Entries above 95 cents are rejected outright;
+tightening that cap to 90 cents overshoots and deletes \$27 of profitable
+low-90s days.
+
+Sizing carries its own risk. A losses-first reordering of the flat-\$50 test
+trades busts on day two ($-\$0.38$); the guarded variant
+$\min(\$50, 20\%\ \text{of bankroll})$ survives it, ending at \$176 with a
+\$64 floor. The half-balance rule replayed on the train half, which holds
+five losses including the quirk days Jan 29 and Feb 24, ends at \$211.99 but
+touches \$96.53 on the way; losses-first on the test half survives but
+touches \$24. Figure~\ref{fig:stake_sweep} sweeps flat stakes to \$2{,}000:
+ROI per dollar is flat at 15.5--16\% from \$25 to \$300, the simulation
+leaves its validated calibration region above roughly \$400, and doubling
+the intended stake from \$1{,}000 to \$2{,}000 adds only about 27\% more
+profit (\$3{,}889 to \$4{,}958).
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.92\linewidth]{figures/stake_sweep.png}
+    \caption{Stake economics for the first-signal rule (0.70 gate): flat
+    stakes swept from \$25 to \$2{,}000 under the calibrated execution
+    model, bankroll unbound. Left: total PnL decelerates with stake. Middle:
+    ROI per dollar staked is flat near 15.5\% from \$25 to \$300. Right: the
+    effective stake bends away from the 1:1 line and asymptotes toward
+    roughly \$1{,}000, the 1\%-of-day-volume liquidity ceiling. The shaded
+    region above about \$400 marks extrapolation beyond the validated
+    \$100--500 calibration range.}
+    \label{fig:stake_sweep}
+\end{figure}
+
+The rest of the edge sits in small, verified additions. Position monitors at
+08:35 and 9:00 (sell if the traded side's fused probability drops below 0.5,
+flip if the other side fully qualifies) added \$43 on train and edge the
+champion on test: \$323.67 against \$321.53. A 9:28--9:29 live-futures leg
+called the official open 13 of 13 on the only 13 days with minute-level
+history and made $+\$107.35$ on three \$50 entries; it cannot be backtested
+further and runs paper-first, and the true auction quirks (Jun 1, Jun 22)
+stay invisible to it. The strategy is also mostly not trading: it sat out 37
+of 58 test days --- 30 of them never reach 70\% confidence with a 5-cent
+edge at any hour --- and trading those days anyway at a 0.60 gate went to
+ruin. Most entries are 72--95-cent favorites paying \$4--25 per win; the
+signature trade is Jul 14, UP at 49 cents, $+\$50.92$ on a \$50 stake, which
+alone paid for both losses.
