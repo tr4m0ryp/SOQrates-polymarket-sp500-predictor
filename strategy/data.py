@@ -64,12 +64,13 @@ def build(rebuild: bool = False) -> list[dict]:
         curve = _minute_curve(date, rec["history"])
         if len(curve) < 60:
             continue
-        model_p, model_mu, model_sig = {}, {}, {}
+        model_p, model_p_news, model_mu, model_sig = {}, {}, {}, {}
         for h in range(10):
             if h not in row["es"]:
                 continue
             mu, sig, p = model.predict(row, h)
             model_p[h], model_mu[h], model_sig[h] = round(p, 4), mu, sig
+            model_p_news[h] = round(_news_p(row, h, mu, sig), 4)
         if not model_p:
             continue
         days.append({
@@ -78,8 +79,10 @@ def build(rebuild: bool = False) -> list[dict]:
             "official_gap": row["off"],
             "volume": rec["meta"]["volume"],
             "release_morning": row["release_morning"],
+            "es": row["es"],
             "curve": curve,
             "model_p": model_p,
+            "model_p_news": model_p_news,
             "model_mu": model_mu,
             "model_sigma": model_sig,
         })
