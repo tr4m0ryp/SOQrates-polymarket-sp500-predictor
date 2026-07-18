@@ -1,1 +1,41 @@
-% conclusion: drafted by the paper workflow
+% conclusion: drafted by the paper workflow (style-engine protocol).
+% Claims restated from .harvest/context.md per the outline's conclusion block
+% (11, 19, 21, 70 per C1, 77, 86, 87, 62+100). No new numbers, no figures.
+% Every bankroll number is paired with its sizing rule (C1/C2).
+\label{sec:conclusion}
+
+We measured one assumption the Polymarket crowd makes every night: that the
+official S\&P~500 open realizes the full overnight futures gap ---
+$k = 1$, $\sigma = 0$ \parencite{polymarket2026spxmarket}. It does not, and
+it keeps not doing so. Only about 80\% of the gap survives into the first
+tick, fitted $k \approx 0.77$--$0.80$ with $a_0 = 0.0092\%$, and a frozen
+linear model built on nothing but that mismeasurement climbs from 72.5\%
+direction accuracy at midnight to roughly 94\% at 9:29 over 200
+out-of-sample days.
+
+The edge is real, and it is small. After fees, spread, and impact, the
+hour-4 hold turned \$100 into \$135.92 on the test half at a tenth of the
+bankroll per trade, and the first-signal rule reached \$850.69 at 26W--2L
+under the compounding stake $\min(\tfrac{1}{2}\,\text{balance},\ \$400,\
+1\%\ \text{of day volume})$. That last term is the ceiling. The
+1\%-of-volume clamp holds effective stakes near \$1{,}000 per day, so the
+strategy cannot outgrow the market it trades, and capital beyond that point
+buys almost nothing.
+
+Nothing here is unconditional. The evidence spans one regime and 58 test
+days, taker fees arrived mid-sample, volume is falling, and the crowd can
+learn. Therefore monthly re-validation is part of the method, not
+maintenance around it. What runs in production is one rule: brief at 00:05,
+enter as taker at the first hour in 4--9 where the edge reaches 5 cents at
+probability 0.70 or higher and price at most 95 cents, stake by the
+min-rule and skip thin days, monitor at 08:35 and 9:00, re-check live
+futures at 9:28, refit monthly.
+
+The next step is not more accuracy from the same inputs. Futures data is at
+its floor. The identified step is the auction replica on real NOII and
+imbalance data --- metered Nasdaq NOII history plus the free academic NYSE
+TAQ feed, validation at zero cost and roughly \$17--40 per month live ---
+which, at the measured sample-day sharpness, would move quirk days from 2
+of 12 strictly called on futures alone to a majority called. The machinery
+is built and validated on synthetic days. Feeding it real ones is the work
+that remains.
