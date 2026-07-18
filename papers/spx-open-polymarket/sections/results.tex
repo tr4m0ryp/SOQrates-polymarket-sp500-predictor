@@ -206,12 +206,12 @@ stressed), peak \$1{,}307.76, maximum drawdown \$477.38; capping stakes at
 \$1{,}000 instead reaches only \$901.02, because the market's own 1\%
 ceiling binds first. The 0.70 gate is load-bearing: at 0.60 the late slice
 goes to ruin on train, and late entries at 86--95 cents need roughly a 90\%
-win rate just to break even. Entries above 95 cents are rejected outright;
-tightening that cap to 90 cents overshoots and deletes \$27 of profitable
-low-90s days.
+win rate just to break even. Entries above 95 cents are rejected outright,
+while tightening that cap to 90 cents overshoots and deletes \$27 of
+profitable low-90s days.
 
 Sizing carries its own risk. A losses-first reordering of the flat-\$50 test
-trades busts on day two ($-\$0.38$); the guarded variant
+trades busts on day two ($-\$0.38$), while the guarded variant
 $\min(\$50, 20\%\ \text{of bankroll})$ survives it, ending at \$176 with a
 \$64 floor. The half-balance rule replayed on the train half, which holds
 five losses including the quirk days Jan 29 and Feb 24, ends at \$211.99 but
@@ -220,7 +220,7 @@ touches \$24. Figure~\ref{fig:stake_sweep} sweeps flat stakes to \$2{,}000:
 ROI per dollar is flat at 15.5--16\% from \$25 to \$300, the simulation
 leaves its validated calibration region above roughly \$400, and doubling
 the intended stake from \$1{,}000 to \$2{,}000 adds only about 27\% more
-profit (\$3{,}889 to \$4{,}958).
+profit.
 
 \begin{figure}[h]
     \centering
