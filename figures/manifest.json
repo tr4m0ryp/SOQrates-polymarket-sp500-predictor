@@ -2,7 +2,7 @@
   {
     "id": "spx_open_predictor",
     "file": "plots/spx_open_predictor.png",
-    "status": "made",
+    "status": "placed",
     "caption_draft": "Model P(official open = UP) trajectories and direction accuracy by prediction time. Top: one line per day over 37 trading days (2026-05-19 to 2026-07-13), x-axis time of day (ET, 00:00 to 9:29), y-axis model P(up); green lines are days that officially opened up, red opened down, with dots at the right edge marking the official outcome. The two 9:29 misses are highlighted: 2026-07-10 (official +4.00 pts) and 2026-06-22 (official -0.14 pts). Bottom: direction accuracy (%) versus prediction time -- the hourly sample (n=134 days) rises from about 74% at midnight to 92% at 9:00, and the minute-level sample (n=18 days) reaches about 94% near 9:29, against a 96.3% ceiling attainable with perfect 9:30 market data (residual auction noise) and the 50% coin-flip floor.",
     "producing_script": null,
     "data_source": "Yahoo v8 chart API (ES=F hourly/minute, ^GSPC daily opens) + backtest dataset; analysis JSONs were session-scratchpad (ephemeral)",
