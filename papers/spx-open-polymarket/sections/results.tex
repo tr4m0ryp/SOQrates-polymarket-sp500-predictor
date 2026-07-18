@@ -45,6 +45,21 @@ and~\ref{fig:spx_open_predictor_0400_200d} fix the call at midnight and at
 
 \begin{figure}[h]
     \centering
+    \includegraphics[width=0.95\linewidth]{figures/spx_open_predictor.png}
+    \caption{Model $P(\text{official open} = \text{UP})$ trajectories and
+    direction accuracy by prediction time. Top: one line per day over 37
+    trading days (2026-05-19 to 2026-07-13), green for days that officially
+    opened up, red for down, with the two 9:29 misses highlighted: 2026-07-10
+    (official $+4.00$ pts) and 2026-06-22 (official $-0.14$ pts). Bottom:
+    direction accuracy rises from about 74\% at midnight (hourly sample,
+    $n=134$ days) to 92\% at 9:00 and about 94\% near 9:29 (minute-level
+    sample, $n=18$ days), against the 96.3\% ceiling attainable with perfect
+    9:30 market data and the 50\% coin-flip floor.}
+    \label{fig:spx_open_predictor}
+\end{figure}
+
+\begin{figure}[h]
+    \centering
     \includegraphics[width=0.92\linewidth]{figures/spx_open_predictor_0000_200d.png}
     \caption{Midnight (00:00 ET) direction calls over 200 trading days
     (2025-09-09 to 2026-07-13). Each line is one day's model
