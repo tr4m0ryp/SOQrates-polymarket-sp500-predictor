@@ -26,6 +26,25 @@ def _minute_curve(day: str, points: list[dict]) -> list[list]:
     return sorted([m, p] for m, p in dedup.items())
 
 
+def _news_p(row: dict, h: int, mu: float, sig: float) -> float:
+    """Deterministic Group-B overlay: post-shock sigma widening + the fitted
+    conflicted-day direction rule, using only gaps known by hour h. The LLM
+    retrieval leg is NOT simulated — this is the futures-derived subset."""
+    from math import erf, sqrt
+    from news import groupb
+    gaps = {k: v for k, v in row["es"].items() if k <= h}
+    sh, delta = groupb.last_shock(gaps)
+    recent = sh is not None and h - sh <= groupb.RECENT_HOURS
+    direction = (1.0 if delta > 0 else -1.0) if recent else 0.0
+    mu_b, sig_b, s_mult = groupb.voice(direction, 0.6, gaps[h], sig, recent)
+    sig_eff = sig * s_mult
+    w = 1 / sig_eff ** 2
+    wb = 0.0 if sig_b == float("inf") else 1 / sig_b ** 2
+    mu_f = (mu * w + mu_b * wb) / (w + wb)
+    sig_f = (1 / (w + wb)) ** 0.5
+    return 0.5 * (1 + erf(mu_f / sig_f / sqrt(2)))
+
+
 def build(rebuild: bool = False) -> list[dict]:
     if not rebuild and _CACHE_FILE.exists():
         return json.loads(_CACHE_FILE.read_text())
