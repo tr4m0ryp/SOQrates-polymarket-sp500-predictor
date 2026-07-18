@@ -76,13 +76,9 @@ def split(days: list[dict]) -> tuple[list[dict], list[dict]]:
 
 def model_p_at(day: dict, minute: int) -> float | None:
     """Model P(up) in force at a given minute (hourly refresh, hold last)."""
-    best = None
-    for h, p in day["model_p"].items():
-        if int(h) * 60 <= minute:
-            best = p if best is None or int(h) > best[0] else best
-            if best is None or int(h) >= best[0]:
-                best = (int(h), p)
-    return best[1] if best else None
+    hours = sorted((int(h), p) for h, p in day["model_p"].items())
+    live = [p for h, p in hours if h * 60 <= minute]
+    return live[-1] if live else None
 
 
 def market_p_at(day: dict, minute: int) -> float | None:
