@@ -48,9 +48,16 @@ def main():
     rs = sub.add_parser("replica-sim")
     rs.set_defaults(fn=auction.cmd_replica_sim)
 
+    dp = sub.add_parser("databento-pull")
+    dp.add_argument("--date", required=True, help="YYYY-MM-DD to pull + cache")
+    dp.set_defaults(fn=auction.cmd_databento_pull)
+
     s3 = sub.add_parser("stage3")
     s3.add_argument("--date", required=True,
-                    help="YYYY-MM-DD (needs lseg-pull first)")
+                    help="YYYY-MM-DD (needs databento-pull or lseg-pull first)")
+    s3.add_argument("--source", choices=["lseg", "databento"], default=None,
+                    help="auction source (default: databento if "
+                         "DATABENTO_API_KEY set, else lseg)")
     s3.set_defaults(fn=auction.cmd_stage3)
 
     for name, fn in (("predict", market.cmd_predict),
