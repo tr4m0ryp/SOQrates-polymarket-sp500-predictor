@@ -1,0 +1,51 @@
+This is BibTeX, Version 0.99e (TeX Live 2026)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: main.aux
+The style file: plainnat.bst
+Database file #1: references.bib
+I was expecting a `{' or a `('---line 4 of file references.bib
+ : % Web sources are @misc 
+ :                         with howpublished = {\url{...}} for natbib/plainnat
+I'm skipping whatever remains of this entry
+You've used 23 entries,
+            2773 wiz_defined-function locations,
+            700 strings with 8069 characters,
+and the built_in function-call counts, 7816 in all, are:
+= -- 733
+> -- 283
+< -- 22
++ -- 111
+- -- 84
+* -- 444
+:= -- 1207
+add.period$ -- 92
+call.type$ -- 23
+change.case$ -- 97
+chr.to.int$ -- 19
+cite$ -- 46
+duplicate$ -- 371
+empty$ -- 776
+format.name$ -- 113
+if$ -- 1674
+int.to.chr$ -- 5
+int.to.str$ -- 1
+missing$ -- 5
+newline$ -- 146
+num.names$ -- 92
+pop$ -- 252
+preamble$ -- 1
+purify$ -- 74
+quote$ -- 0
+skip$ -- 285
+stack$ -- 0
+substring$ -- 165
+swap$ -- 29
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 253
+warning$ -- 0
+while$ -- 79
+width$ -- 0
+write$ -- 334
+(There was 1 error message)
