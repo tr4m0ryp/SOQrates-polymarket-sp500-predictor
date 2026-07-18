@@ -5,6 +5,26 @@ model (running today); the **bold** rows are the auction layer (Track 3), the re
 we went looking at LSEG. Sources for the auction layer were selected by the
 2026-07-17 deep-research run (104 agents, 22 sources, 20 verified claims).
 
+## Decided stack — one pick per need (2026-07-18)
+
+Most-reliable-and-cheapest single source per row. Detailed multi-option table below.
+
+**Auction — HISTORICAL (backtest):**
+- Nasdaq NOII → **Databento** (metered filtered pulls, ~$0–50; the one WRDS gap). Built, needs access.
+- NYSE imbalance → **WRDS · NYSE Daily TAQ Order-Imbalance file** (free, arbitrary dates). To wire.
+- Cross print + ts → **WRDS · TAQ trades** (free, exact ts + venue). To wire.
+- Constituent NBBO → **WRDS · TAQ NBBO** (free, ms consolidated). To wire.
+
+**Auction — LIVE (production):** all four legs → **IBKR** (tick 225 + L1, one EU-reachable
+account, both venues), **~$17–40/mo total**. Beats Webull-free+Massive-$49 on reliability *and*
+cost. To wire. (Webull OpenAPI = free Nasdaq-only alt, `webull_noii.py` already built.)
+
+**News layer:** macro dates → FRED (free key); consensus + earnings → FMP free tier; live wire
+→ Alpaca news WS (free). All to wire except FRED (running, NFP-only).
+
+**Two adapters left to build:** WRDS fetcher (historical) + IBKR live client (production).
+Databento client already built. WRDS = research-only (no live/production trading).
+
 **Legend — Sourced & runnable:** `Yes` = wired and running · `Partial` = running but
 incomplete · `No` = not yet wired (Source column names the chosen one to build).
 
