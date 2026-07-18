@@ -133,20 +133,20 @@ reference.
 \end{table}
 
 \paragraph{Auction-feed sharpness.}
-The auction feeds were measured on the free sample days available. On the one
-full ITCH day (December 30, 2019; 3{,}086 Nasdaq symbols), the NOII ---
-Nasdaq's published indicative opening price --- deviates from the official
-open by a mean 10.4 basis points at 9:29 and 8.3 at 9:29:50; weighted by the
-top-100 notional names, 4.7 and 3.2. At index level that is a replica error
-near 1.7 points at 9:29 and 0.75 at 9:29:50, against the futures floor of
-roughly 6 points: 3--8$\times$ sharper in the final minute. The NYSE side is
-far noisier. On the free TAQ sample day (April 1, 2026; 21 NYSE mega-caps)
-the median indicative deviation falls from 100 basis points at 9:00 to 43 at
-9:29 and 29 at 9:29:50, with fat tails --- 6--10$\times$ noisier than Nasdaq
-NOII, which validates carrying NYSE names at prior close in the replica. The
-replica machinery passes its self-tests (Monte Carlo matches the analytic
-case; a synthetic quirk correctly reports JPM swinging $P(\text{up})$ by
-$-0.16$), but it has never seen real auction data.
+The auction feeds were measured on free sample days. On the one full ITCH
+day (December 30, 2019; 3{,}086 Nasdaq symbols), the NOII --- Nasdaq's
+published indicative opening price --- deviates from the official open by a
+mean 10.4 basis points at 9:29 and 8.3 at 9:29:50, and by 4.7 and 3.2 when
+weighted by the top-100 notional names. At index level that is a replica
+error near 1.7 points at 9:29 and 0.75 at 9:29:50, against a futures floor
+of roughly 6 points: 3--8$\times$ sharper in the final minute. The NYSE side
+is far noisier: on the TAQ sample day (April 1, 2026; 21 NYSE mega-caps) the
+median indicative deviation falls from 100 basis points at 9:00 to 43 at
+9:29 and 29 at 9:29:50 --- 6--10$\times$ noisier than Nasdaq NOII, which
+validates carrying NYSE names at prior close in the replica. The replica
+machinery passes its self-tests (Monte Carlo matches the analytic case; a
+synthetic quirk correctly reports JPM swinging $P(\text{up})$ by $-0.16$),
+but it has never seen real auction data.
 
 \paragraph{Strategy backtest.}
 Of 15 verified strategy candidates, exactly one survives out of sample.
