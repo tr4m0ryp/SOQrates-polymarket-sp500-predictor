@@ -100,7 +100,28 @@ about 1\% flip risk; a $+0.10\%$ gap at the same hour carries about 30\%.
 \subsection{Stake economics}
 \label{app:execution_stakes}
 
-Figure~\ref{fig:stake_sweep} sweeps flat stakes to \$2{,}000:
+The compounding variant stakes
+\begin{equation}
+s_t = \min\!\left(\tfrac{1}{2}\,B_t,\ \$400,\ 0.01\,V_t\right),
+\label{eq:stake}
+\end{equation}
+
+\begin{center}
+\small
+\begin{tabular}{ll}
+\toprule
+Symbol & Meaning \\
+\midrule
+$s_t$ & stake placed on day $t$ \\
+$B_t$ & bankroll entering day $t$ \\
+$V_t$ & day $t$'s traded market volume; days under \$1k are skipped \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+the min-rule of step 4 of the deployed rule; its test-half record is in
+Section~\ref{sec:results}. Figure~\ref{fig:stake_sweep} sweeps flat
+stakes to \$2{,}000:
 ROI per dollar is flat at 15.5--16\% from \$25 to \$300, the simulation
 leaves its validated calibration region above roughly \$400, and doubling
 the intended stake from \$1{,}000 to \$2{,}000 adds only about 27\% more
