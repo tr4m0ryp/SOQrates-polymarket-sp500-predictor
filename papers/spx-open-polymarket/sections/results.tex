@@ -19,8 +19,9 @@ and~\ref{fig:spx_open_predictor_0400_200d} fix the call at midnight and at
 04:00: 145 against 154 correct days, so four extra hours of futures data buy
 4.5 accuracy points.
 
-Every rate in this section carries a 95\% Wilson score interval
-\citep{wilson1927}:
+Every rate below carries a 95\% Wilson score interval \citep{wilson1927};
+it stays inside $[0,1]$ and widens honestly at small $n$, which is exactly
+where this paper's records live:
 \begin{equation}
 \mathrm{CI}_{95} = \frac{1}{1 + z^2/n}\left(\hat p + \frac{z^2}{2n}
 \;\pm\; z\sqrt{\frac{\hat p(1-\hat p)}{n} + \frac{z^2}{4n^2}}\right),
@@ -40,9 +41,6 @@ $z$ & the 97.5\% normal quantile \\
 \bottomrule
 \end{tabular}
 \end{center}
-
-The interval stays inside $[0,1]$ and widens honestly at small $n$, which
-is exactly where this paper's records live.
 
 \begin{table}[h]
     \centering
