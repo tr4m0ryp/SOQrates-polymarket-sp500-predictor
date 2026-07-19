@@ -137,6 +137,27 @@ Glenn~W. Brier.
 \newblock Verification of forecasts expressed in terms of probability.
 \newblock \emph{Monthly Weather Review}, 78\penalty0 (1):\penalty0 1--3, 1950.
 
+\bibitem[{Nasdaq}(2026{\natexlab{a}})]{nasdaq2026itchsamples}
+{Nasdaq}.
+\newblock Totalview-itch sample data files.
+\newblock \url{https://emi.nasdaq.com/ITCH/}, 2026{\natexlab{a}}.
+\newblock Accessed 2026-07-18.
+
+\bibitem[{NYSE}(2026)]{nyse2026taqimbalances}
+{NYSE}.
+\newblock Taq order imbalances: Historical market data.
+\newblock
+  \url{https://www.nyse.com/market-data/historical/taq-order-imbalances}, 2026.
+\newblock Accessed 2026-07-18.
+
+\bibitem[{Nasdaq}(2026{\natexlab{b}})]{nasdaq2026totalview}
+{Nasdaq}.
+\newblock Nasdaq totalview and the net order imbalance indicator.
+\newblock
+  \url{https://www.nasdaq.com/solutions/data/equities/nasdaq-totalview},
+  2026{\natexlab{b}}.
+\newblock Accessed 2026-07-18.
+
 \bibitem[{Wharton Research Data Services}(2026)]{wrds2026taq}
 {Wharton Research Data Services}.
 \newblock Nyse trade and quote (taq).
@@ -157,27 +178,6 @@ Glenn~W. Brier.
 {Databento}.
 \newblock Us equities market data.
 \newblock \url{https://databento.com/equities}, 2026.
-\newblock Accessed 2026-07-18.
-
-\bibitem[{NYSE}(2026)]{nyse2026taqimbalances}
-{NYSE}.
-\newblock Taq order imbalances: Historical market data.
-\newblock
-  \url{https://www.nyse.com/market-data/historical/taq-order-imbalances}, 2026.
-\newblock Accessed 2026-07-18.
-
-\bibitem[{Nasdaq}(2026{\natexlab{a}})]{nasdaq2026itchsamples}
-{Nasdaq}.
-\newblock Totalview-itch sample data files.
-\newblock \url{https://emi.nasdaq.com/ITCH/}, 2026{\natexlab{a}}.
-\newblock Accessed 2026-07-18.
-
-\bibitem[{Nasdaq}(2026{\natexlab{b}})]{nasdaq2026totalview}
-{Nasdaq}.
-\newblock Nasdaq totalview and the net order imbalance indicator.
-\newblock
-  \url{https://www.nasdaq.com/solutions/data/equities/nasdaq-totalview},
-  2026{\natexlab{b}}.
 \newblock Accessed 2026-07-18.
 
 \bibitem[{Polymarket}(2026{\natexlab{d}})]{polymarket2026orders}

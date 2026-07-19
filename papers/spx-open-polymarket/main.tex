@@ -25,6 +25,13 @@
 \usepackage{xcolor}         % colors (checklist answer macros)
 \usepackage{caption}        % \captionof for the non-floating title-page teaser
 
+% Page-limit fighting (style profile latex.md, shinyhunter idiom):
+% raggedbottom + tightened float separation for the 9-page NeurIPS
+% main-text boundary. Content is untouched; only float glue shrinks.
+\raggedbottom
+\setlength{\textfloatsep}{12pt plus 2pt minus 4pt}
+\setlength{\intextsep}{8pt plus 2pt minus 3pt}
+
 \title{SOQrates: Predicting the S\&P 500 Opening Price}
 
 \author{Moussa Ouallaf}
