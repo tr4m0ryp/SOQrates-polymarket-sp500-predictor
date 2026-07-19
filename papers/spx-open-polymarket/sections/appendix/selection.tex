@@ -53,6 +53,30 @@ $n$ & scored days \\
 \end{tabular}
 \end{center}
 
+\subsection{Sigma decomposition}
+\label{app:sigma_news}
+
+The share of the midnight prediction width that is future news follows
+from the fitted widths at midnight and at 9:29:
+\begin{equation}
+\sigma_{\mathrm{news}} = \sqrt{\sigma_{00{:}00}^2 - \sigma_{9{:}29}^2}
+= \sqrt{0.34^2 - 0.09^2} \approx 0.33\%.
+\label{eq:sigma_news}
+\end{equation}
+
+\begin{center}
+\small
+\begin{tabular}{ll}
+\toprule
+Symbol & Meaning \\
+\midrule
+$\sigma_{00{:}00}$ & fitted prediction width at midnight, $0.34\%$ \\
+$\sigma_{9{:}29}$ & the 9:29 mapping-and-auction floor, $0.09\%$ \\
+$\sigma_{\mathrm{news}}$ & the share of midnight width that is future news \\
+\bottomrule
+\end{tabular}
+\end{center}
+
 \subsection{Selection correction}
 \label{app:selection_detail}
 
