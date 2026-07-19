@@ -113,9 +113,9 @@ ex = {'half_spread':0.01,'impact_per_100':0.001}
 fs = {'h_start':4,'h_end':9,'edge':0.05,'gate':0.7,'signal':'model','stake_abs':50,**ex}
 h4c = {'hour':4,'edge':0.05,'gate':0.6,'signal':'model','maker':0,'bet_frac':0.1,**ex}
 h4f = {'hour':4,'edge':0.05,'gate':0.6,'signal':'model','stake_abs':50,**ex}
-for name, fam, prm in (('first_signal
-$50',    'first_signal', fs),
-                       ('hold h4 10%','hold', h4c), ('hold h4 $50','hold', h4f)):
+for name, fam, prm in (('first_signal 50', 'first_signal', fs),
+                       ('hold h4 10pct', 'hold', h4c),
+                       ('hold h4 50', 'hold', h4f)):
     r = sim.run(fam, te, dict(prm)); m = r['metrics']
     wins = sum(1 for t in r['trades'] if t['pnl']>0)
     print(name, m['final_bankroll'], m['n_trades'], wins, m.get('min_bankroll'))"
