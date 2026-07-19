@@ -196,6 +196,91 @@ reference.
     \end{tabular}
 \end{table}
 
+Figure~\ref{fig:reliability_diagram} tests the late-hour probabilities bin
+by bin. At the 9:00 prediction time the production hand-off (v1.2 at that
+hour) scores a test-half Brier of 0.0696 on the rebuilt cache, beside 0.0667
+for the baseline and 0.0690 for v1.3 on the same split. The distribution is
+bimodal: 24 of the 100 days sit below predicted 0.1 and all opened down, 24
+sit above 0.9 and all opened up, and the thin middle bins (3--10 days each)
+carry Wilson intervals that straddle the diagonal. No miscalibration is
+detectable at this sample size; with 100 days that is a statement about the
+sample as much as about the model.
+
+\begin{figure}[htp]
+    \centering
+    \includegraphics[width=0.92\linewidth]{figures/reliability_diagram.pdf}
+    \caption{Reliability diagram for the production model at the 9:00 ET
+    prediction time, held-out test half of the validated 200-day window
+    ($n=100$ days, 2026-02-12 to 2026-07-13; fitted on the first 100 days).
+    Top: predicted $P(\text{up})$ binned into deciles against the observed
+    frequency of up opens, with 95\% Wilson intervals per bin; the dashed
+    diagonal is perfect calibration. Bottom: days per bin. The distribution
+    is bimodal (24 days below 0.1, 24 above 0.9), so most 9:00 calls are
+    near-certain and correct: 0 of 34 up opens in the two lowest bins, 34 of
+    34 in the two highest. Brier score 0.0696. The 9:29 prediction time
+    cannot be evaluated this way, because its minute-level history exists
+    only as an unretained 18-day sample.}
+    \label{fig:reliability_diagram}
+\end{figure}
+
+\paragraph{Baselines.}
+Beating the futures gap is not the same as beating everyone.
+Table~\ref{tab:baselines} scores the model against three references on the
+same test half: the Polymarket crowd itself (the last cached order-book
+midpoint before each prediction time), the full-gap carryover the crowd's
+pricing implies ($k=1$: call the gap's sign with certainty), and a logistic
+regression on the gap fitted on the train half only. The $k=1$ row is the
+mispricing this paper trades: its midnight Brier of 0.2400 against the
+model's 0.1660 is the cost of treating the gap as certain. The crowd is
+harder to beat. On matched days it is slightly more accurate before the open
+and better calibrated from 04:00 on, while the model wins midnight
+calibration (0.1660 against 0.1785) and 09:00 accuracy (92.0\% against
+90.9\%). The tradable edge is therefore the confidence gate and the 5-cent
+edge threshold against the quoted price, not raw accuracy at every hour.
+
+\begin{table}[h]
+    \centering
+    \small
+    \caption{Baselines against the model on the test half (2026-02-12 to
+    2026-07-13, $n=100$ days; crowd cells cover the crowd-quoted subset,
+    $n$ as shown). Accuracy calls up when $P(\text{up})>0.5$; Brier as in
+    Equation~\ref{eq:brier}. The $k{=}1$ carryover is a hard 0/1 classifier,
+    so its Brier equals its miss rate.}
+    \label{tab:baselines}
+    \begin{tabular}{llrrr}
+        \toprule
+        Time (ET) & Method & $n$ & Accuracy & Brier \\
+        \midrule
+        00:00 & Polymarket crowd             & 96  & 77.1\% & 0.1785 \\
+              & Full-gap carryover ($k{=}1$) & 100 & 76.0\% & 0.2400 \\
+              & Logistic on gap              & 100 & 74.0\% & 0.1792 \\
+              & SOQrates                     & 100 & 77.0\% & 0.1660 \\
+        \midrule
+        04:00 & Polymarket crowd             & 99  & 79.8\% & 0.1559 \\
+              & Full-gap carryover ($k{=}1$) & 100 & 79.0\% & 0.2100 \\
+              & Logistic on gap              & 100 & 74.0\% & 0.1703 \\
+              & SOQrates                     & 100 & 79.0\% & 0.1578 \\
+        \midrule
+        09:00 & Polymarket crowd             & 99  & 90.9\% & 0.0663 \\
+              & Full-gap carryover ($k{=}1$) & 100 & 92.0\% & 0.0800 \\
+              & Logistic on gap              & 100 & 91.0\% & 0.0680 \\
+              & SOQrates                     & 100 & 92.0\% & 0.0696 \\
+        \midrule
+        09:29 & Polymarket crowd             & 99  & 92.9\% & 0.0599 \\
+              & Full-gap carryover ($k{=}1$) & --  & --     & --     \\
+              & Logistic on gap              & --  & --     & --     \\
+              & SOQrates                     & --  & --     & --     \\
+        \bottomrule
+        \multicolumn{5}{p{0.88\linewidth}}{\footnotesize Dashes: no
+        minute-level futures history is cached for this window (Yahoo keeps
+        about 30 days of ES minute bars), so no gap and therefore no gap
+        baseline or model prediction exists at 9:29; the crowd row needs only
+        the cached order books. Crowd coverage: 99 of 100 test days have a
+        cached price curve, and three more days lack any quote by midnight,
+        hence $n=96$ there.} \\
+    \end{tabular}
+\end{table}
+
 \paragraph{Auction-feed sharpness.}
 The auction feeds were measured on free sample days. On the one full ITCH
 day (December 30, 2019; 3{,}086 Nasdaq symbols), the NOII, Nasdaq's
