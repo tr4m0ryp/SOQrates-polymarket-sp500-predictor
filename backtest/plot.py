@@ -103,7 +103,7 @@ def reliability_diagram(out_path="plots/reliability_diagram.png"):
     axc.set_ylabel("days", color=MUTED, fontsize=9)
     axc.set_xlabel("predicted P(up)", color=MUTED, fontsize=10)
 
-    fig.tight_layout()
+    fig.subplots_adjust(left=0.11, right=0.96, top=0.94, bottom=0.075)
     for path in (out_path, out_path.replace(".png", ".pdf")):
         fig.savefig(path, facecolor=SURFACE)
     return out_path, brier, len(preds)
