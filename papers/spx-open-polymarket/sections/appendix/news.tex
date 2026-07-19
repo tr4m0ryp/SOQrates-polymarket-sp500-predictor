@@ -1,0 +1,71 @@
+% appendix: news layer + fitted-constant registry. Blocks moved intact for
+% the 9-page NeurIPS main-text boundary (2026-07-19): Methods "Regime and
+% news extensions" paragraphs (news design rules, schedule, groups A/B) and
+% Table tab:fitted_constants. Only change: "the audit described below" now
+% points at Appendix app:execution, where the audit lives.
+\section{News layer, schedule, and the fitted-constant registry}
+\label{app:news}
+
+\paragraph{News design rules.}
+On our own event days, news publication and market reaction are
+simultaneous within one 15-minute GDELT indexing cycle: the March 23 Iran
+story was first indexed at 12:00 UTC, the same hour ES swung $+2\%$. Two
+rules follow. The LLM can never front-run headlines, and the LLM never
+sees market data: market moves only trigger runs.
+
+\paragraph{Schedule.}
+Checkpoints run at 02:30, 04:30, 07:00, 08:00, 08:35 (mandatory,
+post-release) and 09:15, plus an event trigger on any $0.15\%$ gap move
+within 15 minutes; LLM runs are capped at $6+6$ per night. The calendar
+itself is thin: BLS blocks scripted schedule fetches, so without a FRED
+key only the NFP first-Friday rule applies, flagging 20 of 465 days.
+
+\paragraph{Group A: midnight briefing.}
+At 00:05 an LLM briefing reads the calendar, earnings, nowcast-versus-
+consensus and prediction-market structural odds; measured over 30 days,
+structural odds move only about 0.2 points overnight, so one snapshot
+stays fresh. Output is a variance multiplier $m_A \in [1, 2.5]$ anchored
+at the fitted 1.29, and a directional tilt $\lvert d_A \rvert \le 0.3$
+allowed only on nowcast--consensus disagreement. The primary model is
+GitHub Models gpt-4.1, about 12 calls per night with 1--2K-token payloads.
+
+\paragraph{Group B: fitted effects.}
+Two deterministic effects are fitted from data. After a gap move of at
+least $0.35\%$ in one hour within the last two hours, the official-open
+residual is wider: pooled ratio 1.90 over 76 shock days, with unstable
+halves. On conflicted days, where a shock happened but the gap sits under
+$0.15\%$, the shock's sign predicts the official open 85.4\% of the
+time ($n = 41$), encoded as $\mu_B = 0.9\,d_B\,c\,\sigma_m$ with the 0.9
+chosen conservatively; the term is zero by construction on already-repriced
+days. For the strategy backtest these constants were refit train-only
+(shock 1.32, conflict 0.85) after the audit described in
+Appendix~\ref{app:execution} caught pooled-fit look-ahead.
+
+Table~\ref{tab:fitted_constants} collects the fitted constants with their
+fitting windows.
+
+\begin{table}[h]
+\centering
+\caption{Every fitted constant in the pipeline with the data that fitted
+it. All were frozen before evaluation; the three sigma multipliers (1.29,
+1.32, 1.9) are distinct constants with distinct scopes and are never
+merged.}
+\label{tab:fitted_constants}
+\small
+\begin{tabular}{lll}
+\toprule
+Constant & Value & Fitted on \\
+\midrule
+$a_0$ & $0.0092\%$ & 6 months of daily data \\
+pooled $k$ & $0.77$--$0.80$ & 465-day train half \\
+$k$ by volatility tercile & $0.733\;/\;0.827\;/\;0.839$ & calm / mid / volatile \\
+$\sigma$ at midnight & $\approx 0.34\%$ & intraday fit \\
+release-morning multiplier & $1.29$ & 11 NFP mornings \\
+post-shock multiplier & $1.9$ (range $1.3$--$2.3$) & 76 shock days \\
+lab refit (shock, train-only) & $1.32$ & train half only \\
+conflicted-day $Z$ & $0.9$ & 41 days, 85.4\% hit \\
+NOII accuracy & 2--5 bp & free ITCH sample day \\
+accuracy ceiling & 96.3\% & 81 unseen days \\
+\bottomrule
+\end{tabular}
+\end{table}
