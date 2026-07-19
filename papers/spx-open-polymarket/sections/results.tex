@@ -231,25 +231,9 @@ leaves the coin-flip zone with an edge of at least 5 cents and a traded-side
 probability of at least 0.70. At flat \$50 stakes it runs \$100 to \$321.53
 on the test half (\$300.31 with costs doubled), 28 trades, 26W--2L (92.9\%,
 95\% CI 77--98); its 8 late-clarifier entries went 8 for 8 (95\% CI
-68--100). The compounding variant stakes
-\begin{equation}
-s_t = \min\!\left(\tfrac{1}{2}\,B_t,\ \$400,\ 0.01\,V_t\right),
-\label{eq:stake}
-\end{equation}
-
-\begin{center}
-\small
-\begin{tabular}{ll}
-\toprule
-Symbol & Meaning \\
-\midrule
-$s_t$ & stake placed on day $t$ \\
-$B_t$ & bankroll entering day $t$ \\
-$V_t$ & day $t$'s traded market volume; days under \$1k are skipped \\
-\bottomrule
-\end{tabular}
-\end{center}
-
+68--100). The compounding variant stakes half the balance, capped at
+\$400 and at 1\% of day volume (Equation~\ref{eq:stake},
+Appendix~\ref{app:execution}),
 and under it the same 28 trades run \$100 to \$850.69 (\$669.44
 stressed), peak \$1{,}307.76, maximum drawdown \$477.38; capping stakes at
 \$1{,}000 instead reaches only \$901.02, because the market's own 1\%
