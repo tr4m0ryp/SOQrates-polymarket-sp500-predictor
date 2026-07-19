@@ -1,8 +1,60 @@
-% appendix: selection-correction detail. Block moved intact from the
-% Methods strategy-lab subsection for the 9-page NeurIPS main-text
-% boundary (2026-07-19). The adjusted results themselves stay in Results.
-\section{Selection-correction detail}
+% appendix: statistical machinery. Blocks moved intact for the 9-page
+% NeurIPS main-text boundary (2026-07-19): the Wilson and Brier formula
+% blocks from Results and the selection-correction block from the Methods
+% strategy-lab subsection. The adjusted results themselves stay in Results.
+\section{Statistical machinery}
 \label{app:selection}
+
+\subsection{Wilson score interval}
+\label{app:wilson}
+
+Every rate in the paper carries a 95\% Wilson score interval
+\citep{wilson1927}:
+\begin{equation}
+\mathrm{CI}_{95} = \frac{1}{1 + z^2/n}\left(\hat p + \frac{z^2}{2n}
+\;\pm\; z\sqrt{\frac{\hat p(1-\hat p)}{n} + \frac{z^2}{4n^2}}\right),
+\qquad z = 1.96.
+\label{eq:wilson}
+\end{equation}
+
+\begin{center}
+\small
+\begin{tabular}{ll}
+\toprule
+Symbol & Meaning \\
+\midrule
+$\hat p$ & observed success fraction \\
+$n$ & number of scored days \\
+$z$ & the 97.5\% normal quantile \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Brier score}
+\label{app:brier}
+
+Probability quality is scored by the Brier score \citep{brier1950}, the
+mean squared probability error:
+\begin{equation}
+\mathrm{Brier} = \frac{1}{n}\sum_{t=1}^{n}\left(p_t - y_t\right)^2.
+\label{eq:brier}
+\end{equation}
+
+\begin{center}
+\small
+\begin{tabular}{ll}
+\toprule
+Symbol & Meaning \\
+\midrule
+$p_t$ & model probability of an up open on day $t$ \\
+$y_t$ & 1 if day $t$ officially opened up, else 0 \\
+$n$ & scored days \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection{Selection correction}
+\label{app:selection_detail}
 
 The laboratory walked 15 unique verified candidates forward, and the
 deployed rule is the family's maximum, so its test record is scored with
