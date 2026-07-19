@@ -173,7 +173,9 @@ wallets are manually running our own early-entry stale-book edge at
 \$200--8k scale, which validates it and shows the informed slots remain
 unoccupied. Against the books directly, the model's Brier score is 0.059
 to the crowd's 0.071, worth about 20\% per trade at the 5-cent threshold
-over 18 indicative days.
+over 18 indicative days; on the full 100-day test half the picture is more
+even (Table~\ref{tab:baselines}), and the edge lives in the gate and the
+quoted price, not in out-forecasting the crowd at every hour.
 
 Hindsight bounds what remains. A perfect oracle over the 58 test days
 makes $+\$7{,}315$ against our $+\$164$. More than \$4{,}600 of it comes
