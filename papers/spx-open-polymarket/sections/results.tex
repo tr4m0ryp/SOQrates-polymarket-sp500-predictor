@@ -86,21 +86,10 @@ $z$ & the 97.5\% normal quantile \\
 Not betting is part of the model. Dropping the days whose midnight confidence
 sits below 65\% removes 88 of 200 days (44\%) and lifts midnight accuracy
 from 72.5\% to 82.1\% (92 of 112, 95\% CI 74--88), as
-Figure~\ref{fig:spx_open_predictor_0000_confident} shows. The filter is not a
+Figure~\ref{fig:spx_open_predictor_0000_confident}
+(Appendix~\ref{app:trajectories}) shows. The filter is not a
 reporting trick; it is the trading rule, and below 65\% the system stands
 down.
-
-\begin{figure}[htp]
-    \centering
-    \includegraphics[width=0.92\linewidth]{figures/spx_open_predictor_0000_confident.png}
-    \caption{Midnight calls with coin-toss days removed. Days with midnight
-    confidence below 65\% are excluded: 88 of 200. On the remaining 112
-    confident days, 92 calls are correct (grey) and 20 wrong (red), lifting
-    midnight accuracy from 72.5\% to 82.1\%. Axes as in
-    Figure~\ref{fig:spx_open_predictor_0000_200d}. The exclusion filter is
-    itself the trading rule: no bet on coin-toss days.}
-    \label{fig:spx_open_predictor_0000_confident}
-\end{figure}
 
 \paragraph{Calibration.}
 Table~\ref{tab:calibration} compares model versions on the test half
