@@ -331,24 +331,12 @@ the \$100 start; at flat \$50 stakes the same rule reaches \$264.30, peak
     \end{tabular}
 \end{table}
 
-\begin{figure}[htp]
-    \centering
-    \includegraphics[width=0.92\linewidth]{figures/strategy_bankroll_50.png}
-    \caption{Bankroll trajectories for the hour-4 hold rule at \$50 daily
-    stakes on the test half (2026-04-16 to 2026-07-14), execution modeled
-    with a 1-cent half-spread and the calibrated impact model. Raw \$50/day
-    (blue) grows \$100 to \$264.30, peak \$292; the guarded variant staking
-    $\min(\$50, 20\%\ \text{of bankroll})$ (green) reaches \$176. Dots mark
-    the two losing days: Jul 2 (news reversal) and Jul 10 (late futures
-    flip).}
-    \label{fig:strategy_bankroll_50}
-\end{figure}
-
 The first-signal upgrade enters at the first hour in 4--9 where the model
 leaves the coin-flip zone with an edge of at least 5 cents and a traded-side
 probability of at least 0.70. At flat \$50 stakes it runs \$100 to \$321.53
-on the test half (\$300.31 with costs doubled), 28 trades, 26W--2L; its 8
-late-clarifier entries went 8 for 8. The compounding variant stakes
+on the test half (\$300.31 with costs doubled), 28 trades, 26W--2L (92.9\%,
+95\% CI 77--98); its 8 late-clarifier entries went 8 for 8 (95\% CI
+68--100). The compounding variant stakes
 \begin{equation}
 s_t = \min\!\left(\tfrac{1}{2}\,B_t,\ \$400,\ 0.01\,V_t\right),
 \label{eq:stake}
