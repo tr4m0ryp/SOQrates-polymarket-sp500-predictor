@@ -364,10 +364,41 @@ win rate just to break even. Entries above 95 cents are rejected outright,
 while tightening that cap to 90 cents overshoots and deletes \$27 of
 profitable low-90s days.
 
+Ordering luck is priced by resampling. Drawing the 58 test days with
+replacement 10{,}000 times and replaying every sequence through the same
+execution model brackets both records, as
+Figure~\ref{fig:strategy_bankroll_50_band} shows. The first-signal
+\$321.53 sits within 2\% of its bootstrap median of \$326.60 (5th--95th
+percentile \$95.60--\$491.64), and the hour-4 hold's \$135.92 beside its
+median of \$136.67 (\$94.87--\$191.28). Neither record is a lucky ordering
+of the same days. Both 5th percentiles fall just under the \$100 start:
+about one resample in twenty ends at a small loss.
+
+\begin{figure}[htp]
+    \centering
+    \includegraphics[width=0.92\linewidth]{figures/strategy_bankroll_50_band.pdf}
+    \caption{Day-resampled bootstrap bands for the two headline bankroll
+    records on the test half (58 days, 2026-04-16 to 2026-07-14): 10{,}000
+    resamples of whole days with replacement, replayed through the
+    calibrated execution model (1-cent half-spread, 0.1\% impact per \$100).
+    Solid lines are the actual trajectories, dotted lines the bootstrap
+    median, shading the 5th--95th percentile envelope. First-signal at flat
+    \$50 stakes (blue) ends at \$321.53 against bootstrap end values of
+    \$95.60 / \$326.60 / \$491.64 (5th / median / 95th); the hour-4 hold
+    staking 10\% of bankroll (green) ends at \$135.92 against \$94.87 /
+    \$136.67 / \$191.28. Both 5th percentiles sit just below the \$100
+    start: roughly one resample in twenty ends at a small loss, the
+    priced-in cost of 2 losing trades in 21--28 recurring at unlucky
+    frequencies.}
+    \label{fig:strategy_bankroll_50_band}
+\end{figure}
+
 Sizing carries its own risk. A losses-first reordering of the flat-\$50 test
 trades busts on day two ($-\$0.38$), while the guarded variant
 $\min(\$50, 20\%\ \text{of bankroll})$ survives it, ending at \$176 with a
-\$64 floor. The half-balance rule replayed on the train half, which holds
+\$64 floor. The bootstrap prices the same fragility without an adversarial
+ordering: resampled the same way, the flat-\$50 hold's 5th-percentile end
+value is $-\$0.08$, ruin from a \$100 start. The half-balance rule replayed on the train half, which holds
 five losses including the quirk days Jan 29 and Feb 24, ends at \$211.99 but
 touches \$96.53 on the way; losses-first on the test half survives but
 touches \$24. Figure~\ref{fig:stake_sweep} sweeps flat stakes to \$2{,}000:
