@@ -229,6 +229,21 @@ that reason.
 
 \subsection{Limitations}
 
+\paragraph{The survivor is the best of fifteen tries.} Twelve of the 15
+verified candidates lost money out of sample, and the one that did not was
+kept. Priced for that selection, its record is not statistically
+significant: adjusted $p = 0.36$ against a naive 0.026, and 0.26 with the
+two later-selected variants included
+(Section~\ref{sec:results}). We read the correction narrowly. It does not
+say the edge is absent: the mispricing is measured on 200 days without any
+candidate selection, and both records sit at their bootstrap medians. It
+says 58 trading days cannot certify an edge of this size, so the roughly
+\$5.6 per day per \$100 flat stake is a magnitude for a live out-of-sample
+period to confirm or refute. Until then, every dollar figure in this paper
+is a promising backtest, not a measured return. The correction is itself a
+lower bound: the recorded family is 15, but the train-side grids behind it
+touched over 100 parameter cells.
+
 \paragraph{One regime, 58 test days.} The strategy evidence spans a single
 market regime and 58 evaluation days, and the crowd on the other side can
 learn. Every dollar figure is conditional on that window. More
