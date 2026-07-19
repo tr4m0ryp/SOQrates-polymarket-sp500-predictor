@@ -102,7 +102,9 @@
 \input{sections/appendix/market}
 \input{sections/appendix/trajectories}
 
-\newpage
+% \clearpage (not \newpage) so pending appendix-F floats flush before
+% the checklist: Figure 8 must not share the checklist's first page.
+\clearpage
 \input{checklist.tex}
 
 \end{document}
