@@ -1,0 +1,108 @@
+% appendix: auction replica. Blocks moved intact for the 9-page NeurIPS
+% main-text boundary (2026-07-19): Methods "Auction replica" subsection,
+% Results "Auction-feed sharpness" paragraphs, Discussion "The ceiling and
+% the replica path" subsection. Content unchanged except section headers.
+\section{Auction replica: machinery, measured sharpness, and the path past
+the futures floor}
+\label{app:replica}
+
+\subsection{Machinery}
+\label{app:replica_machinery}
+
+The replica assembles the first tick from per-stock auction previews
+instead of futures:
+\begin{equation}
+\mu_R = \sum_i w_i \left( \frac{\hat P_i}{C_i} - 1 \right)
+\mathbf{1}[\,i \in \mbox{first tick}\,].
+\label{eq:replica}
+\end{equation}
+
+\begin{center}
+\small
+\begin{tabular}{ll}
+\toprule
+Symbol & Meaning \\
+\midrule
+$w_i$ & stock $i$'s prior-close capitalization weight \\
+$\hat P_i$ & predicted first print of stock $i$ \\
+$C_i$ & stock $i$'s prior close \\
+$\mathbf{1}[\cdot]$ & one when stock $i$ opens in time for the first tick \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Stale stocks contribute zero, which keeps the whole computation in
+divisor-free weighted-gap space. A Monte Carlo layer treats the first tick
+as a random variable: certain-live names are pooled analytically,
+certain-stale names sit at zero, and uncertain names are simulated under a
+common slowness factor (a logit shift, $\beta = 1.0$) with per-stock
+preview noise of $0.05\%$ for Nasdaq and $0.30\%$ for NYSE names, both
+measured. The simulation outputs mean, sigma, $P(\mathrm{up})$, quantiles,
+and the pivotal names, those whose inclusion swings $P(\mathrm{up})$
+most, scored as $P(\mathrm{up} \mid \mathrm{in}) - P(\mathrm{up} \mid
+\mathrm{out})$. A print filter conditions on crosses observed after
+9:30:00, and the seed is fixed. Print timing uses venue priors, Nasdaq
+$p_{\mathrm{live}} \approx 0.97$ and NYSE $\approx 0.15$, until real cross
+timestamps allow a per-stock fit, with a Bayes update for names still
+silent.
+
+Inputs are Nasdaq's Net Order Imbalance Indicator and NYSE order
+imbalances \citep{nasdaq2026totalview,nyse2026taqimbalances}. The ITCH
+parser streams a raw $\sim$3.5~GB gzipped TotalView-ITCH day file and
+finishes a full day in 27 seconds. Development ran on free full-day
+samples: seven ITCH days from 2019--2020 \citep{nasdaq2026itchsamples}
+and NYSE TAQ imbalance samples including April 1--2, 2026
+\citep{nyse2026taqimbalances}. Those dates mostly miss the 2026 quirk
+days, so they validate parsers, not the days that matter. The replica
+machinery is validated on synthetic data only.
+
+\subsection{Measured feed sharpness}
+\label{app:replica_sharpness}
+
+The auction feeds were measured on free sample days. On the one full ITCH
+day (December 30, 2019; 3{,}086 Nasdaq symbols), the NOII, Nasdaq's
+published indicative opening price, deviates from the official open by a
+mean 10.4 basis points at 9:29 and 8.3 at 9:29:50, and by 4.7 and 3.2 when
+weighted by the top-100 notional names. At index level that is a replica
+error near 1.7 points at 9:29 and 0.75 at 9:29:50, against a futures floor
+of roughly 6 points: 3--8$\times$ sharper in the final minute.
+
+The NYSE side
+is far noisier: on the TAQ sample day (April 1, 2026; 21 NYSE mega-caps) the
+median indicative deviation falls from 100 basis points at 9:00 to 43 at
+9:29 and 29 at 9:29:50. That is 6--10$\times$ noisier than Nasdaq NOII,
+which validates carrying NYSE names at prior close in the replica. The replica
+machinery passes its self-tests (Monte Carlo matches the analytic case; a
+synthetic quirk correctly reports JPM swinging $P(\text{up})$ by $-0.16$),
+but it has never seen real auction data.
+
+\subsection{The ceiling and the replica path}
+\label{app:replica_path}
+
+The 96.3\% ceiling is not a law of nature. It is the limit of
+market-price data, and the one priced path past it is the auction
+replica: assemble the official first tick from the exchanges' own
+pre-open feeds instead of inferring it from futures. Nasdaq's NOII,
+``the best predictor of the opening price available to the public''
+\citep{nasdaq2026totalview}, runs at one-second cadence from 9:28 on
+the post-2021 feed. Measured on sample days, it implies an index-level
+replica error near 1.7 points at 9:29 and 0.75 at 9:29:50, against the
+$\pm 6$-point futures floor: 3--8$\times$ sharper in the final minute.
+
+The expected payoff was computed before spending anything. It moves 9:29
+accuracy from roughly 94\% to 97--98\% and quirk days from 2 of 12
+strictly called correctly on futures alone to a majority called. On the
+tiniest quirk days the replica prices the abandoned 1--6-cent side at its
+true 60--80\%: a several-fold expected-value trade even when the winner
+is unknowable. These are projections from measured sample-day sharpness,
+not backtest results.
+
+There is no cheaper shortcut. A constituent replica built from pre-market
+trades adds nothing over the futures gap, stale prints and regression
+weights going to zero, so beating futures requires quotes and auction
+data. One design question also stays open. Inverse-variance fusion
+(Equation~\ref{eq:fusion}) assumes independent voices, but the futures
+and replica voices are nested
+and the news and gap voices are correlated; the Monte Carlo scenario
+shape is discarded at the Gaussian boundary. Scenario-reweighting fusion
+is the proposed fix. We state the problem and leave it unsolved.
