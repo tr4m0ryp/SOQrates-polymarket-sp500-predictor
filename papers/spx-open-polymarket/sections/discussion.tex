@@ -63,117 +63,12 @@ per-stock model at midnight would add only one or two accuracy points.
 The climb in Figure~\ref{fig:spx_open_predictor} is mostly news
 resolving, not the model improving.
 
-Both test losses are fully attributed as well; Appendix~\ref{app:execution}
-walks through each day and prices what was recoverable.
-
-\subsection{Quirk days and the crowd}
-
-The true quirk days are a different animal. Roughly once a month the
-official print lands opposite to, or within a fraction of a point of, the
-direction futures held all night. Futures cannot catch these days at any
-hour; that is empirically confirmed, and v1.2 does not pretend to. It
-keeps 4 of 12 quirk days safe, right or no-bet at 9:00, exactly as
-the baseline does. What it improves is the confidence held on the wrong
-side: Mar 10 from 84\% to 66\%, Apr 9 from 84\% to 70\%.
-
-The residual is the auction mechanism itself, the modern descendant of
-the stale-open effect \citep{stollwhaley1990}. Even at 9:29 the
-futures error floor is $\pm 6$ index points; on Jun 22 (official $-0.14$
-points) every model version said $+1.7$ to $+5.7$. Inside the floor, no
-price data helps.
-
-The crowd handles these days worst of all. On Mar 10 a bettor posted that
-TradingView showed an open of 6{,}792.83 while the official open printed
-6{,}796.56, on the other side of the prior close. The retail data feed
-and the resolution source disagree exactly when it matters. Hedging with
-ETFs or futures fails for the same reason: both track the wrong number,
-and Jun 22 showed the ETF leg breaking around a dividend date. Comment
-volume tells the rest: median 3 per day, 41 on Apr 9. On these days,
-standing down is not a weakness. It is the only correct call futures data
-can deliver.
-
-The 96.3\% ceiling itself is not a law of nature, only the limit of
-market-price data; Appendix~\ref{app:replica} lays out the one priced path
-past it, the auction replica, with its measured feed sharpness and
-projected payoff.
-
-\subsection{Who else is in the market}
-
-The competition scan says the edge exists because the informed slots are
-empty. The trade tape shows two serious automated actors. One is a print
-sniper buying the winner at exactly four seconds after 9:30:00, at
-0.989--0.999, in \$1--8k daily clips. The other is a mechanical longshot
-harvester that took the cheap winning side on both recent quirk days:
-about 1{,}000 trades in three weeks, median buy 15 cents, 93\% of buys
-under 50 cents. The 9:25--9:29 buyers at 99 cents and above are
-futures confirmers with no informational edge. Nobody shows
-auction-informed behavior before the print. On Jun 30 the crowd sat at
-35\% on a day that resolved Up, and even the sniper waited.
-
-The insider scan is negative twice over. All 14 wallets with 100\%
-day-win rates are stale-book harvesters: average entries at 66--79 cents
-on days the model already priced at 0.60--0.72, with hard fills going
-about 50\%. The best streak found, 12 of 12 days at a market-implied
-joint probability of 2.4\%, is what chance produces among 242 wallets:
-about six such streaks are expected. No pre-8:30 release-morning
-accumulation appears anywhere, so no BLS-leak signature. The always-right
-wallets are manually running our own early-entry stale-book edge at
-\$200--8k scale, which validates it and shows the informed slots remain
-unoccupied. Against the books directly, the model's Brier score is 0.059
-to the crowd's 0.071, worth about 20\% per trade at the 5-cent threshold
-over 18 indicative days; on the full 100-day test half the picture is more
-even (Table~\ref{tab:baselines}), and the edge lives in the gate and the
-quoted price, not in out-forecasting the crowd at every hour.
-
-Hindsight bounds what remains. A perfect oracle over the 58 test days
-makes $+\$7{,}315$ against our $+\$164$. More than \$4{,}600 of it comes
-from five late quirk-day collapses, and Jun 1 alone, the winning side
-at 1.8 cents at 9:29, a 55$\times$, is 82\% of the entire ceiling. A
-timing-only oracle on our own 21 days and sides makes $+\$569$, about
-3.5$\times$ ours, and it is unharvestable by any tested rule. On 31 of 58
-days the best price occurred between midnight and 2:00, exactly when the
-model is least confident.
-
-The regime is also moving. The train half's average win multiplier was
-1.45 against the test half's 1.28, taker fees of \$0.09--1.02 per trade
-arrived on Mar 30, and the profitable entry window has been drifting
-earlier. Monthly re-validation is mandatory, not hygiene. Execution
-shapes the rest. Our \$20--500 clips on a \$30--48k/day book are the
-price impact, so the stale-book edge is structurally a maker strategy
-\citep{polymarket2026orders}. A 5-cent modeled edge is not 5 cents of
-capturable edge on a taker fill.
-
-\subsection{Negative results}
-
-The catalogue of dead ends is part of the result. On the model side, the
-2--3am overnight drift is dead since 2021, so there is no drift term.
-Tercile-$k$ without the widened regime sigma is worse than the baseline
-it refines, and no single news gather-time works: the decisive moves
-spread across the whole night.
-
-The news layer earns its place only as a calendar: about 70\% of ES jumps
-occur overnight, and every major US release lands at 8:30. The
-deterministic overlay changes almost nothing at current settings (train
-\$357 versus \$359, test \$314 versus \$322). The first LLM replay went 2
-correct, 1 missed, and 3 wrong-signed out of 6: every wrong sign a
-retrieval failure, not a reasoning failure. Retrieval quality dominates
-model quality.
-
-On the strategy side, Table~\ref{tab:strategy_graveyard} covers the
-families; the designs that died before reaching it are more instructive.
-Dip-hunting is refuted by adverse selection. On winning days the median
-post-signal dip is 2 cents; on losing days it is 62 cents, the crash to
-zero. Every patient variant loses to immediate taker entry on both
-halves: dip-triggered entries, resting maker orders one to three cents
-inside, 50/50 splits. After a valid signal the market converges
-away from you.
-
-Midnight entry is refuted by sizing. Deciding at 00:00 with \$50 stakes
-went to ruin on train despite 62\% winners: a 72.5\%-accurate signal
-cannot carry a stake. Hour 4 is the earliest hour where confidence
-justifies money. Optimal sizing at a small bankroll is all-in by another
-name; the compounding rule caps itself at half the balance for exactly
-that reason.
+The deeper cuts live in the appendices. Appendix~\ref{app:execution}
+walks through the two test losses and prices what was recoverable.
+Appendix~\ref{app:market} covers the true quirk days and how the crowd
+handles them, the scan of who else trades this market, and the catalogue
+of negative results. Appendix~\ref{app:replica} lays out the one priced
+path past the 96.3\% futures ceiling, the auction replica.
 
 \subsection{Limitations}
 
