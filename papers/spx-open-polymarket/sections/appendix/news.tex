@@ -41,6 +41,19 @@ days. For the strategy backtest these constants were refit train-only
 (shock 1.32, conflict 0.85) after the audit described in
 Appendix~\ref{app:execution} caught pooled-fit look-ahead.
 
+\paragraph{Regime ablations.}
+Tercile-$k$ without the widened regime sigma is worse than baseline (7
+overconfident misses), and the fitted release-morning multiplier of 1.29 is
+small but right-signed (NFP-subset Brier 0.1993 to 0.1971). v1.3 sharpens the
+early hours but is slightly worse late, so production runs v1.3 before 5:00
+and v1.2 after. Quirk days stay beyond futures data: v1.2 keeps 4 of 12
+safe, right or no-bet at 9:00 and the same as baseline, but softens wrong-side
+confidence (Mar 10 from 84\% to 66\%, Apr 9 from 84\% to 70\%), and at 9:00
+no wrong call at 80\% confidence or above remains. Extending the fit window
+to 465 days degrades late-hour calibration because the train half then
+swallows the tariff-chaos regime; the 200-day numbers remain the validated
+reference.
+
 Table~\ref{tab:fitted_constants} collects the fitted constants with their
 fitting windows.
 
