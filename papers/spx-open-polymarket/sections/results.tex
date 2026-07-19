@@ -19,27 +19,62 @@ and~\ref{fig:spx_open_predictor_0400_200d} fix the call at midnight and at
 04:00: 145 against 154 correct days, so four extra hours of futures data buy
 4.5 accuracy points.
 
+Every rate in this section carries a 95\% Wilson score interval
+\citep{wilson1927}:
+\begin{equation}
+\mathrm{CI}_{95} = \frac{1}{1 + z^2/n}\left(\hat p + \frac{z^2}{2n}
+\;\pm\; z\sqrt{\frac{\hat p(1-\hat p)}{n} + \frac{z^2}{4n^2}}\right),
+\qquad z = 1.96.
+\label{eq:wilson}
+\end{equation}
+
+\begin{center}
+\small
+\begin{tabular}{ll}
+\toprule
+Symbol & Meaning \\
+\midrule
+$\hat p$ & observed success fraction \\
+$n$ & number of scored days \\
+$z$ & the 97.5\% normal quantile \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The interval stays inside $[0,1]$ and widens honestly at small $n$, which
+is exactly where this paper's records live.
+
 \begin{table}[h]
     \centering
     \small
     \caption{Out-of-sample direction accuracy by prediction time, 200 trading
-    days (September 2025 -- July 2026). Every hour closer to the open buys
+    days (September 2025 -- July 2026), with 95\% Wilson intervals
+    (Equation~\ref{eq:wilson}). Every hour closer to the open buys
     accuracy, and the 9:29 value sits about two points under the ceiling that
-    even perfect 9:30 market data would allow.}
+    even perfect 9:30 market data would allow. The wide 9:29 and ceiling
+    intervals are the price of their small samples.}
     \label{tab:accuracy_ladder}
-    \begin{tabular}{lll}
+    \begin{tabular}{llll}
         \toprule
-        Prediction time (ET) & Accuracy & Sample \\
+        Prediction time (ET) & Accuracy & 95\% CI & Sample \\
         \midrule
-        00:00 & 72.5\% & 200 days \\
-        04:00 & 77.0\% & 154/200 \\
-        06:00 & 82\% & 200 days \\
-        07:00 & 85\% & 200 days \\
-        09:00 & 90\% & 200 days \\
-        9:29 & $\sim$94\% & $n=18$, minute-level \\
+        00:00 & 72.5\% & 65.9--78.2\% & 145/200 \\
+        04:00 & 77.0\% & 70.7--82.3\% & 154/200 \\
+        06:00 & 82\% & 75.5--86.3\% & 200 days \\
+        07:00 & 85\% & 78.3--88.4\% & 200 days \\
+        09:00 & 90\% & 83.9--92.6\% & 200 days \\
+        9:29 & $\sim$94\% & 74.2--99.0\% & $n=18$, minute-level \\
         \midrule
-        Ceiling (perfect 9:30 data) & 96.3\% & 81 unseen days \\
+        Ceiling (perfect 9:30 data) & 96.3\% & 89.7--98.7\% & 81 unseen days \\
         \bottomrule
+        \multicolumn{4}{p{0.88\linewidth}}{\footnotesize The 00:00 and 04:00
+        intervals are computed on the tabulated counts. A later rebuild of the
+        price cache reproduces the 04:00--09:00 rungs one to two days lower
+        (153, 163, 168, 178 of 200); the 06:00--09:00 intervals are computed
+        on those rebuilt counts, and every shift is at most one accuracy
+        point. The 9:29 and ceiling intervals are arithmetic on the only
+        counts consistent with the stated rates (17/18 and 78/81), because
+        those minute-level samples were not retained.} \\
     \end{tabular}
 \end{table}
 
