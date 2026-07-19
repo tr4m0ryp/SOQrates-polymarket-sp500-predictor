@@ -1,0 +1,63 @@
+% appendix: per-day trajectory + miss figures. Floats moved intact from
+% Results (0000_200d, 0400_200d, 0000_confident) and Discussion (misses)
+% for the 9-page NeurIPS main-text boundary (2026-07-19). Captions
+% unchanged; each figure is referenced from the main-text prose.
+\section{Per-day trajectory and miss figures}
+\label{app:trajectories}
+
+Figures~\ref{fig:spx_open_predictor_0000_200d},
+\ref{fig:spx_open_predictor_0400_200d}
+and~\ref{fig:spx_open_predictor_0000_confident} show the per-day
+probability trajectories behind the accuracy ladder of
+Table~\ref{tab:accuracy_ladder};
+Figure~\ref{fig:spx_open_predictor_misses} isolates the two 9:29 misses
+attributed in Section~\ref{sec:discussion}.
+
+\begin{figure}[htp]
+    \centering
+    \includegraphics[width=0.92\linewidth]{figures/spx_open_predictor_0000_200d.png}
+    \caption{Midnight (00:00 ET) direction calls over 200 trading days
+    (2025-09-09 to 2026-07-13). Each line is one day's model
+    $P(\text{official open} = \text{UP})$ trajectory; the dashed vertical line
+    marks 00:00, where the call is fixed, and dots at the right edge show the
+    official outcome. Grey lines are correct calls (145), red wrong (55):
+    72.5\% midnight accuracy. Many red trajectories start near 0.5,
+    previewing the coin-toss filter.}
+    \label{fig:spx_open_predictor_0000_200d}
+\end{figure}
+
+\begin{figure}[htp]
+    \centering
+    \includegraphics[width=0.92\linewidth]{figures/spx_open_predictor_0400_200d.png}
+    \caption{04:00 ET direction calls over the same 200 trading days. Same
+    construction as Figure~\ref{fig:spx_open_predictor_0000_200d}, with the
+    call fixed at the dashed 04:00 line: 154 correct (grey) against 46 wrong
+    (red), 77.0\% accuracy versus 72.5\% at midnight.}
+    \label{fig:spx_open_predictor_0400_200d}
+\end{figure}
+
+\begin{figure}[htp]
+    \centering
+    \includegraphics[width=0.92\linewidth]{figures/spx_open_predictor_0000_confident.png}
+    \caption{Midnight calls with coin-toss days removed. Days with midnight
+    confidence below 65\% are excluded: 88 of 200. On the remaining 112
+    confident days, 92 calls are correct (grey) and 20 wrong (red), lifting
+    midnight accuracy from 72.5\% to 82.1\%. Axes as in
+    Figure~\ref{fig:spx_open_predictor_0000_200d}. The exclusion filter is
+    itself the trading rule: no bet on coin-toss days.}
+    \label{fig:spx_open_predictor_0000_confident}
+\end{figure}
+
+\begin{figure}[htp]
+    \centering
+    \includegraphics[width=0.92\linewidth]{figures/spx_open_predictor_misses.png}
+    \caption{The two 9:29 misses out of 37 days (2026-05-19 to 2026-07-13).
+    Grey trajectories are days predicted correctly at 9:29; the colored pair
+    are the misses: 2026-06-22 (red, predicted UP, official opened DOWN by
+    $-0.14$ points, a near-tie auction quirk inside the futures floor)
+    and 2026-07-10 (orange, predicted DOWN, official opened UP by $+4.00$
+    points, a late futures flip: the gap crossed zero only after 9:00).
+    Axes: time of day (ET, 00:00 to 9:29) versus the model's probability of
+    an up open; dots at the right edge mark the official outcome.}
+    \label{fig:spx_open_predictor_misses}
+\end{figure}
