@@ -44,7 +44,7 @@ def bankroll_band(out_path="plots/strategy_bankroll_50_band.png"):
                     xytext=(8, 0), textcoords="offset points", color=INK,
                     fontsize=10, fontweight="bold", va="center")
         e = s["end"]
-        ax.annotate(f"5-95%: ${e['p5']:,.0f}-${e['p95']:,.0f}",
+        ax.annotate(f"5-95%: \\${e['p5']:,.0f}-\\${e['p95']:,.0f}",
                     (xs[-1], e["p95"]), xytext=(8, 0),
                     textcoords="offset points", color=MUTED, fontsize=8.5,
                     va="center")
