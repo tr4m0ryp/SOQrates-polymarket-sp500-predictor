@@ -66,10 +66,30 @@
 
 \section{Conclusion}
 \input{sections/conclusion}
+% Marker for the 9-page main-text boundary check: the page recorded for
+% this label in main.aux is the last page of the Conclusion.
+\label{page:mainend}
+
+% Unnumbered back-matter sections (NeurIPS convention: after the
+% Conclusion, before References; neither counts toward the content pages).
+\section*{Broader Impacts}
+\input{sections/broader_impacts}
+
+\section*{Data and Code Availability}
+\input{sections/availability}
 
 \clearpage
 \bibliographystyle{unsrtnat}
 \bibliography{references}
+
+% Appendices follow the references, before the checklist
+% (order per the kit's neurips_2026.tex).
+\appendix
+\input{sections/appendix/replica}
+\input{sections/appendix/execution}
+\input{sections/appendix/news}
+\input{sections/appendix/selection}
+\input{sections/appendix/trajectories}
 
 \newpage
 \input{checklist.tex}
