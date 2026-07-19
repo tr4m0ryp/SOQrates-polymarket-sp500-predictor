@@ -63,22 +63,8 @@ per-stock model at midnight would add only one or two accuracy points.
 The climb in Figure~\ref{fig:spx_open_predictor} is mostly news
 resolving, not the model improving.
 
-\subsection{The two test losses}
-
-Both test losses are fully attributed, and they are different kinds of
-loss. Jul 2 was a news reversal: a 4:00 DOWN entry at 67.5 cents with an
-up-probability of 0.19, then an 8:30 release that blew the gap to
-$+0.27\%$. The model reached 0.97 only at 9:00, and by 8:29 the market
-already stood at 0.835. About \$77 of the \$296 loss was recoverable at
-8:29, and nothing later.
-
-Jul 10 is the more instructive day. We had classified it as an unknowable
-auction quirk. It was in fact a late futures flip, the gap moving from
-$-0.03\%$ at 9:00 to $+0.08\%$ at 9:29 while the book lagged at
-0.715/0.53. A sell-and-flip in the 8:29--9:28 window turns the $-\$307$
-loss into $+\$347$, a \$654 swing, with futures data alone. That
-reclassification is why the deployed rule carries position monitors and a
-9:28 futures leg.
+Both test losses are fully attributed as well; Appendix~\ref{app:execution}
+walks through each day and prices what was recoverable.
 
 \subsection{Quirk days and the crowd}
 
