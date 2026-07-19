@@ -76,26 +76,9 @@ down.
 \paragraph{Calibration.}
 Table~\ref{tab:calibration} compares model versions on the test half
 ($n=100$ days). Probability quality is scored by the Brier score
-\citep{brier1950}, the mean squared probability error:
-\begin{equation}
-\mathrm{Brier} = \frac{1}{n}\sum_{t=1}^{n}\left(p_t - y_t\right)^2.
-\label{eq:brier}
-\end{equation}
-
-\begin{center}
-\small
-\begin{tabular}{ll}
-\toprule
-Symbol & Meaning \\
-\midrule
-$p_t$ & model probability of an up open on day $t$ \\
-$y_t$ & 1 if day $t$ officially opened up, else 0 \\
-$n$ & scored days \\
-\bottomrule
-\end{tabular}
-\end{center}
-
-Lower is better, and a constant 0.5 forecast scores 0.25. The gains are
+\citep{brier1950}, the mean squared probability error
+(Equation~\ref{eq:brier}, Appendix~\ref{app:selection}); lower is better,
+and a constant 0.5 forecast scores 0.25. The gains are
 calibration, not direction: the intermediate
 v1.1 already left direction accuracy unchanged while trimming the midnight
 Brier from 0.1785 to 0.1751. v1.2 cuts
