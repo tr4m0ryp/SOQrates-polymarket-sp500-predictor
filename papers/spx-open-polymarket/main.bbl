@@ -137,13 +137,6 @@ Glenn~W. Brier.
 \newblock Verification of forecasts expressed in terms of probability.
 \newblock \emph{Monthly Weather Review}, 78\penalty0 (1):\penalty0 1--3, 1950.
 
-\bibitem[{Polymarket}(2026{\natexlab{d}})]{polymarket2026orders}
-{Polymarket}.
-\newblock Creating orders (trading documentation).
-\newblock \url{https://docs.polymarket.com/trading/orders/create},
-  2026{\natexlab{d}}.
-\newblock Accessed 2026-07-18.
-
 \bibitem[{Wharton Research Data Services}(2026)]{wrds2026taq}
 {Wharton Research Data Services}.
 \newblock Nyse trade and quote (taq).
@@ -185,6 +178,13 @@ Glenn~W. Brier.
 \newblock
   \url{https://www.nasdaq.com/solutions/data/equities/nasdaq-totalview},
   2026{\natexlab{b}}.
+\newblock Accessed 2026-07-18.
+
+\bibitem[{Polymarket}(2026{\natexlab{d}})]{polymarket2026orders}
+{Polymarket}.
+\newblock Creating orders (trading documentation).
+\newblock \url{https://docs.polymarket.com/trading/orders/create},
+  2026{\natexlab{d}}.
 \newblock Accessed 2026-07-18.
 
 \bibitem[Politis and Romano(1994)]{politisromano1994}

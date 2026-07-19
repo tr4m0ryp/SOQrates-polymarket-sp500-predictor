@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.5.9)  19 JUL 2026 03:17
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.5.9)  19 JUL 2026 03:24
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -535,7 +535,7 @@ File: mt-cmr.cfg 2013/05/19 v2.2 microtype config. file: Computer Modern Roman
 (RS)
 )
 (./sections/abstract.tex)
-<figures/spx_open_predictor.png, id=112, 781.9614pt x 600.3228pt>
+<figures/spx_open_predictor.png, id=136, 781.9614pt x 600.3228pt>
 File: figures/spx_open_predictor.png Graphic file (type png)
 <use figures/spx_open_predictor.png>
 Package pdftex.def Info: figures/spx_open_predictor.png  used on input line 45.
@@ -566,99 +566,102 @@ File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
 
 {/usr/local/texlive/2026basic/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.e
 nc}])
-(./sections/method.tex [3] [4]) (./sections/results.tex [5]
-<figures/reliability_diagram.pdf, id=234, 520.34402pt x 549.25201pt>
-File: figures/reliability_diagram.pdf Graphic file (type pdf)
-<use figures/reliability_diagram.pdf>
-Package pdftex.def Info: figures/reliability_diagram.pdf  used on input line 18
-0.
-(pdftex.def)             Requested size: 365.68546pt x 386.01587pt.
-
+(./sections/method.tex [3] [4]) (./sections/results.tex
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[6] [7 <./figures/reliability_diagram.pdf>] [8]
-<figures/strategy_bankroll_50_band.pdf, id=312, 722.7pt x 390.25798pt>
+[5]
+Underfull \vbox (badness 2503) has occurred while \output is active []
+
+ [6]
+<figures/strategy_bankroll_50_band.pdf, id=280, 722.7pt x 390.25798pt>
 File: figures/strategy_bankroll_50_band.pdf Graphic file (type pdf)
 <use figures/strategy_bankroll_50_band.pdf>
 Package pdftex.def Info: figures/strategy_bankroll_50_band.pdf  used on input l
-ine 339.
+ine 274.
 (pdftex.def)             Requested size: 365.68546pt x 197.46877pt.
- [9 <./figures/strategy_bankroll_50_band.pdf>]) (./sections/discussion.tex [10]
 
-Underfull \vbox (badness 6608) has occurred while \output is active []
-
- [11])
-(./sections/conclusion.tex [12]) (./sections/broader_impacts.tex)
-(./sections/availability.tex) [13] (./main.bbl
+[7]) (./sections/discussion.tex [8 <./figures/strategy_bankroll_50_band.pdf>]
+[9]) (./sections/conclusion.tex) (./sections/broader_impacts.tex) [10]
+(./sections/availability.tex) [11] (./main.bbl
 Underfull \hbox (badness 1107) in paragraph at lines 88--93
 []\T1/ptm/m/n/10 (+20) Nasdaq Trader.  Nasdaq-listed se-cu-ri-ties di-rec-tory 
 (nas-daqlisted.txt).  []$\T1/cmtt/m/n/10 https : / / www .
  []
 
-[14
+[12
 
 ]
-Underfull \hbox (badness 1308) in paragraph at lines 170--175
+Underfull \hbox (badness 1308) in paragraph at lines 163--168
 []\T1/ptm/m/n/10 (+20) NYSE.  Taq or-der im-bal-ances: His-tor-i-cal mar-ket da
 ta.  []$\T1/cmtt/m/n/10 https : / / www . nyse . com /
  []
 
-) (./sections/appendix/replica.tex [15]) (./sections/appendix/execution.tex
-Underfull \vbox (badness 3029) has occurred while \output is active []
-
- [16]
-<figures/stake_sweep.png, id=514, 1011.78pt x 332.442pt>
+) (./sections/appendix/replica.tex [13]) (./sections/appendix/execution.tex
+[14]
+<figures/stake_sweep.png, id=484, 1011.78pt x 332.442pt>
 File: figures/stake_sweep.png Graphic file (type png)
 <use figures/stake_sweep.png>
 Package pdftex.def Info: figures/stake_sweep.png  used on input line 89.
 (pdftex.def)             Requested size: 365.68546pt x 120.15585pt.
-)
-(./sections/appendix/news.tex [17 <./figures/stake_sweep.png>])
-(./sections/appendix/selection.tex) (./sections/appendix/trajectories.tex
-[18]
-<figures/spx_open_predictor_0000_200d.png, id=541, 807.015pt x 516.9714pt>
+) (./sections/appendix/news.tex [15 <./figures/stake_sweep.png>])
+(./sections/appendix/selection.tex [16]) (./sections/appendix/market.tex
+[17]) (./sections/appendix/trajectories.tex
+Underfull \vbox (badness 1226) has occurred while \output is active []
+
+ [18]
+<figures/reliability_diagram.pdf, id=521, 520.34402pt x 549.25201pt>
+File: figures/reliability_diagram.pdf Graphic file (type pdf)
+<use figures/reliability_diagram.pdf>
+Package pdftex.def Info: figures/reliability_diagram.pdf  used on input line 24
+.
+(pdftex.def)             Requested size: 365.68546pt x 386.01587pt.
+<figures/spx_open_predictor_0000_200d.png, id=528, 807.015pt x 516.9714pt>
 File: figures/spx_open_predictor_0000_200d.png Graphic file (type png)
 <use figures/spx_open_predictor_0000_200d.png>
 Package pdftex.def Info: figures/spx_open_predictor_0000_200d.png  used on inpu
-t line 18.
+t line 52.
 (pdftex.def)             Requested size: 365.68546pt x 234.25998pt.
-<figures/spx_open_predictor_0400_200d.png, id=542, 807.015pt x 516.9714pt>
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [19 <./figures/reliability_diagram.pdf>]
+<figures/spx_open_predictor_0400_200d.png, id=582, 807.015pt x 516.9714pt>
 File: figures/spx_open_predictor_0400_200d.png Graphic file (type png)
 <use figures/spx_open_predictor_0400_200d.png>
 Package pdftex.def Info: figures/spx_open_predictor_0400_200d.png  used on inpu
-t line 31.
+t line 65.
 (pdftex.def)             Requested size: 365.68546pt x 234.25998pt.
-<figures/spx_open_predictor_0000_confident.png, id=545, 807.015pt x 516.9714pt>
+<figures/spx_open_predictor_0000_confident.png, id=585, 807.015pt x 516.9714pt>
 
 File: figures/spx_open_predictor_0000_confident.png Graphic file (type png)
 <use figures/spx_open_predictor_0000_confident.png>
 Package pdftex.def Info: figures/spx_open_predictor_0000_confident.png  used on
- input line 41.
+ input line 75.
 (pdftex.def)             Requested size: 365.68546pt x 234.25998pt.
-<figures/spx_open_predictor_misses.png, id=548, 779.0706pt x 489.027pt>
+<figures/spx_open_predictor_misses.png, id=588, 779.0706pt x 489.027pt>
 File: figures/spx_open_predictor_misses.png Graphic file (type png)
 <use figures/spx_open_predictor_misses.png>
 Package pdftex.def Info: figures/spx_open_predictor_misses.png  used on input l
-ine 53.
+ine 87.
 (pdftex.def)             Requested size: 365.68546pt x 229.54424pt.
-) [19 <./figures/spx_open_predictor_0000_200d.png>] [20 <./figures/spx_open_pre
-dictor_0400_200d.png> <./figures/spx_open_predictor_0000_confident.png>]
-(./checklist.tex [21 <./figures/spx_open_predictor_misses.png>] [22] [23]
-[24] [25] [26] [27]) [28] (./main.aux)
+) [20 <./figures/spx_open_predictor_0000_200d.png>] [21 <./figures/spx_open_pre
+dictor_0400_200d.png> <./figures/spx_open_predictor_0000_confident.png>] (./che
+cklist.tex [22 <./figures/spx_open_predictor_misses.png>] [23] [24] [25] [26] [
+27] [28]) [29] (./main.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
  ***********
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: 299BCC6E9B04F15D6E8663622148A48D;4686.
+(rerunfilecheck)             Checksum: 0FC97FA73C36F39B59964BBE9FAC0446;5933.
  ) 
 Here is how much of TeX's memory you used:
- 14981 strings out of 469006
- 240596 string characters out of 5454814
- 701969 words of memory out of 5000000
- 43048 multiletter control sequences out of 15000+600000
- 672760 words of font info for 242 fonts, out of 8000000 for 9000
+ 15015 strings out of 469006
+ 241216 string characters out of 5454814
+ 699495 words of memory out of 5000000
+ 43068 multiletter control sequences out of 15000+600000
+ 672887 words of font info for 244 fonts, out of 8000000 for 9000
  319 hyphenation exceptions out of 8191
  75i,13n,79p,1001b,758s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2026basic/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx1
@@ -683,10 +686,10 @@ sic/texmf-dist/fonts/type1/public/cm-super/sftt1000.pfb></usr/local/texlive/202
 6basic/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2026basi
 c/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/texlive/2026basic/tex
 mf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on main.pdf (28 pages, 3826504 bytes).
+Output written on main.pdf (29 pages, 3829474 bytes).
 PDF statistics:
- 770 PDF objects out of 1000 (max. 8388607)
- 577 compressed objects within 6 object streams
- 158 named destinations out of 1000 (max. 500000)
- 47361 words of extra memory for PDF output out of 51595 (max. 10000000)
+ 811 PDF objects out of 1000 (max. 8388607)
+ 616 compressed objects within 7 object streams
+ 166 named destinations out of 1000 (max. 500000)
+ 47409 words of extra memory for PDF output out of 51595 (max. 10000000)
 
