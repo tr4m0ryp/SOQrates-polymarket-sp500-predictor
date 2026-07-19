@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.5.9)  19 JUL 2026 03:42
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.5.9)  19 JUL 2026 03:44
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -643,9 +643,10 @@ Package pdftex.def Info: figures/spx_open_predictor_misses.png  used on input l
 ine 96.
 (pdftex.def)             Requested size: 365.68546pt x 229.54424pt.
 ) [21 <./figures/spx_open_predictor_0000_200d.png>] [22 <./figures/spx_open_pre
-dictor_0400_200d.png> <./figures/spx_open_predictor_0000_confident.png>] (./che
-cklist.tex [23 <./figures/spx_open_predictor_misses.png>] [24] [25] [26] [27] [
-28] [29]) [30] (./main.aux)
+dictor_0400_200d.png> <./figures/spx_open_predictor_0000_confident.png>] [23 <.
+/figures/spx_open_predictor_misses.png>] (./checklist.tex [24
+
+] [25] [26] [27] [28] [29]) [30] (./main.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
@@ -660,7 +661,7 @@ Here is how much of TeX's memory you used:
  43074 multiletter control sequences out of 15000+600000
  673014 words of font info for 246 fonts, out of 8000000 for 9000
  319 hyphenation exceptions out of 8191
- 75i,13n,79p,1001b,801s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 75i,13n,79p,1001b,797s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2026basic/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx1
 0.pfb></usr/local/texlive/2026basic/texmf-dist/fonts/type1/public/amsfonts/cm/c
 mbx9.pfb></usr/local/texlive/2026basic/texmf-dist/fonts/type1/public/amsfonts/c
@@ -683,7 +684,7 @@ sic/texmf-dist/fonts/type1/public/cm-super/sftt1000.pfb></usr/local/texlive/202
 6basic/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2026basi
 c/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/texlive/2026basic/tex
 mf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on main.pdf (30 pages, 3831559 bytes).
+Output written on main.pdf (30 pages, 3831305 bytes).
 PDF statistics:
  846 PDF objects out of 1000 (max. 8388607)
  650 compressed objects within 7 object streams
