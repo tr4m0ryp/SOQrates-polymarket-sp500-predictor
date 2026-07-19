@@ -37,19 +37,15 @@
 \end{abstract}
 
 % Title-page teaser (user request 2026-07-19): the hero figure shares the
-% page with the abstract; its in-prose discussion stays in Results.
+% page with the abstract; compact caption here, full discussion in Results.
 \begin{figure}[b]
     \centering
-    \includegraphics[width=0.95\linewidth]{figures/spx_open_predictor.png}
-    \caption{Model $P(\text{official open} = \text{UP})$ trajectories and
-    direction accuracy by prediction time. Top: one line per day over 37
-    trading days (2026-05-19 to 2026-07-13), green for days that officially
-    opened up, red for down, with the two 9:29 misses highlighted: 2026-07-10
-    (official $+4.00$ pts) and 2026-06-22 (official $-0.14$ pts). Bottom:
-    direction accuracy rises from about 74\% at midnight (hourly sample,
-    $n=134$ days) to 92\% at 9:00 and about 94\% near 9:29 (minute-level
-    sample, $n=18$ days), against the 96.3\% ceiling attainable with perfect
-    9:30 market data and the 50\% coin-flip floor.}
+    \includegraphics[width=0.72\linewidth]{figures/spx_open_predictor.png}
+    \caption{Per-day model $P(\text{official open} = \text{UP})$ trajectories
+    over 37 trading days (top; green opened up, red down, the two 9:29 misses
+    highlighted) and direction accuracy by prediction time (bottom): about
+    74\% at midnight rising to about 94\% near 9:29, against a 96.3\%
+    perfect-data ceiling and the 50\% coin-flip floor.}
     \label{fig:spx_open_predictor}
 \end{figure}
 
