@@ -1,4 +1,4 @@
-\begin{thebibliography}{23}
+\begin{thebibliography}{27}
 \providecommand{\natexlab}[1]{#1}
 \providecommand{\url}[1]{\texttt{#1}}
 \expandafter\ifx\csname urlstyle\endcsname\relax
@@ -146,6 +146,31 @@ Andrew~J. Patton.
 \newblock \url{https://docs.polymarket.com/trading/orders/create},
   2026{\natexlab{d}}.
 \newblock Accessed 2026-07-18.
+
+\bibitem[White(2000)]{white2000reality}
+Halbert White.
+\newblock A reality check for data snooping.
+\newblock \emph{Econometrica}, 68\penalty0 (5):\penalty0 1097--1126, 2000.
+\newblock \doi{10.1111/1468-0262.00152}.
+
+\bibitem[Politis and Romano(1994)]{politisromano1994}
+Dimitris~N. Politis and Joseph~P. Romano.
+\newblock The stationary bootstrap.
+\newblock \emph{Journal of the American Statistical Association}, 89\penalty0
+  (428):\penalty0 1303--1313, 1994.
+\newblock \doi{10.1080/01621459.1994.10476870}.
+
+\bibitem[Wilson(1927)]{wilson1927}
+Edwin~B. Wilson.
+\newblock Probable inference, the law of succession, and statistical inference.
+\newblock \emph{Journal of the American Statistical Association}, 22\penalty0
+  (158):\penalty0 209--212, 1927.
+\newblock \doi{10.1080/01621459.1927.10502953}.
+
+\bibitem[Brier(1950)]{brier1950}
+Glenn~W. Brier.
+\newblock Verification of forecasts expressed in terms of probability.
+\newblock \emph{Monthly Weather Review}, 78\penalty0 (1):\penalty0 1--3, 1950.
 
 \bibitem[{Wharton Research Data Services}(2026)]{wrds2026taq}
 {Wharton Research Data Services}.
