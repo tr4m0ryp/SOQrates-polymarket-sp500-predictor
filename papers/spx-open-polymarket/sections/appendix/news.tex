@@ -41,6 +41,11 @@ days. For the strategy backtest these constants were refit train-only
 (shock 1.32, conflict 0.85) after the audit described in
 Appendix~\ref{app:execution} caught pooled-fit look-ahead.
 
+\paragraph{The macro calendar is thin.} BLS blocks scripted schedule
+fetches, so without a FRED key the calendar reduces to the NFP
+first-Friday rule and flags only 20 of 465 days. A FRED key or a manually
+maintained release JSON restores the CPI, PPI, and GDP mornings.
+
 \paragraph{Regime ablations.}
 Tercile-$k$ without the widened regime sigma is worse than baseline (7
 overconfident misses), and the fitted release-morning multiplier of 1.29 is
