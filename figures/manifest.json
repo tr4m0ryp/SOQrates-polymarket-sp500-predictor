@@ -56,16 +56,17 @@
   {
     "id": "strategy_bankroll_50",
     "file": "plots/strategy_bankroll_50.png",
-    "status": "placed",
+    "status": "waived",
     "caption_draft": "Bankroll trajectories for the $50-stake daily strategy on the test half (Apr 16 - Jul 14, 2026): hour-4 hold rule (enter at 04:00 ET when model edge >= 5c and traded-side confidence >= 0.60, hold to resolution), 21 trades, 19 wins - 2 losses, execution modeled with 1c half-spread and 0.1% impact per $100. Raw $50/day (blue) grows $100 to $264; the guarded variant staking min($50, 20% of bankroll) (green) grows $100 to $176. Dots mark the two losing days -- Jul 2 (news reversal) and Jul 10 (quirk day). Axes: date versus bankroll (USDC); dashed line at the $100 start.",
     "producing_script": "strategy/plot.py",
     "data_source": "strategy/data.py build() test-half dataset via strategy/sim.py (hold rule; Polymarket books + model signals)",
-    "notes": "Vector PDF regenerated from strategy/plot.py (plots/strategy_bankroll_50.pdf). Both PNG and PDF copied to the paper figures dir."
+    "notes": "Vector PDF regenerated from strategy/plot.py (plots/strategy_bankroll_50.pdf). Both PNG and PDF copied to the paper figures dir.",
+    "waive_reason": "superseded by band version"
   },
   {
     "id": "reliability_diagram",
     "file": "plots/reliability_diagram.png",
-    "status": "made",
+    "status": "placed",
     "caption_draft": "Reliability diagram for the production model at the 9:00 ET prediction time, held-out test half of the validated 200-day window (n=100 days, 2026-02-12 to 2026-07-13; model fitted on the first 100 days, 2025-09-09 to 2026-02-11). Top: predicted P(up) binned into deciles versus the observed frequency of UP opens, with 95% Wilson intervals per bin; the dashed diagonal is perfect calibration. Bottom: days per bin -- the distribution is bimodal (24 days below 0.1 and 24 above 0.9), so most 9:00 calls are near-certain and correct (0/34 UP in the two lowest bins, 34/34 in the two highest). Brier score 0.0696. The 9:29 prediction time cannot be evaluated: minute-level history exists only as an unretained 18-day sample.",
     "producing_script": "backtest/plot.py (reliability_diagram)",
     "data_source": ".cache/dataset.json 200-day window (2025-09-09..2026-07-13) via backtest/dataset.py; ModelProd (model/core.py) fitted on the window's first half",
@@ -74,7 +75,7 @@
   {
     "id": "strategy_bankroll_50_band",
     "file": "plots/strategy_bankroll_50_band.png",
-    "status": "made",
+    "status": "placed",
     "caption_draft": "Day-resampled bootstrap bands for the two headline bankroll records on the test half (58 days, 2026-04-16 to 2026-07-14), 10,000 resamples of whole days with replacement, execution modeled with 1c half-spread and 0.1% impact per $100. Solid lines are the actual trajectories, dotted lines the bootstrap median, shading the 5th-95th percentile envelope. First-signal at flat $50 stakes (blue) ends at $321.53 actual; bootstrap end values 5th $95.60 / median $326.60 / 95th $491.64. Hour-4 hold staking 10% of bankroll (green) ends at $135.92 actual; bootstrap end values 5th $94.87 / median $136.67 / 95th $191.28. Both 5th percentiles sit just below the $100 start: roughly one resample in twenty ends at a small loss, the priced-in cost of 2 losing trades in 21-28 resampled at unlucky frequencies.",
     "producing_script": "strategy/plot.py (bankroll_band) with bands from strategy/bootstrap.py",
     "data_source": ".cache/strategy_days.json test half via strategy/sim.py contracts; bands cached in .cache/bootstrap_bands.json (B=10000, seed 20260719)",
