@@ -139,43 +139,9 @@ through April 15, then 58 test days from April 16 to July 14. The curves
 are CLOB midpoints, not prints \citep{polymarket2026clob}, so every
 strategy carries a volume gate.
 
-Execution is modeled, not assumed. Polymarket's Fee Structure V2,
-effective March 30, 2026, makes makers free with a 25\% rebate and charges
-takers
-\begin{equation}
-f = n \, r \, p\,(1-p), \qquad r = 0.04,
-\label{eq:takerfee}
-\end{equation}
-
-\begin{center}
-\small
-\begin{tabular}{ll}
-\toprule
-Symbol & Meaning \\
-\midrule
-$f$ & taker fee in USDC \\
-$n$ & shares filled \\
-$r$ & fee rate of the Finance category \\
-$p$ & price of the traded side, in USDC \\
-\bottomrule
-\end{tabular}
-\end{center}
-
-which peaks at even odds, about \$1 per 100 shares
-\citep{polymarket2026orders}. The entire test half is fee-era,
-a built-in regime stress. From roughly 3,400 real trade prints across six
-days we calibrated an effective half-spread of about 1 cent and a price
-impact of about 0.05 cents per \$100 of stake; the binding constraint is
-depth, not slope. Maker fills are modeled pessimistically: the price must
-trade through the limit.
-
-An independent audit of the harness found four defects, and all four were
-fixed before any conclusion was drawn: fictional fills on zero-volume days
-(one such fill carried 46\% of an early result's profit), an entry gate
-that admitted bets against the model's own view, over-optimistic maker
-fills, and look-ahead in the news-overlay constants, which were refit on
-disjoint data. In a thin market, execution assumptions are as load-bearing
-as the signal.
+Execution is modeled, not assumed: Appendix~\ref{app:execution} gives the
+fee model, the calibrated spread and impact, the pessimistic maker-fill
+rule, and the four audit defects fixed before any conclusion was drawn.
 
 Candidates read the model through one edge module:
 \begin{equation}
