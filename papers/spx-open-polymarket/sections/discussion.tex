@@ -22,14 +22,10 @@ Figure~\ref{fig:spx_open_predictor_misses}
 the minute-level sample: two misses in 37 days, one of each remaining
 kind.
 
-The misses also cluster. Eight of the 20 confident midnight misses came
-from volatile March 2026 alone: a sigma calibrated on average conditions
-turns nominal 85\% days into real 70\% days once the regime shifts. That
-is the regime-dependent overnight risk \citet{ahoniemi2016overnight}
-document, and the clustering, not any single miss, motivated the
-regime-aware sigma in v1.2. The timing is just as lopsided: 24 of the 27
-news-miss days had their last flip in the 8:30--9:30 window, after every
-practical entry hour.
+The misses also cluster, in volatile March 2026 and in the 8:30--9:30
+window after every practical entry hour;
+Appendix~\ref{app:trajectories} quantifies the clustering, which is what
+motivated the regime-aware sigma in v1.2.
 
 The sigma decomposition locates the model's boundary precisely. Pure
 mapping and auction noise measure $\pm 0.08$--$0.09\%$, the 9:29 floor;
