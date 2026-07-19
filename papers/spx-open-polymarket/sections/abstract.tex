@@ -9,11 +9,15 @@ carries over in full ($k=1$, $\sigma=0$). It does not. Measured over 200
 trading days, only about 80\% of the gap survives into the official open
 ($k \approx 0.77$--$0.80$). We trade that spread with a frozen linear model,
 fitted once and never refit on the test half. Out of sample, accuracy is a
-ladder, not a number: 72.5\% at midnight, rising to roughly 94\% at 9:29.
+ladder, not a number: 72.5\% at midnight (95\% CI 66--78, $n=200$), rising to
+roughly 94\% at 9:29 (95\% CI 74--99, $n=18$).
 Standing down on coin-toss days, those with midnight confidence below 65\%,
 lifts committed midnight accuracy to 82.1\%. A fee- and execution-audited
 backtest leaves one survivor of 15 strategy candidates: entering at the first
 confident hour turns \$100 into \$321.53 at flat \$50 stakes, 26 wins against
-2 losses; the hour-4 hold variant reaches \$135.92 staking 10\% of bankroll
-per trade. The caveats stand: one market regime, 58 test days, a thinning
+2 losses (93\%, 95\% CI 77--98); the hour-4 hold variant reaches \$135.92
+staking 10\% of bankroll per trade. Pricing in that this is the best of the
+candidate family, White's reality check gives an adjusted $p$ of 0.26--0.36
+against a naive 0.03, so the trading record is promising but statistically
+unconfirmed. The caveats stand: one market regime, 58 test days, a thinning
 market, a crowd that can learn.
