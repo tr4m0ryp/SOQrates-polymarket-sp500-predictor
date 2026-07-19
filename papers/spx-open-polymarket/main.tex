@@ -37,18 +37,19 @@
 \input{sections/abstract}
 \end{abstract}
 
-% Title-page teaser (user request 2026-07-19): the hero figure shares the
-% page with the abstract; compact caption here, full discussion in Results.
-\begin{figure}[b!]
-    \centering
+% Title-page teaser (user request 2026-07-19): non-floating so it sits
+% exactly under the abstract and the Preprint footer stays at the page
+% bottom; compact caption here, full discussion in Results.
+\begin{center}
+    \vspace{0.6em}
     \includegraphics[width=0.72\linewidth]{figures/spx_open_predictor.png}
-    \caption{Per-day model $P(\text{official open} = \text{UP})$ trajectories
-    over 37 trading days (top; green opened up, red down, the two 9:29 misses
-    highlighted) and direction accuracy by prediction time (bottom): about
-    74\% at midnight rising to about 94\% near 9:29, against a 96.3\%
-    perfect-data ceiling and the 50\% coin-flip floor.}
+    \captionof{figure}{Per-day model $P(\text{official open} = \text{UP})$
+    trajectories over 37 trading days (top; green opened up, red down, the
+    two 9:29 misses highlighted) and direction accuracy by prediction time
+    (bottom): about 74\% at midnight rising to about 94\% near 9:29, against
+    a 96.3\% perfect-data ceiling and the 50\% coin-flip floor.}
     \label{fig:spx_open_predictor}
-\end{figure}
+\end{center}
 
 \clearpage
 \section{Introduction}
