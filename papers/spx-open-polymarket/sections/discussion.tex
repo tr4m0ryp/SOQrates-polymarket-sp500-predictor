@@ -92,35 +92,10 @@ volume tells the rest: median 3 per day, 41 on Apr 9. On these days,
 standing down is not a weakness. It is the only correct call futures data
 can deliver.
 
-\subsection{The ceiling and the replica path}
-
-The 96.3\% ceiling is not a law of nature. It is the limit of
-market-price data, and the one priced path past it is the auction
-replica: assemble the official first tick from the exchanges' own
-pre-open feeds instead of inferring it from futures. Nasdaq's NOII,
-``the best predictor of the opening price available to the public''
-\citep{nasdaq2026totalview}, runs at one-second cadence from 9:28 on
-the post-2021 feed. Measured on sample days, it implies an index-level
-replica error near 1.7 points at 9:29 and 0.75 at 9:29:50, against the
-$\pm 6$-point futures floor: 3--8$\times$ sharper in the final minute.
-
-The expected payoff was computed before spending anything. It moves 9:29
-accuracy from roughly 94\% to 97--98\% and quirk days from 2 of 12
-strictly called correctly on futures alone to a majority called. On the
-tiniest quirk days the replica prices the abandoned 1--6-cent side at its
-true 60--80\%: a several-fold expected-value trade even when the winner
-is unknowable. These are projections from measured sample-day sharpness,
-not backtest results.
-
-There is no cheaper shortcut. A constituent replica built from pre-market
-trades adds nothing over the futures gap, stale prints and regression
-weights going to zero, so beating futures requires quotes and auction
-data. One design question also stays open. Inverse-variance fusion
-(Equation~\ref{eq:fusion}) assumes independent voices, but the futures
-and replica voices are nested
-and the news and gap voices are correlated; the Monte Carlo scenario
-shape is discarded at the Gaussian boundary. Scenario-reweighting fusion
-is the proposed fix. We state the problem and leave it unsolved.
+The 96.3\% ceiling itself is not a law of nature, only the limit of
+market-price data; Appendix~\ref{app:replica} lays out the one priced path
+past it, the auction replica, with its measured feed sharpness and
+projected payoff.
 
 \subsection{Who else is in the market}
 
