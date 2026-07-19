@@ -350,3 +350,42 @@ down. The deployed rule is seven steps:
   \item at 9:30, log fills against the resolution and refit monthly,
     walk-forward.
 \end{enumerate}
+
+\paragraph{Selection correction.}
+The laboratory walked 15 unique verified candidates forward, and the
+deployed rule is the family's maximum, so its test record is scored with
+White's reality check \citep{white2000reality}:
+\begin{equation}
+V = \max_{k \le K} \sqrt{n}\,\bar f_k, \qquad
+p_{\mathrm{adj}} = \frac{1}{B}\sum_{b=1}^{B}
+\mathbf{1}\!\left[\max_{k \le K} \sqrt{n}
+\left(\bar f^{\,*b}_k - \bar f_k\right) \ge V\right].
+\label{eq:reality_check}
+\end{equation}
+
+\begin{center}
+\small
+\begin{tabular}{ll}
+\toprule
+Symbol & Meaning \\
+\midrule
+$\bar f_k$ & candidate $k$'s mean daily test PnL at flat \$100 stakes \\
+$n$ & test days, 58 \\
+$K$ & family size: 15 recorded, 17 with the later-selected variants \\
+$\bar f^{\,*b}_k$ & the same mean on bootstrap resample $b$ \\
+$B$ & bootstrap draws, 10{,}000 \\
+$V$ & the best candidate's scaled performance \\
+$p_{\mathrm{adj}}$ & chance that a no-edge family produces a best this good \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Days are resampled jointly across candidates with a stationary bootstrap
+\citep{politisromano1994}, mean block length five days, which preserves
+cross-candidate correlation and short-range autocorrelation; each candidate
+is centered at its own mean, White's least-favorable null. A binomial test
+on the win--loss record was rejected on purpose: entries average 80--90
+cents, so a no-edge bettor also wins most trades, and mean PnL is the
+honest statistic. The correction is a lower bound, because train-side grid
+searches touched over 100 parameter cells and only the walked-forward
+candidates are recorded.
