@@ -66,7 +66,7 @@
 
 \item {\bf Open access to data and code}
     \item[] Question: Does the paper provide open access to the data and code, with sufficient instructions to faithfully reproduce the main experimental results, as described in supplemental material?
-    \item[] Answer: \answerYes{}
+    \item[] Answer: \answerNo{}
     \item[] Justification: Partially. All input data comes from free public APIs, named and cited in the Data and Code Availability statement and Section~\ref{sec:data}; the code lives in a private, noncommercially licensed repository, available from the author on reasonable request per that statement, and the pipeline can be rebuilt from the disclosed equations, fitted constants (Table~\ref{tab:fitted_constants}), and the seven-step rule in Section~\ref{sec:method}.
     \item[] Guidelines:
     \begin{itemize}
@@ -112,7 +112,7 @@
 \item {\bf Experiments compute resources}
     \item[] Question: For each experiment, does the paper provide sufficient information on the computer resources (type of compute workers, memory, time of execution) needed to reproduce the experiments?
     \item[] Answer: \answerYes{}
-    \item[] Justification: Section~\ref{sec:method} states the runtime is Python~3.12 standard library on a single machine, network-bound at one prediction per day, and that the heaviest job, parsing a full 3.5~GB ITCH day file, finishes in 27 seconds; no GPU or cluster is involved anywhere.
+    \item[] Justification: Appendix~\ref{app:replica} states the runtime is Python~3.12 standard library on a single machine, network-bound at one prediction per day, and that the heaviest job, parsing a full 3.5~GB ITCH day file, finishes in 27 seconds; no GPU or cluster is involved anywhere.
     \item[] Guidelines:
     \begin{itemize}
         \item The answer \answerNA{} means that the paper does not include experiments.
