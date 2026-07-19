@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.5.9)  19 JUL 2026 00:46
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.5.9)  19 JUL 2026 02:03
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -373,24 +373,24 @@ File: l3backend-pdftex.def 2025-10-09 L3 backend support: PDF output (pdfTeX)
 ) (./main.aux)
 \openout1 = `main.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 27.
-LaTeX Font Info:    ... okay on input line 27.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 27.
-LaTeX Font Info:    ... okay on input line 27.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 27.
-LaTeX Font Info:    ... okay on input line 27.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 27.
-LaTeX Font Info:    ... okay on input line 27.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 27.
-LaTeX Font Info:    ... okay on input line 27.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 27.
-LaTeX Font Info:    ... okay on input line 27.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 27.
-LaTeX Font Info:    ... okay on input line 27.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 27.
-LaTeX Font Info:    ... okay on input line 27.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 27.
-LaTeX Font Info:    ... okay on input line 27.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 31.
+LaTeX Font Info:    ... okay on input line 31.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 31.
+LaTeX Font Info:    ... okay on input line 31.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 31.
+LaTeX Font Info:    ... okay on input line 31.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 31.
+LaTeX Font Info:    ... okay on input line 31.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 31.
+LaTeX Font Info:    ... okay on input line 31.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 31.
+LaTeX Font Info:    ... okay on input line 31.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 31.
+LaTeX Font Info:    ... okay on input line 31.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 31.
+LaTeX Font Info:    ... okay on input line 31.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 31.
+LaTeX Font Info:    ... okay on input line 31.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
@@ -458,7 +458,7 @@ LaTeX Font Info:    ... okay on input line 27.
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-Package hyperref Info: Link coloring OFF on input line 27.
+Package hyperref Info: Link coloring OFF on input line 31.
 (./main.out) (./main.out)
 \@outlinefile=\write3
 \openout3 = `main.out'.
@@ -488,13 +488,13 @@ Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
-LaTeX Info: Redefining \microtypecontext on input line 27.
-Package microtype Info: Applying patch `item' on input line 27.
-Package microtype Info: Applying patch `toc' on input line 27.
-Package microtype Info: Applying patch `eqnum' on input line 27.
-Package microtype Info: Applying patch `footnote' on input line 27.
-Package microtype Info: Applying patch `verbatim' on input line 27.
-LaTeX Info: Redefining \microtypesetup on input line 27.
+LaTeX Info: Redefining \microtypecontext on input line 31.
+Package microtype Info: Applying patch `item' on input line 31.
+Package microtype Info: Applying patch `toc' on input line 31.
+Package microtype Info: Applying patch `eqnum' on input line 31.
+Package microtype Info: Applying patch `footnote' on input line 31.
+Package microtype Info: Applying patch `verbatim' on input line 31.
+LaTeX Info: Redefining \microtypesetup on input line 31.
 Package microtype Info: Generating PDF output.
 Package microtype Info: Character protrusion enabled (level 2).
 Package microtype Info: Using default protrusion set `alltext'.
@@ -512,101 +512,105 @@ File: mt-ptm.cfg 2006/04/20 v1.7 microtype config. file: Times (RS)
 File: mt-cmr.cfg 2013/05/19 v2.2 microtype config. file: Computer Modern Roman 
 (RS)
 )
-(./sections/abstract.tex) (./sections/introduction.tex
-Package microtype Info: Loading generic protrusion settings for font family
-(microtype)             `cmtt' (encoding: T1).
-(microtype)             For optimal results, create family-specific settings.
-(microtype)             See the microtype manual for details.
+(./sections/abstract.tex)
+<figures/spx_open_predictor.png, id=76, 781.9614pt x 600.3228pt>
+File: figures/spx_open_predictor.png Graphic file (type png)
+<use figures/spx_open_predictor.png>
+Package pdftex.def Info: figures/spx_open_predictor.png  used on input line 43.
+
+(pdftex.def)             Requested size: 377.60951pt x 289.90126pt.
  [1
 
 
 {/usr/local/texlive/2026basic/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{/us
-r/local/texlive/2026basic/texmf-dist/fonts/enc/dvips/base/8r.enc}{/usr/local/te
-xlive/2026basic/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc}]
+r/local/texlive/2026basic/texmf-dist/fonts/enc/dvips/base/8r.enc}] [2 <./figure
+s/spx_open_predictor.png>]
+(./sections/introduction.tex
+Package microtype Info: Loading generic protrusion settings for font family
+(microtype)             `cmtt' (encoding: T1).
+(microtype)             For optimal results, create family-specific settings.
+(microtype)             See the microtype manual for details.
 LaTeX Font Info:    Trying to load font information for TS1+ptm on input line 7
 1.
 
 (/usr/local/texlive/2026basic/texmf-dist/tex/latex/psnfss/ts1ptm.fd
 File: ts1ptm.fd 2001/06/04 font definitions for TS1/ptm.
-))
-(./sections/method.tex [2] [3] [4]
-Underfull \vbox (badness 2237) has occurred while \output is active []
+) [3
 
- [5])
-(./sections/results.tex
-<figures/spx_open_predictor.png, id=200, 781.9614pt x 600.3228pt>
-File: figures/spx_open_predictor.png Graphic file (type png)
-<use figures/spx_open_predictor.png>
-Package pdftex.def Info: figures/spx_open_predictor.png  used on input line 48.
+{/usr/local/texlive/2026basic/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.e
+nc}])
+(./sections/method.tex [4]
 
-(pdftex.def)             Requested size: 377.60951pt x 289.90126pt.
-<figures/spx_open_predictor_0000_200d.png, id=202, 807.015pt x 516.9714pt>
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[5] [6]) (./sections/results.tex
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+<figures/spx_open_predictor_0000_200d.png, id=179, 807.015pt x 516.9714pt>
 File: figures/spx_open_predictor_0000_200d.png Graphic file (type png)
 <use figures/spx_open_predictor_0000_200d.png>
 Package pdftex.def Info: figures/spx_open_predictor_0000_200d.png  used on inpu
-t line 63.
+t line 52.
 (pdftex.def)             Requested size: 365.68546pt x 234.25998pt.
-<figures/spx_open_predictor_0400_200d.png, id=203, 807.015pt x 516.9714pt>
+<figures/spx_open_predictor_0400_200d.png, id=180, 807.015pt x 516.9714pt>
 File: figures/spx_open_predictor_0400_200d.png Graphic file (type png)
 <use figures/spx_open_predictor_0400_200d.png>
 Package pdftex.def Info: figures/spx_open_predictor_0400_200d.png  used on inpu
-t line 76.
+t line 65.
 (pdftex.def)             Requested size: 365.68546pt x 234.25998pt.
-<figures/spx_open_predictor_0000_confident.png, id=207, 807.015pt x 516.9714pt>
+<figures/spx_open_predictor_0000_confident.png, id=184, 807.015pt x 516.9714pt>
 
 File: figures/spx_open_predictor_0000_confident.png Graphic file (type png)
 <use figures/spx_open_predictor_0000_confident.png>
 Package pdftex.def Info: figures/spx_open_predictor_0000_confident.png  used on
- input line 93.
+ input line 82.
 (pdftex.def)             Requested size: 365.68546pt x 234.25998pt.
- [6] [7 <./figures/spx_open_predictor.png>] [8 <./figures/spx_open_predictor_00
-00_200d.png> <./figures/spx_open_predictor_0400_200d.png>]
-<figures/strategy_bankroll_50.png, id=245, 722.7pt x 390.258pt>
+[7] [8 <./figures/spx_open_predictor_0000_200d.png> <./figures/spx_open_predict
+or_0400_200d.png>]
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[9 <./figures/spx_open_predictor_0000_confident.png>]
+<figures/strategy_bankroll_50.png, id=225, 722.7pt x 390.258pt>
 File: figures/strategy_bankroll_50.png Graphic file (type png)
 <use figures/strategy_bankroll_50.png>
-Package pdftex.def Info: figures/strategy_bankroll_50.png  used on input line 2
-03.
+Package pdftex.def Info: figures/strategy_bankroll_50.png  used on input line 1
+92.
 (pdftex.def)             Requested size: 365.68546pt x 197.46877pt.
- [9 <./figures/spx_open_predictor_0000_confident.png>]
-<figures/stake_sweep.png, id=255, 1011.78pt x 332.442pt>
+ [10]
+<figures/stake_sweep.png, id=235, 1011.78pt x 332.442pt>
 File: figures/stake_sweep.png Graphic file (type png)
 <use figures/stake_sweep.png>
-Package pdftex.def Info: figures/stake_sweep.png  used on input line 260.
+Package pdftex.def Info: figures/stake_sweep.png  used on input line 249.
 (pdftex.def)             Requested size: 365.68546pt x 120.15585pt.
-) [10 <./figures/strategy_bankroll_50.png>] (./sections/discussion.tex
-<figures/spx_open_predictor_misses.png, id=265, 779.0706pt x 489.027pt>
+)
+Underfull \vbox (badness 3396) has occurred while \output is active []
+
+ [11 <./figures/strategy_bankroll_50.png> <./figures/stake_sweep.png>]
+(./sections/discussion.tex
+<figures/spx_open_predictor_misses.png, id=245, 779.0706pt x 489.027pt>
 File: figures/spx_open_predictor_misses.png Graphic file (type png)
 <use figures/spx_open_predictor_misses.png>
 Package pdftex.def Info: figures/spx_open_predictor_misses.png  used on input l
 ine 26.
 (pdftex.def)             Requested size: 365.68546pt x 229.54424pt.
-
-Underfull \vbox (badness 10000) has occurred while \output is active []
-
- [11 <./figures/stake_sweep.png>] [12 <./figures/spx_open_predictor_misses.png>
-]
-Underfull \vbox (badness 2799) has occurred while \output is active []
-
- [13])
-(./sections/conclusion.tex [14]) (./main.bbl
-Underfull \hbox (badness 1072) in paragraph at lines 52--58
-[]\T1/ptm/m/n/10 (+20) LSEG.  Tick his-tory (datas-cope se-lect).  []$\T1/cmtt/
-m/n/10 https : / / www . lseg . com / en / data-[]analytics /
+ [12 <./figures/spx_open_predictor_misses.png>]
+[13] [14]) (./sections/conclusion.tex) [15] [16] (./main.bbl
+Underfull \hbox (badness 1107) in paragraph at lines 88--93
+[]\T1/ptm/m/n/10 (+20) Nasdaq Trader.  Nasdaq-listed se-cu-ri-ties di-rec-tory 
+(nas-daqlisted.txt).  []$\T1/cmtt/m/n/10 https : / / www .
  []
 
 
-Underfull \hbox (badness 1102) in paragraph at lines 95--100
-[]\T1/ptm/m/n/10 (+20) Polymarket.  Poly-mar-ket clob: In-tro-duc-tion (de-vel-
-oper doc-u-men-ta-tion).  []$\T1/cmtt/m/n/10 https : / / docs .
+Underfull \hbox (badness 1308) in paragraph at lines 124--129
+[]\T1/ptm/m/n/10 (+20) NYSE.  Taq or-der im-bal-ances: His-tor-i-cal mar-ket da
+ta.  []$\T1/cmtt/m/n/10 https : / / www . nyse . com /
  []
 
-[15]
-Underfull \hbox (badness 1661) in paragraph at lines 152--156
-[]\T1/ptm/m/n/10 (+20) The GDELT Project.  Gdelt doc 2.0 api de-buts.  []$\T1/c
-mtt/m/n/10 https : / / blog . gdeltproject . org /
- []
+[17
 
-) [16] (./checklist.tex [17] [18] [19] [20] [21] [22]) [23] (./main.aux)
+]) [18] (./checklist.tex [19] [20] [21] [22] [23] [24]) [25] (./main.aux)
  ***********
 LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
@@ -615,11 +619,11 @@ Package rerunfilecheck Info: File `main.out' has not changed.
 (rerunfilecheck)             Checksum: 9EA6F9A5A198C7586058655C2C80D796;2510.
  ) 
 Here is how much of TeX's memory you used:
- 13493 strings out of 469006
- 211347 string characters out of 5454814
- 670499 words of memory out of 5000000
+ 13490 strings out of 469006
+ 211314 string characters out of 5454814
+ 672532 words of memory out of 5000000
  41652 multiletter control sequences out of 15000+600000
- 669931 words of font info for 217 fonts, out of 8000000 for 9000
+ 669597 words of font info for 214 fonts, out of 8000000 for 9000
  319 hyphenation exceptions out of 8191
  75i,11n,79p,1001b,801s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2026basic/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx1
@@ -640,10 +644,10 @@ ist/fonts/type1/public/cm-super/sftt1000.pfb></usr/local/texlive/2026basic/texm
 f-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2026basic/texmf-dis
 t/fonts/type1/urw/times/utmr8a.pfb></usr/local/texlive/2026basic/texmf-dist/fon
 ts/type1/urw/times/utmri8a.pfb>
-Output written on main.pdf (23 pages, 3801537 bytes).
+Output written on main.pdf (25 pages, 3801186 bytes).
 PDF statistics:
- 540 PDF objects out of 1000 (max. 8388607)
- 460 compressed objects within 5 object streams
- 128 named destinations out of 1000 (max. 500000)
+ 514 PDF objects out of 1000 (max. 8388607)
+ 432 compressed objects within 5 object streams
+ 130 named destinations out of 1000 (max. 500000)
  46772 words of extra memory for PDF output out of 51595 (max. 10000000)
 

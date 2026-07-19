@@ -5,6 +5,36 @@
   \providecommand{\doi}[1]{doi: #1}\else
   \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
 
+\bibitem[{Polymarket}(2026{\natexlab{a}})]{polymarket2026spxmarket}
+{Polymarket}.
+\newblock Spx opens up or down on july 14, 2026 (market page).
+\newblock
+  \url{https://polymarket.com/event/spx-opens-up-or-down-on-july-14-2026},
+  2026{\natexlab{a}}.
+\newblock Accessed 2026-07-18.
+
+\bibitem[{S\&P Dow Jones Indices}(2026)]{spdji2026indexmath}
+{S\&P Dow Jones Indices}.
+\newblock Index mathematics methodology.
+\newblock
+  \url{https://www.spglobal.com/spdji/en/documents/methodologies/methodology-index-math.pdf},
+  2026.
+\newblock Accessed 2026-07-18.
+
+\bibitem[{CME Group}(2026)]{cme2026soq}
+{CME Group}.
+\newblock Equity index settlement procedures: Special opening quotation.
+\newblock \url{https://www.cmegroup.com/trading/equity-index/settlement.html},
+  2026.
+\newblock Accessed 2026-07-18.
+
+\bibitem[Stoll and Whaley(1990)]{stollwhaley1990}
+Hans~R. Stoll and Robert~E. Whaley.
+\newblock Stock market structure and volatility.
+\newblock \emph{The Review of Financial Studies}, 3\penalty0 (1):\penalty0
+  37--71, 1990.
+\newblock \doi{10.1093/rfs/3.1.37}.
+
 \bibitem[Ahoniemi and Lanne(2013)]{ahoniemilanne2013}
 Katja Ahoniemi and Markku Lanne.
 \newblock Overnight stock returns and realized volatility.
@@ -20,26 +50,6 @@ Katja Ahoniemi, Ana-Maria Fuertes, and Jose Olmo.
   525--551, 2016.
 \newblock \doi{10.1093/jjfinec/nbu032}.
 
-\bibitem[{CME Group}(2026)]{cme2026soq}
-{CME Group}.
-\newblock Equity index settlement procedures: Special opening quotation.
-\newblock \url{https://www.cmegroup.com/trading/equity-index/settlement.html},
-  2026.
-\newblock Accessed 2026-07-18.
-
-\bibitem[{Databento}(2026)]{databento2026equities}
-{Databento}.
-\newblock Us equities market data.
-\newblock \url{https://databento.com/equities}, 2026.
-\newblock Accessed 2026-07-18.
-
-\bibitem[{Federal Reserve Bank of St. Louis}(2026)]{fred2026releasedates}
-{Federal Reserve Bank of St. Louis}.
-\newblock Fred api: fred/release/dates.
-\newblock \url{https://fred.stlouisfed.org/docs/api/fred/release_dates.html},
-  2026.
-\newblock Accessed 2026-07-18.
-
 \bibitem[Hansen and Lunde(2005)]{hansenlunde2005}
 Peter~Reinhard Hansen and Asger Lunde.
 \newblock A realized variance for the whole day based on intermittent
@@ -48,42 +58,6 @@ Peter~Reinhard Hansen and Asger Lunde.
   525--554, 2005.
 \newblock \doi{10.1093/jjfinec/nbi028}.
 
-\bibitem[{LSEG}(2026)]{lseg2026tickhistory}
-{LSEG}.
-\newblock Tick history (datascope select).
-\newblock
-  \url{https://www.lseg.com/en/data-analytics/market-data/data-feeds/tick-history},
-  2026.
-\newblock Accessed 2026-07-18.
-
-\bibitem[{Nasdaq}(2026{\natexlab{a}})]{nasdaq2026itchsamples}
-{Nasdaq}.
-\newblock Totalview-itch sample data files.
-\newblock \url{https://emi.nasdaq.com/ITCH/}, 2026{\natexlab{a}}.
-\newblock Accessed 2026-07-18.
-
-\bibitem[{Nasdaq}(2026{\natexlab{b}})]{nasdaq2026totalview}
-{Nasdaq}.
-\newblock Nasdaq totalview and the net order imbalance indicator.
-\newblock
-  \url{https://www.nasdaq.com/solutions/data/equities/nasdaq-totalview},
-  2026{\natexlab{b}}.
-\newblock Accessed 2026-07-18.
-
-\bibitem[{Nasdaq Trader}(2026)]{nasdaqtrader2026listed}
-{Nasdaq Trader}.
-\newblock Nasdaq-listed securities directory (nasdaqlisted.txt).
-\newblock \url{https://www.nasdaqtrader.com/dynamic/SymDir/nasdaqlisted.txt},
-  2026.
-\newblock Accessed 2026-07-18.
-
-\bibitem[{NYSE}(2026)]{nyse2026taqimbalances}
-{NYSE}.
-\newblock Taq order imbalances: Historical market data.
-\newblock
-  \url{https://www.nyse.com/market-data/historical/taq-order-imbalances}, 2026.
-\newblock Accessed 2026-07-18.
-
 \bibitem[Patton(2011)]{patton2011ranking}
 Andrew~J. Patton.
 \newblock Data-based ranking of realised volatility estimators.
@@ -91,11 +65,30 @@ Andrew~J. Patton.
   2011.
 \newblock \doi{10.1016/j.jeconom.2010.12.010}.
 
-\bibitem[{Polymarket}(2026{\natexlab{a}})]{polymarket2026clob}
-{Polymarket}.
-\newblock Polymarket clob: Introduction (developer documentation).
-\newblock \url{https://docs.polymarket.com/developers/CLOB/introduction},
-  2026{\natexlab{a}}.
+\bibitem[{Yahoo Finance}(2026)]{yahoo2026chartapi}
+{Yahoo Finance}.
+\newblock Yahoo finance chart api (v8 endpoint).
+\newblock \url{https://query1.finance.yahoo.com/v8/finance/chart/%5EGSPC},
+  2026.
+\newblock Accessed 2026-07-18.
+
+\bibitem[{Stooq}(2026)]{stooq2026spx}
+{Stooq}.
+\newblock Historical daily data for \^{}spx.
+\newblock \url{https://stooq.com/q/d/l/?s=%5Espx&i=d}, 2026.
+\newblock Accessed 2026-07-18.
+
+\bibitem[{Slickcharts}(2026)]{slickcharts2026sp500}
+{Slickcharts}.
+\newblock S\&p 500 companies by weight.
+\newblock \url{https://www.slickcharts.com/sp500}, 2026.
+\newblock Accessed 2026-07-18.
+
+\bibitem[{Nasdaq Trader}(2026)]{nasdaqtrader2026listed}
+{Nasdaq Trader}.
+\newblock Nasdaq-listed securities directory (nasdaqlisted.txt).
+\newblock \url{https://www.nasdaqtrader.com/dynamic/SymDir/nasdaqlisted.txt},
+  2026.
 \newblock Accessed 2026-07-18.
 
 \bibitem[{Polymarket}(2026{\natexlab{b}})]{polymarket2026gamma}
@@ -106,52 +99,52 @@ Andrew~J. Patton.
   2026{\natexlab{b}}.
 \newblock Accessed 2026-07-18.
 
-\bibitem[{Polymarket}(2026{\natexlab{c}})]{polymarket2026orders}
-{Polymarket}.
-\newblock Creating orders (trading documentation).
-\newblock \url{https://docs.polymarket.com/trading/orders/create},
-  2026{\natexlab{c}}.
-\newblock Accessed 2026-07-18.
-
-\bibitem[{Polymarket}(2026{\natexlab{d}})]{polymarket2026spxmarket}
-{Polymarket}.
-\newblock Spx opens up or down on july 14, 2026 (market page).
-\newblock
-  \url{https://polymarket.com/event/spx-opens-up-or-down-on-july-14-2026},
-  2026{\natexlab{d}}.
-\newblock Accessed 2026-07-18.
-
-\bibitem[{Slickcharts}(2026)]{slickcharts2026sp500}
-{Slickcharts}.
-\newblock S\&p 500 companies by weight.
-\newblock \url{https://www.slickcharts.com/sp500}, 2026.
-\newblock Accessed 2026-07-18.
-
-\bibitem[{S\&P Dow Jones Indices}(2026)]{spdji2026indexmath}
-{S\&P Dow Jones Indices}.
-\newblock Index mathematics methodology.
-\newblock
-  \url{https://www.spglobal.com/spdji/en/documents/methodologies/methodology-index-math.pdf},
-  2026.
-\newblock Accessed 2026-07-18.
-
-\bibitem[Stoll and Whaley(1990)]{stollwhaley1990}
-Hans~R. Stoll and Robert~E. Whaley.
-\newblock Stock market structure and volatility.
-\newblock \emph{The Review of Financial Studies}, 3\penalty0 (1):\penalty0
-  37--71, 1990.
-\newblock \doi{10.1093/rfs/3.1.37}.
-
-\bibitem[{Stooq}(2026)]{stooq2026spx}
-{Stooq}.
-\newblock Historical daily data for \^{}spx.
-\newblock \url{https://stooq.com/q/d/l/?s=%5Espx&i=d}, 2026.
-\newblock Accessed 2026-07-18.
-
 \bibitem[{The GDELT Project}(2017)]{gdelt2017doc}
 {The GDELT Project}.
 \newblock Gdelt doc 2.0 api debuts.
 \newblock \url{https://blog.gdeltproject.org/gdelt-doc-2-0-api-debuts/}, 2017.
+\newblock Accessed 2026-07-18.
+
+\bibitem[{Federal Reserve Bank of St. Louis}(2026)]{fred2026releasedates}
+{Federal Reserve Bank of St. Louis}.
+\newblock Fred api: fred/release/dates.
+\newblock \url{https://fred.stlouisfed.org/docs/api/fred/release_dates.html},
+  2026.
+\newblock Accessed 2026-07-18.
+
+\bibitem[{Nasdaq}(2026{\natexlab{a}})]{nasdaq2026totalview}
+{Nasdaq}.
+\newblock Nasdaq totalview and the net order imbalance indicator.
+\newblock
+  \url{https://www.nasdaq.com/solutions/data/equities/nasdaq-totalview},
+  2026{\natexlab{a}}.
+\newblock Accessed 2026-07-18.
+
+\bibitem[{NYSE}(2026)]{nyse2026taqimbalances}
+{NYSE}.
+\newblock Taq order imbalances: Historical market data.
+\newblock
+  \url{https://www.nyse.com/market-data/historical/taq-order-imbalances}, 2026.
+\newblock Accessed 2026-07-18.
+
+\bibitem[{Nasdaq}(2026{\natexlab{b}})]{nasdaq2026itchsamples}
+{Nasdaq}.
+\newblock Totalview-itch sample data files.
+\newblock \url{https://emi.nasdaq.com/ITCH/}, 2026{\natexlab{b}}.
+\newblock Accessed 2026-07-18.
+
+\bibitem[{Polymarket}(2026{\natexlab{c}})]{polymarket2026clob}
+{Polymarket}.
+\newblock Polymarket clob: Introduction (developer documentation).
+\newblock \url{https://docs.polymarket.com/developers/CLOB/introduction},
+  2026{\natexlab{c}}.
+\newblock Accessed 2026-07-18.
+
+\bibitem[{Polymarket}(2026{\natexlab{d}})]{polymarket2026orders}
+{Polymarket}.
+\newblock Creating orders (trading documentation).
+\newblock \url{https://docs.polymarket.com/trading/orders/create},
+  2026{\natexlab{d}}.
 \newblock Accessed 2026-07-18.
 
 \bibitem[{Wharton Research Data Services}(2026)]{wrds2026taq}
@@ -162,11 +155,18 @@ Hans~R. Stoll and Robert~E. Whaley.
   2026.
 \newblock Accessed 2026-07-18.
 
-\bibitem[{Yahoo Finance}(2026)]{yahoo2026chartapi}
-{Yahoo Finance}.
-\newblock Yahoo finance chart api (v8 endpoint).
-\newblock \url{https://query1.finance.yahoo.com/v8/finance/chart/%5EGSPC},
+\bibitem[{LSEG}(2026)]{lseg2026tickhistory}
+{LSEG}.
+\newblock Tick history (datascope select).
+\newblock
+  \url{https://www.lseg.com/en/data-analytics/market-data/data-feeds/tick-history},
   2026.
+\newblock Accessed 2026-07-18.
+
+\bibitem[{Databento}(2026)]{databento2026equities}
+{Databento}.
+\newblock Us equities market data.
+\newblock \url{https://databento.com/equities}, 2026.
 \newblock Accessed 2026-07-18.
 
 \end{thebibliography}
