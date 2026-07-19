@@ -4,6 +4,10 @@
 
 \documentclass{article}
 
+% Numbered citations ([1] style) instead of author-year: user request
+% 2026-07-19. Must be set before the kit loads natbib.
+\PassOptionsToPackage{numbers,compress}{natbib}
+
 % "preprint" option: nonanonymized version with the
 % "Preprint. Work in progress." footer (kit convention for arXiv-style posts).
 \usepackage[preprint]{neurips_2026}
