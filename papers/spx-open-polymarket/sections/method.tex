@@ -167,24 +167,9 @@ $e_{\mathrm{up}}, e_{\mathrm{down}}$ & edge of buying the UP or DOWN side \\
 
 A side is bought only when its edge reaches the 0.05 minimum price
 divergence; below $c = 0.65$ the module answers coin-flip zone, stand
-down. The deployed rule is seven steps:
-\begin{enumerate}
-  \item at 00:05, run the Group-A briefing;
-  \item re-fuse the voices at every checkpoint and event trigger;
-  \item enter at the first hour in 4--9 with edge $\ge 5$ cents,
-    traded-side probability $\ge 0.70$ and price $\le 95$ cents, as an
-    immediate taker;
-  \item stake $\min(\mbox{half balance}, \$400, 1\%\ \mbox{of day
-    volume})$, and skip days below \$1k volume;
-  \item at 08:35 and 9:00, run position monitors: sell if the traded
-    side's fused probability drops below 0.5, flip if the other side
-    fully qualifies;
-  \item at 9:28, re-check against live futures: enter remaining edges
-    $\ge 3$ cents, sell-and-flip on contradiction (the replica replaces
-    this voice when live);
-  \item at 9:30, log fills against the resolution and refit monthly,
-    walk-forward.
-\end{enumerate}
+down. The deployed rule is seven steps, from the 00:05 briefing through
+gated entry, sizing, and monitoring to the monthly walk-forward refit;
+Appendix~\ref{app:execution} lists them.
 
 \paragraph{Selection correction.}
 Because the laboratory walked 15 verified candidates forward and deployed
