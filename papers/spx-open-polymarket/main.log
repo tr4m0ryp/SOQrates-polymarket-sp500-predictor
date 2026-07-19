@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.5.9)  19 JUL 2026 03:32
+This is pdfTeX, Version 3.141592653-2.6-1.40.29 (TeX Live 2026) (preloaded format=pdflatex 2026.5.9)  19 JUL 2026 03:33
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -582,7 +582,7 @@ Package pdftex.def Info: figures/strategy_bankroll_50_band.pdf  used on input l
 ine 258.
 (pdftex.def)             Requested size: 365.68546pt x 197.46877pt.
  [7 <./figures/strategy_bankroll_50_band.pdf>]) (./sections/discussion.tex
-[8]) (./sections/conclusion.tex) [9] (./sections/broader_impacts.tex)
+[8]) (./sections/conclusion.tex) (./sections/broader_impacts.tex [9])
 (./sections/availability.tex) [10] (./main.bbl
 Underfull \hbox (badness 1107) in paragraph at lines 88--93
 []\T1/ptm/m/n/10 (+20) Nasdaq Trader.  Nasdaq-listed se-cu-ri-ties di-rec-tory 
@@ -613,30 +613,30 @@ File: figures/reliability_diagram.pdf Graphic file (type pdf)
 Package pdftex.def Info: figures/reliability_diagram.pdf  used on input line 24
 .
 (pdftex.def)             Requested size: 365.68546pt x 386.01587pt.
-<figures/spx_open_predictor_0000_200d.png, id=553, 807.015pt x 516.9714pt>
+<figures/spx_open_predictor_0000_200d.png, id=554, 807.015pt x 516.9714pt>
 File: figures/spx_open_predictor_0000_200d.png Graphic file (type png)
 <use figures/spx_open_predictor_0000_200d.png>
 Package pdftex.def Info: figures/spx_open_predictor_0000_200d.png  used on inpu
-t line 52.
+t line 61.
 (pdftex.def)             Requested size: 365.68546pt x 234.25998pt.
-<figures/spx_open_predictor_0400_200d.png, id=554, 807.015pt x 516.9714pt>
+<figures/spx_open_predictor_0400_200d.png, id=555, 807.015pt x 516.9714pt>
 File: figures/spx_open_predictor_0400_200d.png Graphic file (type png)
 <use figures/spx_open_predictor_0400_200d.png>
 Package pdftex.def Info: figures/spx_open_predictor_0400_200d.png  used on inpu
-t line 65.
+t line 74.
 (pdftex.def)             Requested size: 365.68546pt x 234.25998pt.
-<figures/spx_open_predictor_0000_confident.png, id=557, 807.015pt x 516.9714pt>
+<figures/spx_open_predictor_0000_confident.png, id=558, 807.015pt x 516.9714pt>
 
 File: figures/spx_open_predictor_0000_confident.png Graphic file (type png)
 <use figures/spx_open_predictor_0000_confident.png>
 Package pdftex.def Info: figures/spx_open_predictor_0000_confident.png  used on
- input line 75.
+ input line 84.
 (pdftex.def)             Requested size: 365.68546pt x 234.25998pt.
-<figures/spx_open_predictor_misses.png, id=560, 779.0706pt x 489.027pt>
+<figures/spx_open_predictor_misses.png, id=561, 779.0706pt x 489.027pt>
 File: figures/spx_open_predictor_misses.png Graphic file (type png)
 <use figures/spx_open_predictor_misses.png>
 Package pdftex.def Info: figures/spx_open_predictor_misses.png  used on input l
-ine 87.
+ine 96.
 (pdftex.def)             Requested size: 365.68546pt x 229.54424pt.
 ) [19] [20 <./figures/reliability_diagram.pdf>] [21 <./figures/spx_open_predict
 or_0000_200d.png> <./figures/spx_open_predictor_0400_200d.png>] [22 <./figures/
@@ -648,12 +648,12 @@ LaTeX2e <2025-11-01>
 L3 programming layer <2026-01-19>
  ***********
 Package rerunfilecheck Info: File `main.out' has not changed.
-(rerunfilecheck)             Checksum: D6140A66BF0D65CD244D6139969AB35A;6704.
+(rerunfilecheck)             Checksum: 7A7A3E7D0A178471A776DB335CC8918A;6678.
  ) 
 Here is how much of TeX's memory you used:
  15028 strings out of 469006
  241383 string characters out of 5454814
- 703730 words of memory out of 5000000
+ 703725 words of memory out of 5000000
  43074 multiletter control sequences out of 15000+600000
  673014 words of font info for 246 fonts, out of 8000000 for 9000
  319 hyphenation exceptions out of 8191
@@ -680,10 +680,10 @@ sic/texmf-dist/fonts/type1/public/cm-super/sftt1000.pfb></usr/local/texlive/202
 6basic/texmf-dist/fonts/type1/urw/times/utmb8a.pfb></usr/local/texlive/2026basi
 c/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/texlive/2026basic/tex
 mf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on main.pdf (29 pages, 3830787 bytes).
+Output written on main.pdf (29 pages, 3831071 bytes).
 PDF statistics:
- 841 PDF objects out of 1000 (max. 8388607)
- 646 compressed objects within 7 object streams
+ 842 PDF objects out of 1000 (max. 8388607)
+ 647 compressed objects within 7 object streams
  170 named destinations out of 1000 (max. 500000)
  47441 words of extra memory for PDF output out of 51595 (max. 10000000)
 
