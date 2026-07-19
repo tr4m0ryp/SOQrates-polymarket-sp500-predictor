@@ -17,23 +17,10 @@ committed calls the attribution is exhaustive: the 12 midnight misses are
 pre-market, three in the 8:30 window). The six misses at 7:00 are five
 news days plus one quirk, Apr 9. Nothing is left over.
 
-Figure~\ref{fig:spx_open_predictor_misses} shows what survives to 9:29 in
+Figure~\ref{fig:spx_open_predictor_misses}
+(Appendix~\ref{app:trajectories}) shows what survives to 9:29 in
 the minute-level sample: two misses in 37 days, one of each remaining
 kind.
-
-\begin{figure}[htp]
-    \centering
-    \includegraphics[width=0.92\linewidth]{figures/spx_open_predictor_misses.png}
-    \caption{The two 9:29 misses out of 37 days (2026-05-19 to 2026-07-13).
-    Grey trajectories are days predicted correctly at 9:29; the colored pair
-    are the misses: 2026-06-22 (red, predicted UP, official opened DOWN by
-    $-0.14$ points, a near-tie auction quirk inside the futures floor)
-    and 2026-07-10 (orange, predicted DOWN, official opened UP by $+4.00$
-    points, a late futures flip: the gap crossed zero only after 9:00).
-    Axes: time of day (ET, 00:00 to 9:29) versus the model's probability of
-    an up open; dots at the right edge mark the official outcome.}
-    \label{fig:spx_open_predictor_misses}
-\end{figure}
 
 The misses also cluster. Eight of the 20 confident midnight misses came
 from volatile March 2026 alone: a sigma calibrated on average conditions
