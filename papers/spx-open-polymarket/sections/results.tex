@@ -20,28 +20,10 @@ fix the call at midnight and at
 04:00: 145 against 154 correct days, so four extra hours of futures data buy
 4.5 accuracy points.
 
-Every rate below carries a 95\% Wilson score interval \citep{wilson1927}.
-The interval stays inside $[0,1]$ and widens honestly at small $n$, exactly
-where this paper's records live:
-\begin{equation}
-\mathrm{CI}_{95} = \frac{1}{1 + z^2/n}\left(\hat p + \frac{z^2}{2n}
-\;\pm\; z\sqrt{\frac{\hat p(1-\hat p)}{n} + \frac{z^2}{4n^2}}\right),
-\qquad z = 1.96.
-\label{eq:wilson}
-\end{equation}
-
-\begin{center}
-\small
-\begin{tabular}{ll}
-\toprule
-Symbol & Meaning \\
-\midrule
-$\hat p$ & observed success fraction \\
-$n$ & number of scored days \\
-$z$ & the 97.5\% normal quantile \\
-\bottomrule
-\end{tabular}
-\end{center}
+Every rate below carries a 95\% Wilson score interval \citep{wilson1927},
+which stays inside $[0,1]$ and widens honestly at small $n$, exactly where
+this paper's records live; Appendix~\ref{app:selection} displays the
+formula (Equation~\ref{eq:wilson}).
 
 \begin{table}[h]
     \centering

@@ -112,27 +112,6 @@ Andrew~J. Patton.
   2026.
 \newblock Accessed 2026-07-18.
 
-\bibitem[{Nasdaq}(2026{\natexlab{a}})]{nasdaq2026totalview}
-{Nasdaq}.
-\newblock Nasdaq totalview and the net order imbalance indicator.
-\newblock
-  \url{https://www.nasdaq.com/solutions/data/equities/nasdaq-totalview},
-  2026{\natexlab{a}}.
-\newblock Accessed 2026-07-18.
-
-\bibitem[{NYSE}(2026)]{nyse2026taqimbalances}
-{NYSE}.
-\newblock Taq order imbalances: Historical market data.
-\newblock
-  \url{https://www.nyse.com/market-data/historical/taq-order-imbalances}, 2026.
-\newblock Accessed 2026-07-18.
-
-\bibitem[{Nasdaq}(2026{\natexlab{b}})]{nasdaq2026itchsamples}
-{Nasdaq}.
-\newblock Totalview-itch sample data files.
-\newblock \url{https://emi.nasdaq.com/ITCH/}, 2026{\natexlab{b}}.
-\newblock Accessed 2026-07-18.
-
 \bibitem[{Polymarket}(2026{\natexlab{c}})]{polymarket2026clob}
 {Polymarket}.
 \newblock Polymarket clob: Introduction (developer documentation).
@@ -140,25 +119,11 @@ Andrew~J. Patton.
   2026{\natexlab{c}}.
 \newblock Accessed 2026-07-18.
 
-\bibitem[{Polymarket}(2026{\natexlab{d}})]{polymarket2026orders}
-{Polymarket}.
-\newblock Creating orders (trading documentation).
-\newblock \url{https://docs.polymarket.com/trading/orders/create},
-  2026{\natexlab{d}}.
-\newblock Accessed 2026-07-18.
-
 \bibitem[White(2000)]{white2000reality}
 Halbert White.
 \newblock A reality check for data snooping.
 \newblock \emph{Econometrica}, 68\penalty0 (5):\penalty0 1097--1126, 2000.
 \newblock \doi{10.1111/1468-0262.00152}.
-
-\bibitem[Politis and Romano(1994)]{politisromano1994}
-Dimitris~N. Politis and Joseph~P. Romano.
-\newblock The stationary bootstrap.
-\newblock \emph{Journal of the American Statistical Association}, 89\penalty0
-  (428):\penalty0 1303--1313, 1994.
-\newblock \doi{10.1080/01621459.1994.10476870}.
 
 \bibitem[Wilson(1927)]{wilson1927}
 Edwin~B. Wilson.
@@ -171,6 +136,13 @@ Edwin~B. Wilson.
 Glenn~W. Brier.
 \newblock Verification of forecasts expressed in terms of probability.
 \newblock \emph{Monthly Weather Review}, 78\penalty0 (1):\penalty0 1--3, 1950.
+
+\bibitem[{Polymarket}(2026{\natexlab{d}})]{polymarket2026orders}
+{Polymarket}.
+\newblock Creating orders (trading documentation).
+\newblock \url{https://docs.polymarket.com/trading/orders/create},
+  2026{\natexlab{d}}.
+\newblock Accessed 2026-07-18.
 
 \bibitem[{Wharton Research Data Services}(2026)]{wrds2026taq}
 {Wharton Research Data Services}.
@@ -193,5 +165,33 @@ Glenn~W. Brier.
 \newblock Us equities market data.
 \newblock \url{https://databento.com/equities}, 2026.
 \newblock Accessed 2026-07-18.
+
+\bibitem[{NYSE}(2026)]{nyse2026taqimbalances}
+{NYSE}.
+\newblock Taq order imbalances: Historical market data.
+\newblock
+  \url{https://www.nyse.com/market-data/historical/taq-order-imbalances}, 2026.
+\newblock Accessed 2026-07-18.
+
+\bibitem[{Nasdaq}(2026{\natexlab{a}})]{nasdaq2026itchsamples}
+{Nasdaq}.
+\newblock Totalview-itch sample data files.
+\newblock \url{https://emi.nasdaq.com/ITCH/}, 2026{\natexlab{a}}.
+\newblock Accessed 2026-07-18.
+
+\bibitem[{Nasdaq}(2026{\natexlab{b}})]{nasdaq2026totalview}
+{Nasdaq}.
+\newblock Nasdaq totalview and the net order imbalance indicator.
+\newblock
+  \url{https://www.nasdaq.com/solutions/data/equities/nasdaq-totalview},
+  2026{\natexlab{b}}.
+\newblock Accessed 2026-07-18.
+
+\bibitem[Politis and Romano(1994)]{politisromano1994}
+Dimitris~N. Politis and Joseph~P. Romano.
+\newblock The stationary bootstrap.
+\newblock \emph{Journal of the American Statistical Association}, 89\penalty0
+  (428):\penalty0 1303--1313, 1994.
+\newblock \doi{10.1080/01621459.1994.10476870}.
 
 \end{thebibliography}
