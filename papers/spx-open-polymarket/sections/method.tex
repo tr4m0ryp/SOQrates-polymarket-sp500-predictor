@@ -65,31 +65,8 @@ open; measured hourly it runs $\pm0.344\%$ at midnight, $\pm0.30\%$ at
 04:00, $\pm0.15\%$ at 09:00 and $\pm0.083\%$ at 9:29. Every constant was
 fitted once on the train half and frozen.
 
-For open positions we also score the risk that the effective gap changes
-sign before 9:30. The center drifts about $0.014\%$ per square-root minute,
-so
-\begin{equation}
-P(\mathrm{flip}) = \Phi\!\left(\frac{-\,\lvert 0.83\,g\rvert}
-{0.014\%\,\sqrt{\tau}}\right).
-\label{eq:flip}
-\end{equation}
-
-\begin{center}
-\small
-\begin{tabular}{ll}
-\toprule
-Symbol & Meaning \\
-\midrule
-$g$ & current futures gap, in \% of prior close \\
-$0.83$ & effective pass-through used in the drift model \\
-$0.014\%$ & fitted drift of the center per $\sqrt{\text{minute}}$ \\
-$\tau$ & minutes remaining before 9:30~ET \\
-\bottomrule
-\end{tabular}
-\end{center}
-
-The scale matters more than the formula. A $+0.40\%$ gap at 7:00 carries
-about 1\% flip risk; a $+0.10\%$ gap at the same hour carries about 30\%.
+Open positions also carry a flip risk, the chance that the effective gap
+changes sign before 9:30; Appendix~\ref{app:execution} gives that model.
 
 \subsection{Regime and news extensions}
 \label{sec:extensions}
