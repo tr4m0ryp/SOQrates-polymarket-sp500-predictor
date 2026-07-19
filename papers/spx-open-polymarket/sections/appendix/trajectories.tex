@@ -1,9 +1,43 @@
-% appendix: per-day trajectory + miss figures. Floats moved intact from
-% Results (0000_200d, 0400_200d, 0000_confident) and Discussion (misses)
-% for the 9-page NeurIPS main-text boundary (2026-07-19). Captions
-% unchanged; each figure is referenced from the main-text prose.
-\section{Per-day trajectory and miss figures}
+% appendix: supplementary figures. Floats moved intact from Results
+% (reliability diagram + its discussion paragraph, 0000_200d, 0400_200d,
+% 0000_confident) and Discussion (misses) for the 9-page NeurIPS main-text
+% boundary (2026-07-19). Captions unchanged; each figure is referenced
+% from the main-text prose.
+\section{Supplementary figures}
 \label{app:trajectories}
+
+\subsection{Reliability of the 9:00 probabilities}
+\label{app:reliability}
+
+Figure~\ref{fig:reliability_diagram} tests the late-hour probabilities bin
+by bin. At the 9:00 prediction time the production hand-off (v1.2 at that
+hour) scores a test-half Brier of 0.0696 on the rebuilt cache, beside 0.0667
+for the baseline and 0.0690 for v1.3 on the same split. The distribution is
+bimodal: 24 of the 100 days sit below predicted 0.1 and all opened down, 24
+sit above 0.9 and all opened up, and the thin middle bins (3--10 days each)
+carry Wilson intervals that straddle the diagonal. No miscalibration is
+detectable at this sample size; with 100 days that is a statement about the
+sample as much as about the model.
+
+\begin{figure}[htp]
+    \centering
+    \includegraphics[width=0.92\linewidth]{figures/reliability_diagram.pdf}
+    \caption{Reliability diagram for the production model at the 9:00 ET
+    prediction time, held-out test half of the validated 200-day window
+    ($n=100$ days, 2026-02-12 to 2026-07-13; fitted on the first 100 days).
+    Top: predicted $P(\text{up})$ binned into deciles against the observed
+    frequency of up opens, with 95\% Wilson intervals per bin; the dashed
+    diagonal is perfect calibration. Bottom: days per bin. The distribution
+    is bimodal (24 days below 0.1, 24 above 0.9), so most 9:00 calls are
+    near-certain and correct: 0 of 34 up opens in the two lowest bins, 34 of
+    34 in the two highest. Brier score 0.0696. The 9:29 prediction time
+    cannot be evaluated this way, because its minute-level history exists
+    only as an unretained 18-day sample.}
+    \label{fig:reliability_diagram}
+\end{figure}
+
+\subsection{Per-day trajectories and the two 9:29 misses}
+\label{app:trajectory_figs}
 
 Figures~\ref{fig:spx_open_predictor_0000_200d},
 \ref{fig:spx_open_predictor_0400_200d}
