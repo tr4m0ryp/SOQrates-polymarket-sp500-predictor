@@ -90,7 +90,10 @@
 \bibliography{references}
 
 % Appendices follow the references, before the checklist
-% (order per the kit's neurips_2026.tex).
+% (order per the kit's neurips_2026.tex). The \clearpage keeps the
+% references on their own page(s): Appendix A must not share the page
+% where the reference list ends (visual-QA requirement).
+\clearpage
 \appendix
 \input{sections/appendix/replica}
 \input{sections/appendix/execution}
