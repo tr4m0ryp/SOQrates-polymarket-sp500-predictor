@@ -15,32 +15,32 @@ import sys
 CACHE = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
                      ".cache")
 
-# (library, table, why we want it, date column or None)
+# The datasets this project needs, as (library, table, why, date column).
+# Grouped by the job each one does; probe reports access + coverage per row.
 CANDIDATES = [
-    # --- ground truth: the official S&P 500 open we resolve against ---
-    ("comp", "idx_daily", "S&P 500 index daily OPEN/high/low/close (prcod!)", "datadate"),
-    ("comp", "idxcst_his", "S&P 500 constituent membership history", "from"),
-    ("crsp", "dsp500list", "CRSP S&P 500 membership intervals", "start"),
-    ("crsp", "dsp500", "CRSP S&P 500 index daily series", "caldt"),
-    ("crsp", "dsi", "CRSP daily market index series", "date"),
-    # --- constituents: weights + prior closes for the replica ---
-    ("crsp", "dsf", "CRSP daily stock file (prc, shrout, ret, openprc)", "date"),
-    ("crsp", "dsenames", "PERMNO <-> ticker/exchange/SIC name history", "namedt"),
-    ("crsp", "ccmxpf_lnkhist", "CRSP<->Compustat link (gvkey<->permno)", "linkdt"),
-    ("comp", "secd", "Compustat security daily: prccd/prcod, cshoc shares", "datadate"),
-    # --- volatility regime ---
-    ("cboe", "cboe", "CBOE index daily (VIX family)", "date"),
-    ("cboe", "vix", "VIX daily", "date"),
-    # --- news layer: scheduled events ---
-    ("ibes", "actu_epsus", "IBES actuals incl. announcement date/time", "anndats"),
-    ("ibes", "statsum_epsus", "IBES consensus (surprise vs consensus)", "statpers"),
-    ("comp", "co_ann", "Compustat announcement dates", "datadate"),
-    # --- macro ---
-    ("frb", "rates_daily", "Fed H.15 daily rates", "date"),
-    # --- intraday / auction (expected: NO ACCESS at UvA) ---
-    ("taqmsamp", "ctm_20030910", "TAQ millisecond sample trades", None),
-    ("taqmsamp", "cqm_20030910", "TAQ millisecond sample quotes", None),
-    ("taqm_2026", "ctm_20260710", "TAQ daily trades (needs taqm subscription)", None),
+    # --- A. ground truth: the official S&P 500 open we resolve against ---
+    ("comp", "idx_daily", "A1 S&P500 index daily incl. OPEN (prcod) - ground truth", "datadate"),
+    ("comp", "idxsp_hist", "A2 index-code history (gvkeyx for S&P 500)", None),
+    ("crsp", "dsp500", "A3 CRSP S&P500 daily level/return (cross-check)", "caldt"),
+    ("crsp", "dsi", "A4 CRSP daily market index (cross-check)", "date"),
+    # --- B. constituents: membership, weights, venue tag, prior closes ---
+    ("comp", "idxcst_his", "B1 S&P500 membership history (gvkey, from/thru)", "from"),
+    ("crsp", "dsp500list", "B2 CRSP S&P500 membership intervals (permno)", "start"),
+    ("crsp", "dsf", "B3 daily stock file: prc, openprc, shrout, cfacpr", "date"),
+    ("crsp", "dsenames", "B4 permno->ticker/exchcd (NYSE vs Nasdaq venue tag)", "namedt"),
+    ("crsp", "ccmxpf_lnkhist", "B5 gvkey<->permno link", "linkdt"),
+    ("comp", "secd", "B6 Compustat security daily: prccd/prcod, cshoc", "datadate"),
+    # --- C. volatility regime (sigma scaler inputs) ---
+    ("cboe", "cboe", "C1 CBOE index daily - VIX family", "date"),
+    ("cboe", "vix", "C2 VIX daily (alt table name)", "date"),
+    # --- D. news layer: scheduled events, consensus, surprises ---
+    ("ibes", "actu_epsus", "D1 IBES actuals + announcement date/time", "anndats"),
+    ("ibes", "statsum_epsus", "D2 IBES consensus -> surprise sign", "statpers"),
+    ("comp", "fundq", "D3 Compustat quarterly incl. report date rdq", "rdq"),
+    ("frb", "rates_daily", "D4 Fed H.15 daily rates (regime context)", "date"),
+    # --- E. auction layer (expect NO ACCESS - documents the gap) ---
+    ("taqmsamp", None, "E1 TAQ millisecond SAMPLE - which dates exist?", None),
+    ("taqm_2026", None, "E2 TAQ daily 2026 (needs taqm_common - expect denied)", None),
 ]
 
 
