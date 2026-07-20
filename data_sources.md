@@ -11,9 +11,9 @@ Most-reliable-and-cheapest single source per row. Detailed multi-option table be
 
 **Auction — HISTORICAL (backtest):**
 - Nasdaq NOII → **Databento** (metered filtered pulls, ~$0–50; the one WRDS gap). Built, needs access.
-- NYSE imbalance → **WRDS · NYSE Daily TAQ Order-Imbalance file** (free, arbitrary dates). To wire.
-- Cross print + ts → **WRDS · TAQ trades** (free, exact ts + venue). To wire.
-- Constituent NBBO → **WRDS · TAQ NBBO** (free, ms consolidated). To wire.
+- NYSE imbalance → **Databento** (WRDS route DEAD: UvA has no TAQ subscription, verified 2026-07-19).
+- Cross print + ts → **Databento** / Massive free REST `/v1/open-close` (daily opens, no ts).
+- Constituent NBBO → **Databento** / free IEX subset.
 
 **Auction — LIVE (production):** all four legs → **IBKR** (tick 225 + L1, one EU-reachable
 account, both venues), **~$17–40/mo total**. Beats Webull-free+Massive-$49 on reliability *and*
@@ -22,8 +22,9 @@ cost. To wire. (Webull OpenAPI = free Nasdaq-only alt, `webull_noii.py` already 
 **News layer:** macro dates → FRED (free key); consensus + earnings → FMP free tier; live wire
 → Alpaca news WS (free). All to wire except FRED (running, NFP-only).
 
-**Two adapters left to build:** WRDS fetcher (historical) + IBKR live client (production).
-Databento client already built. WRDS = research-only (no live/production trading).
+**Two adapters left to build:** WRDS fetcher (ground truth / weights / VIX / earnings — NOT
+auction data) + IBKR live client (production). Databento client already built.
+WRDS = research-only (no live/production trading).
 
 **Legend — Sourced & runnable:** `Yes` = wired and running · `Partial` = running but
 incomplete · `No` = not yet wired (Source column names the chosen one to build).
@@ -47,15 +48,16 @@ incomplete · `No` = not yet wired (Source column names the chosen one to build)
 | Real-time news wire stream | No | Alpaca news websocket (free key) | Free |
 | **Nasdaq NOII — historical** | Partial | Free ITCH samples (limited dates); **not in WRDS TAQ** → Databento / self-record for arbitrary dates | Free (limited) |
 | **Nasdaq NOII — live** | No | IBKR tick 225 (both venues, EU-reachable) / Webull | ~$17–40/mo · or free |
-| **NYSE opening imbalance — historical** | **Yes — WRDS** | **WRDS NYSE Daily TAQ · Order-Imbalance file** (arbitrary dates, ~2003+, ms) | **Free** |
+| **NYSE opening imbalance — historical** | No | ~~WRDS TAQ~~ (**no UvA subscription, verified 2026-07-19**) → Databento | metered |
 | **NYSE opening imbalance — live** | No | IBKR tick 225 / Massive NOI WebSocket | ~$40/mo · or $49/mo |
-| **Per-stock opening cross print + ts** | **Yes — WRDS (hist)** | **WRDS TAQ trades** (price + ms ts + venue); IBKR/Alpaca live | **Free** |
-| **Constituent quote midpoints (pre-open NBBO)** | **Yes — WRDS (hist)** | **WRDS TAQ NBBO** (ms consolidated); IBKR L1 / free IEX live | **Free** |
+| **Per-stock opening cross print + ts** | Partial | ~~WRDS TAQ~~ (no subscription) → Massive free REST daily opens (no ts) / Databento for ts | Free / metered |
+| **Constituent quote midpoints (pre-open NBBO)** | No | ~~WRDS TAQ NBBO~~ (no subscription) → Databento; IBKR L1 / free IEX live | metered |
 
 ## Cost to operate
 
-- **Validation / backtest:** **$0** — WRDS (NYSE Daily TAQ) covers NYSE imbalance + cross-prints
-  + NBBO free for arbitrary dates; only Nasdaq NOII history needs free ITCH samples / Databento.
+- **Validation / backtest:** **not $0** — the WRDS shortcut is gone (no TAQ at UvA). Both venues'
+  auction history needs Databento (metered) or free ITCH/NYSE sample dates. WRDS still gives
+  free official-open ground truth, constituent weights, VIX and earnings dates.
 - **Go live:** **~$17–40/mo (IBKR)** — tick 225 gives both venues live, EU-reachable; or the
   free-ish Webull(Nasdaq)+Massive($49) stitch. WRDS is research-only and cannot power live trading.
 
