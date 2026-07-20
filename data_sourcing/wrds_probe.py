@@ -46,6 +46,13 @@ CANDIDATES = [
 
 def probe(db, lib, table, date_col):
     out = {"library": lib, "table": table, "ok": False}
+    if table is None:                            # library-level probe
+        try:
+            tabs = db.list_tables(library=lib)
+            out.update(ok=True, n_tables=len(tabs), tables=sorted(tabs)[:25])
+        except Exception as e:                   # noqa: BLE001
+            out["error"] = str(e).split("\n")[0][:160]
+        return out
     try:
         cols = db.describe_table(library=lib, table=table)
         out["ok"] = True
