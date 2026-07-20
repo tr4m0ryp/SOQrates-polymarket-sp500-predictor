@@ -59,15 +59,26 @@ incomplete · `No` = not yet wired (Source column names the chosen one to build)
 - **Go live:** **~$17–40/mo (IBKR)** — tick 225 gives both venues live, EU-reachable; or the
   free-ish Webull(Nasdaq)+Massive($49) stitch. WRDS is research-only and cannot power live trading.
 
-## WRDS (access confirmed)
+## WRDS (access confirmed — but **TAQ is NOT included**, verified 2026-07-19)
 
-- **NYSE Daily TAQ** → Order-Imbalance file (#2 NYSE imbalance, arbitrary dates, ~2003+, ms),
-  trades (#3 cross prints w/ exact ts + venue), NBBO (#4 quotes). Free, all constituents.
-- **Caveats:** historical + **research-only** (academic license, no live, no production trading);
-  **Nasdaq NOII is NOT in WRDS TAQ** (TAQ imbalance = NYSE-group only) — check the institution's
-  dataset list for any Nasdaq TotalView/ITCH product, else samples/Databento/self-record.
-- **TODO:** wire a small WRDS fetcher (WRDS Python/Postgres API) → feed stage3/timing like the
-  Databento adapter does.
+**Correction of the 2026-07-18 assumption.** UvA's WRDS subscription does **not** include TAQ.
+Verified two independent ways while logged in: the products page shows every `taq_*`/`taqm_*`
+year unsubscribed (incl. `taqm_2025`, `taqm_2026`), and the TAQ query page returns
+*"Sorry, you do not have access to this content … You must be subscribed to: taq_common,
+taqm_common."* Only the **samples** (`taqsamp_all`, `taqmsamp_all`) are available.
+
+- **Consequence:** WRDS gives us **none** of the auction legs. NYSE imbalance, cross prints
+  and constituent NBBO revert to their pre-WRDS status — Databento (historical) / IBKR (live).
+- Even with a TAQ subscription, WRDS TAQ lists only Consolidated Trades + Consolidated Quotes;
+  whether it carries the NYSE Order-Imbalance file at all is unconfirmed — do not assume it.
+- **What UvA *is* subscribed to that this project can use** (177 products total; probe via
+  `.venv-wrds/bin/python data_sourcing/wrds_probe.py` once `~/.pgpass` exists):
+  `comp_na_daily_all` (Compustat NA daily — index daily prices incl. **open**, constituent
+  membership), `crsp_a_stock`/`crsp_q_stock`, `crsp_a_indexes`, `crsp_a_ccm` (linking),
+  `cboe_all` (VIX family daily), `tr_ibes` (earnings actuals + consensus), `frb_all` (Fed
+  rates), `ff_all`, `wrdsapps_*`. No OptionMetrics (sample only), no Datastream (sample only),
+  no futures.
+- **Still research-only** (academic licence): validates the model, cannot power live trading.
 
 ## Known gaps / caveats
 
