@@ -85,7 +85,9 @@ def main():
     for r in payload["candidates"]:
         mark = "OK " if r["ok"] else "NO "
         rng = f" {r.get('range')}" if r.get("range") else ""
-        print(f"{mark}{r['library']}.{r['table']:<18}{rng}  {r['why']}"
+        name = f"{r['library']}.{r['table'] or '*'}"
+        extra = f" ({r['n_tables']} tables)" if r.get("n_tables") else ""
+        print(f"{mark}{name:<26}{rng}{extra}  {r['why']}"
               + ("" if r["ok"] else f"  [{r.get('error','')}]"))
     print(f"\n{len(libs)} libraries visible; detail in .cache/wrds_probe.json")
     db.close()
