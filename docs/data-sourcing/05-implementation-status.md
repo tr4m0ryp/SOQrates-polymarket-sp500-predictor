@@ -4,7 +4,7 @@ What exists in the repo as of 2026-07-18.
 
 ## Built & verified
 
-**Databento integration** (`spx/replica/databento/`) — Fable-verified **CONFIRMED**:
+**Databento integration** (`spx/replica/vendors/databento/`) — Fable-verified **CONFIRMED**:
 - `client.py` — auth + `get_range` (historical HTTP+JSON) + live entrypoint.
 - `schemas.py` — DBN field maps + `normalize_imbalance/trade/quote` + `discover()`.
 - `historical.py` — `nasdaq_noii`, `nyse_imbalance`, `cross_prints`, `nbbo_quotes`.
@@ -14,11 +14,11 @@ What exists in the repo as of 2026-07-18.
 - Prices normalized from fixed-point nanodollar ints; ET timestamps.
 
 **Free-stitch modules** (fallbacks, from the earlier build):
-- `spx/replica/stitch/webull.py` — Webull OpenAPI NOII snapshot (free Nasdaq live).
+- `spx/replica/vendors/stitch/webull.py` — Webull OpenAPI NOII snapshot (free Nasdaq live).
 - `spx/data/alpaca.py` — Alpaca auctions (#3) + quotes (#4).
-- `spx/replica/itch/samples.py` — emi.nasdaq.com sample fetcher → `spx/replica/itch/parse.py`.
-- `spx/replica/taq/samples.py` — ftp.nyse.com sample fetcher → `spx/replica/taq/parse.py`.
-- `spx/replica/stitch/feeds.py` — Massive live NYSE imbalance websocket (completed stub).
+- `spx/replica/vendors/itch/samples.py` — emi.nasdaq.com sample fetcher → `spx/replica/vendors/itch/parse.py`.
+- `spx/replica/vendors/taq/samples.py` — ftp.nyse.com sample fetcher → `spx/replica/vendors/taq/parse.py`.
+- `spx/replica/vendors/stitch/feeds.py` — Massive live NYSE imbalance websocket (completed stub).
 - `spx/news/sources/alpaca.py` — Alpaca live news wire.
 
 ## Wired (CLI + config)
