@@ -67,7 +67,7 @@ def cmd_news_timing(_args):
 
 
 def cmd_news_prefetch(_args):
-    from spx.news import prefetch
+    from spx.news.ops import prefetch
     ctx = prefetch.build()
     print(f"prefetch for {ctx['date']}: releases {ctx['releases_0830'] or 'none'}, "
           f"NFP-Friday {ctx['is_nfp_friday']}")
@@ -103,7 +103,7 @@ def cmd_news_groupb_fit(_args):
 
 
 def cmd_news_llm_test(_args):
-    from spx.news import prefetch
+    from spx.news.ops import prefetch
     from spx.news.llm import prompt, runner as llm
 
     ctx = prefetch.build()

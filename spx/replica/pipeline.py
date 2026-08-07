@@ -11,9 +11,9 @@ credible instant open - the measured NYSE indicative noise (~29bp at
 """
 from spx.data import weights as wmod
 from spx.model import fusion
-from spx.replica.assembly import Constituent, first_tick_gap, replica_sigma
-from spx.replica.montecarlo import McConstituent, simulate
-from spx.replica.timing import TimingModel
+from spx.replica.core.assembly import Constituent, first_tick_gap, replica_sigma
+from spx.replica.core.montecarlo import McConstituent, simulate
+from spx.replica.core.timing import TimingModel
 
 NYSE_TRUST_DEFAULT = False       # flip per-name once live data proves timing
 

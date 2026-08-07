@@ -3,7 +3,7 @@ closed trades: {side, entry_min, px, stake, shares, exit_min, proceeds}.
 Curve prices are UP-token; DOWN token trades at 1-p. Stakes in USDC.
 """
 from spx.strategy.data import LAST_MINUTE, market_p_at, model_p_at
-from spx.strategy.sizing import optimal_stake
+from spx.strategy.engine.sizing import optimal_stake
 
 STAKE = 100.0
 
@@ -205,7 +205,7 @@ def convergence(day, em, prm):
     the market's own repricing path. Enter on edge at `hour`; exit into the
     forecast convergence instead of carrying resolution risk (hold_ok=1
     keeps the position when the target never prints)."""
-    from spx.strategy import crowd
+    from spx.strategy.rules import crowd
     fitted = crowd.load()
     if not fitted:
         return []
@@ -312,7 +312,7 @@ def first_signal(day, em, prm):
     return []
 
 
-from spx.strategy.composite import full_strategy          # noqa: E402
+from spx.strategy.rules.composite import full_strategy          # noqa: E402
 
 STRATEGIES = {"hold": hold, "flow_flip": flow_flip, "takeprofit": takeprofit,
               "longshot": longshot, "scale_in": scale_in,

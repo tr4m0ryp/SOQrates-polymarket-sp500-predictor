@@ -20,7 +20,7 @@ def bankroll_band(out_path="research/plots/strategy_bankroll_50_band.png"):
     import matplotlib.dates as mdates
     import datetime as dt
 
-    from spx.strategy import bootstrap
+    from spx.strategy.analysis import bootstrap
     if not bootstrap.OUT_FILE.exists():
         bootstrap.run()
     bb = json.loads(bootstrap.OUT_FILE.read_text())
@@ -76,7 +76,9 @@ def bankroll_trajectories(out_path="research/plots/strategy_bankroll_50.png"):
     import matplotlib.dates as mdates
     import datetime as dt
 
-    from spx.strategy import data, sim
+    from spx.strategy import data
+
+    from spx.strategy.engine import sim
     days = data.build()
     _, te = data.split(days)
     ex = {"half_spread": 0.01, "impact_per_100": 0.001}

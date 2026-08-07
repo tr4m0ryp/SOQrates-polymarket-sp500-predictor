@@ -102,7 +102,7 @@ def _label(fam: str, prm: dict) -> str:
 
 
 def day_series(fam: str, prm: dict, days: list[dict]) -> list[float]:
-    from spx.strategy import sim
+    from spx.strategy.engine import sim
     res = sim.run(fam, days, _flat(prm))
     by_date = {d["date"]: d["pnl"] for d in res["days"]}
     return [float(by_date.get(day["date"], 0.0)) for day in days]
