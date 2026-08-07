@@ -26,6 +26,19 @@ Four root directories only - do not add more:
 - `tools/` standalone scripts outside the import graph: `wrds_probe.py`
   (runs under `.venv-wrds`).
 
+## Team context pack (`docs/context/`)
+
+Shared onboarding context for sessions with no memory of this project.
+If you are new here (or recalling nothing about this repo), read
+`docs/context/README.md` first; pages 01, 02, and 09 are the minimum
+(overview, architecture, commands), the rest are per-subsystem deep dives,
+and `12-open-questions.md` lists what the repo alone cannot answer.
+
+Keep it honest: whoever changes the architecture, a CLI command, or a data
+flow updates the matching `docs/context/` page in the same commit. When an
+open question gets resolved, move the answer into its numbered page and
+delete the entry from `12-open-questions.md`.
+
 ## Paper -> Overleaf
 
 The paper lives at `research/papers/spx-open-polymarket/` and mirrors the
