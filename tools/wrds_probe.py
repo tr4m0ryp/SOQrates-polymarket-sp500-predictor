@@ -1,7 +1,7 @@
 """Probe WRDS for the datasets this project needs.
 
 Run with the venv that has the wrds client:
-    .venv-wrds/bin/python data_sourcing/wrds_probe.py
+    .venv-wrds/bin/python tools/wrds_probe.py
 
 Requires a ~/.pgpass entry (create once, interactively:
     .venv-wrds/bin/python -c "import wrds; wrds.Connection().create_pgpass_file()"

@@ -4,7 +4,7 @@ from zoneinfo import ZoneInfo
 
 NY = ZoneInfo("America/New_York")
 
-ROOT = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parents[1]
 CACHE = ROOT / ".cache"
 CACHE.mkdir(exist_ok=True)
 
