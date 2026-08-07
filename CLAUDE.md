@@ -25,6 +25,24 @@ Four root directories only - do not add more:
 - `tools/` standalone scripts outside the import graph: `wrds_probe.py`
   (runs under `.venv-wrds`).
 
+## Paper -> Overleaf
+
+The paper lives at `research/papers/spx-open-polymarket/` and mirrors the
+Overleaf project **soqrates**
+(https://www.overleaf.com/project/6a5bf21b6022bf005e17893a). Whenever the
+paper is written or materially revised, push it to that project in the same
+turn; the repo stays the source of truth:
+
+```
+python3 ~/projects/research/style-corpus/overleaf/sync.py \
+  --paper-dir research/papers/spx-open-polymarket \
+  --name soqrates --message "<what changed>"
+```
+
+Always reuse the `soqrates` slug (registered in
+`~/projects/research/overleaf-mirror/manifest.tsv`); a new slug silently
+forks the paper into a second Overleaf project.
+
 ## Package map (all under `spx/`)
 
 - `data/` fetchers: Yahoo chart API (ES/NQ/YM/^GSPC/^VIX1D), stooq
