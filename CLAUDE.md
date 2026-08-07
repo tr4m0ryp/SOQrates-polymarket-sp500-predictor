@@ -86,6 +86,7 @@ forks the paper into a second Overleaf project.
 ```
 python3 . backtest [--rebuild]   # train/test metrics, quirk table
 python3 . predict                # live P(up) now + Polymarket edge
+python3 . quirks                 # quirk-day detail table
 python3 . ground-truth           # stooq-vs-yahoo official-open audit
 python3 . weights                # index weights / Nasdaq share
 python3 . calendar-refresh       # FRED release dates (FRED_API_KEY)
