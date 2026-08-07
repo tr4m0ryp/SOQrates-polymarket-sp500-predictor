@@ -5,7 +5,7 @@ import json
 def cmd_news_mistakes(args):
     from backtest import dataset
     from model.core import ModelProd
-    from news import mistakes
+    from news.eval import mistakes
     from config import ROOT
 
     rows = dataset.load(rebuild=args.rebuild)
@@ -45,7 +45,7 @@ RUN_SCHEDULE = (          # ET checkpoints derived from the decisive-hour profil
 def cmd_news_timing(_args):
     import json
     from backtest import dataset
-    from news import timing
+    from news.eval import timing
     from config import CACHE
 
     rows = dataset.load()
@@ -80,7 +80,7 @@ def cmd_news_prefetch(_args):
 def cmd_news_groupb_fit(_args):
     from backtest import dataset
     from model.core import ModelProd
-    from news import groupb
+    from news.llm import groupb
 
     rows = dataset.load()
     train, test = dataset.split(rows)
@@ -103,7 +103,8 @@ def cmd_news_groupb_fit(_args):
 
 
 def cmd_news_llm_test(_args):
-    from news import llm, prompt, prefetch
+    from news import prefetch
+    from news.llm import prompt, runner as llm
 
     ctx = prefetch.build()
     payload = {"group_a_block": ctx, "headlines_since_last_run": [
@@ -122,7 +123,7 @@ def cmd_news_llm_test(_args):
 
 def cmd_news_llm_bench(args):
     import os
-    from news import bench
+    from news.eval import bench
 
     base = os.environ.get("LLM_BASE_URL", "https://integrate.api.nvidia.com/v1")
     key = os.environ.get("LLM_API_KEY", "")
@@ -144,7 +145,7 @@ def cmd_news_llm_bench(args):
 
 def cmd_news_replay(_args):
     from backtest import dataset
-    from news import replay
+    from news.eval import replay
 
     rows = dataset.load()
     results = replay.replay_labeled(rows)

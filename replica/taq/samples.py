@@ -18,7 +18,7 @@ Caveats (real, load-bearing):
     holds two 2026 ``EQY_US_NYSE_REF_IMBALANCES_YYYYMMDD.gz`` files and one
     older uncompressed ``NYSE_IMBALANCES_20200909``.
   * Two file shapes coexist: gzipped ``*.gz`` and older uncompressed CSV with no
-    extension. ``replica.nyse_taq.parse_opening`` opens with ``gzip``, so an
+    extension. ``replica.taq.parse.parse_opening`` opens with ``gzip``, so an
     uncompressed download is gzip-normalised on the way into the cache; every
     cached file therefore ends in ``.gz`` and feeds the parser unchanged.
   * These are daily files (tens of MB). ``download`` streams to disk and skips
@@ -34,7 +34,7 @@ import shutil
 import urllib.request
 
 from config import CACHE
-from replica import nyse_taq
+from replica.taq import parse as nyse_taq
 
 BASE_URL = ("https://ftp.nyse.com/Historical%20Data%20Samples/"
             "TAQ%20NYSE%20ORDER%20IMBALANCES/")

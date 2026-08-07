@@ -12,7 +12,9 @@ import time
 
 from config import CACHE, NY
 from macro import releases
-from news import gdelt, groupb, llm, prompt, timing
+from news.eval import timing
+from news.llm import groupb, prompt, runner as llm
+from news.sources import gdelt
 
 CHECKPOINT_AFTER = {1: "02:30", 2: "02:30", 3: "04:30", 4: "04:30",
                     5: "07:00", 6: "07:00", 7: "07:00", 8: "08:00",

@@ -8,7 +8,7 @@ provider with `python3 . news-llm-bench --models a,b,c`.
 import json
 import time
 
-from news import llm, prompt
+from news.llm import prompt, runner as llm
 
 SHORTLIST = (
     "deepseek-ai/deepseek-v4-pro",
