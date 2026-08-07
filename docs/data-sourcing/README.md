@@ -4,13 +4,14 @@ Everything we established while sourcing the **Track-3 auction layer** (the open
 microstructure that lets us predict the official SPX 9:30 open before the futures crowd).
 Captured 2026-07-18; research **parked** here pending account/access decisions.
 
-The quick-reference table lives at repo root in [`data_sources.md`](../../data_sources.md).
+The quick-reference table is [00-quick-reference.md](00-quick-reference.md).
 This directory is the detailed reasoning behind it.
 
 ## Files
 
 | File | What's in it |
 |---|---|
+| [00-quick-reference.md](00-quick-reference.md) | Quick-reference table: coverage, cost, and implementation status per source |
 | [01-requirements.md](01-requirements.md) | The 4 data types we need, hist vs live, and the pipeline seams they feed |
 | [02-vendors-evaluated.md](02-vendors-evaluated.md) | Every vendor/source assessed — coverage matrix + per-vendor verdict |
 | [03-decided-stack.md](03-decided-stack.md) | The chosen sources per need, cost, and the adapters left to build |
