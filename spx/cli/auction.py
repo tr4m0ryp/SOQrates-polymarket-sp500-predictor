@@ -2,8 +2,8 @@
 
 
 def cmd_noii_deviation(args):
-    from spx.replica import deviation
-    from spx.replica.itch import parse as itch
+    from spx.replica.core import deviation
+    from spx.replica.vendors.itch import parse as itch
     from spx.data import weights as wmod
     try:
         w = {r["ticker"]: r["weight"] for r in wmod.load()}
@@ -38,7 +38,7 @@ def cmd_noii_deviation(args):
 
 
 def cmd_lseg_status(_args):
-    from spx.replica.lseg import tick_history as lseg
+    from spx.replica.vendors.lseg import tick_history as lseg
     try:
         lseg.auth_token()
         print("DataScope Select credentials OK - token issued.")
@@ -51,7 +51,7 @@ def cmd_lseg_status(_args):
 def cmd_lseg_pull(args):
     from spx.config import CACHE
     from spx.data import weights as wmod
-    from spx.replica.lseg import parse as lseg_parse, tick_history as lseg
+    from spx.replica.vendors.lseg import parse as lseg_parse, tick_history as lseg
 
     rows = wmod.load()
     nas = [r["ticker"] for r in rows if r["exchange"] == "NASDAQ"]
@@ -69,8 +69,8 @@ def cmd_lseg_pull(args):
 
 
 def cmd_databento_status(_args):
-    from spx.replica.databento import source
-    from spx.replica.databento.client import DatabentoError
+    from spx.replica.vendors.databento import source
+    from spx.replica.vendors.databento.client import DatabentoError
     try:
         datasets = source.ping()
     except DatabentoError as e:
@@ -85,8 +85,8 @@ def cmd_databento_status(_args):
 
 
 def cmd_databento_pull(args):
-    from spx.replica.databento import source, schemas
-    from spx.replica.databento.client import DatabentoError
+    from spx.replica.vendors.databento import source, schemas
+    from spx.replica.vendors.databento.client import DatabentoError
     try:
         res = source.pull_day(args.date)
     except DatabentoError as e:
@@ -108,12 +108,12 @@ def cmd_stage3(args):
     from spx.config import CACHE
     from spx.data import yahoo
     from spx.replica import pipeline
-    from spx.replica.lseg import parse as lseg_parse
+    from spx.replica.vendors.lseg import parse as lseg_parse
 
     src = getattr(args, "source", None) or (
         "databento" if os.environ.get("DATABENTO_API_KEY") else "lseg")
     if src == "databento":
-        from spx.replica.databento import source
+        from spx.replica.vendors.databento import source
         if not source.cached(args.date):
             print(f"no cached databento pull for {args.date} - run: "
                   f"databento-pull --date {args.date}")
@@ -163,8 +163,8 @@ def cmd_stage3(args):
 def cmd_replica_sim(_args):
     """Synthetic self-test: validates the MC assembly today, without data."""
     import math
-    from spx.replica.montecarlo import McConstituent, simulate, apply_prints
-    from spx.replica.timing import TimingModel
+    from spx.replica.core.montecarlo import McConstituent, simulate, apply_prints
+    from spx.replica.core.timing import TimingModel
 
     # independent-case check vs analytic normal approximation
     cons = [McConstituent(f"S{i}", 1.0, 0.5, 0.7, 0.0) for i in range(50)]

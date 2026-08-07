@@ -23,11 +23,11 @@ from datetime import datetime, time as dtime, timezone
 
 from spx.config import CACHE, NY
 from spx.data import weights as wmod
-from spx.replica.databento.client import DatabentoError, get_range, _key
-from spx.replica.databento.historical import (NASDAQ_DATASET, NYSE_DATASET,
+from spx.replica.vendors.databento.client import DatabentoError, get_range, _key
+from spx.replica.vendors.databento.historical import (NASDAQ_DATASET, NYSE_DATASET,
                                            cross_print_map,
                                            snapshots as _group_snapshots)
-from spx.replica.databento.schemas import normalize_imbalance, normalize_trade
+from spx.replica.vendors.databento.schemas import normalize_imbalance, normalize_trade
 
 _META = "https://hist.databento.com/v0"
 

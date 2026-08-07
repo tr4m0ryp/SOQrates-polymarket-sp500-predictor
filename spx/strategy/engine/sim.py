@@ -13,7 +13,7 @@ day's real traded volume.
 """
 import math
 
-from spx.strategy.execution import ExecModel
+from spx.strategy.engine.execution import ExecModel
 from spx.strategy.rules import STRATEGIES
 
 START_BANKROLL = 100.0

@@ -10,10 +10,11 @@ import json
 import random
 
 from spx.config import CACHE
-from spx.strategy import data, sim
+from spx.strategy import data
+from spx.strategy.engine import sim
 from spx.strategy.data import market_p_at
-from spx.strategy.execution import ExecModel
-from spx.strategy.rules import _tok
+from spx.strategy.engine.execution import ExecModel
+from spx.strategy.rules.base import _tok
 
 OUT_FILE = CACHE / "bootstrap_bands.json"
 B = 10_000

@@ -25,7 +25,8 @@ def _half(days, which):
 
 
 def cmd_strategy_run(args):
-    from spx.strategy import data, sim
+    from spx.strategy import data
+    from spx.strategy.engine import sim
     days = _half(data.build(), args.half)
     res = sim.run(args.family, days, json.loads(args.params))
     if args.json:
@@ -38,7 +39,8 @@ def cmd_strategy_run(args):
 
 
 def cmd_strategy_search(args):
-    from spx.strategy import data, sim
+    from spx.strategy import data
+    from spx.strategy.engine import sim
     days = _half(data.build(), args.half)
     grids = {
         "hold": [{"hour": h, "edge": e, "gate": g, "maker": mk}
