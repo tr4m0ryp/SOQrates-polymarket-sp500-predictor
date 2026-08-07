@@ -107,7 +107,8 @@ def cmd_stage3(args):
     import os
     from config import CACHE
     from data import yahoo
-    from replica import lseg_parse, pipeline
+    from replica import pipeline
+    from replica.lseg import parse as lseg_parse
 
     src = getattr(args, "source", None) or (
         "databento" if os.environ.get("DATABENTO_API_KEY") else "lseg")
