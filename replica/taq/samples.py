@@ -6,7 +6,7 @@ NYSE hosts a handful of full-day order-imbalance captures in an open directory
     https://ftp.nyse.com/Historical%20Data%20Samples/TAQ%20NYSE%20ORDER%20IMBALANCES/
 
 This module lists what is published, streams a chosen day into ``CACHE/nyse_taq/``,
-and hands the local file to the EXISTING CSV parser in ``replica.nyse_taq``
+and hands the local file to the EXISTING CSV parser in ``replica.taq.parse``
 (``parse_opening``) to recover the opening-auction (0930) indicative clearing
 price stream + imbalance quantities for chosen symbols. That NYSE leg is the
 replica's estimate of the official opening print for NYSE-listed names.
@@ -165,7 +165,7 @@ def download(date_or_filename: str) -> str:
 
 def imbalance_for_date(date_or_filename: str, symbols,
                        until: str = "09:30:10") -> dict:
-    """Download the day's sample then parse it with ``replica.nyse_taq``.
+    """Download the day's sample then parse it with ``replica.taq.parse``.
 
     ``symbols`` is any iterable of tickers (e.g. ``["ELV", "USB"]``, matched
     case-insensitively) or ``None`` to keep every symbol. ``until`` bounds the

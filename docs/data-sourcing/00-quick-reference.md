@@ -17,7 +17,7 @@ Most-reliable-and-cheapest single source per row. Detailed multi-option table be
 
 **Auction — LIVE (production):** all four legs → **IBKR** (tick 225 + L1, one EU-reachable
 account, both venues), **~$17–40/mo total**. Beats Webull-free+Massive-$49 on reliability *and*
-cost. To wire. (Webull OpenAPI = free Nasdaq-only alt, `webull_noii.py` already built.)
+cost. To wire. (Webull OpenAPI = free Nasdaq-only alt, `replica/stitch/webull.py` already built.)
 
 **News layer:** macro dates → FRED (free key); consensus + earnings → FMP free tier; live wire
 → Alpaca news WS (free). All to wire except FRED (running, NFP-only).
@@ -105,8 +105,8 @@ taqm_common."* Only the **samples** (`taqsamp_all`, `taqmsamp_all`) are availabl
 | Source | Module | State before |
 |---|---|---|
 | Alpaca auctions (#3) + quotes (#4) | `data/alpaca.py` | new |
-| Webull live NOII (#1) | `replica/webull_noii.py` | new |
-| Nasdaq ITCH sample fetcher (#1 hist) | `replica/itch_samples.py` | new (parser `itch.py` exists) |
-| NYSE TAQ sample fetcher (#2 hist) | `replica/nyse_taq_samples.py` | new (parser `nyse_taq.py` exists) |
-| Massive live NYSE imbalance (#2 live) | `replica/feeds.py` | stub to finish |
+| Webull live NOII (#1) | `replica/stitch/webull.py` | new |
+| Nasdaq ITCH sample fetcher (#1 hist) | `replica/itch/samples.py` | new (parser `replica/itch/parse.py` exists) |
+| NYSE TAQ sample fetcher (#2 hist) | `replica/taq/samples.py` | new (parser `replica/taq/parse.py` exists) |
+| Massive live NYSE imbalance (#2 live) | `replica/stitch/feeds.py` | stub to finish |
 | Alpaca news stream (news wire) | `news/alpaca_stream.py` | new |

@@ -1,7 +1,7 @@
 """Stage-3 pipeline: auction snapshots -> first-tick replica -> fused P(up).
 
 One code path for both uses:
-  backtest : snapshots from an LSEG Tick History pull (lseg_parse.snapshots)
+  backtest : snapshots from an LSEG Tick History pull (replica.lseg.parse.snapshots)
   live     : snapshots from NCDS/dxFeed + Massive normalize() dicts
 
 Nasdaq names enter at their indicative price (they print at 9:30:00);

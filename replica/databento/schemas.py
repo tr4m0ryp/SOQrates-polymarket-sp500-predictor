@@ -8,7 +8,7 @@ and keep raw `ts_ns` (epoch nanoseconds) for the timing model.
 
 The indicative-clearing selection (`pred_open`) lives in exactly ONE place
 (`_indicative`) so it is finalized on the first keyed pull, exactly like
-replica/lseg_parse. Run `discover(records)` on that first pull to dump the
+replica/lseg/parse. Run `discover(records)` on that first pull to dump the
 observed field names + counts and confirm the maps below.
 """
 from datetime import datetime, timezone
@@ -175,7 +175,7 @@ def normalize_imbalance(rec, venue=None, symbol=None) -> dict:
 
     `pred_open` is the indicative clearing price (NOT the realized print):
     ind_match_price else cont_book_clr_price else ref_price. Shape mirrors
-    replica/lseg_parse snapshots (ticker/pred_open/near/far/ref/paired/...).
+    replica/lseg/parse snapshots (ticker/pred_open/near/far/ref/paired/...).
     """
     ts_ns = _to_ns(_field(rec, "ts_event"))
     sym = _symbol(rec, symbol)
