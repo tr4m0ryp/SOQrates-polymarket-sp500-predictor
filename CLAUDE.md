@@ -19,7 +19,8 @@ market. Model background, validated numbers, and roadmap live in project memory
 Four root directories only - do not add more:
 
 - `spx/` all source code (packages below).
-- `docs/` design notes (`approach.tex`) + the data-sourcing knowledge base.
+- `docs/` design notes (`approach.tex`), the data-sourcing knowledge base,
+  and `context/` (the team context pack, see below).
 - `research/` non-code artifacts: `papers/` (LaTeX + scribe state),
   `plots/` (research plots), `figures/` (figure manifest).
 - `tools/` standalone scripts outside the import graph: `wrds_probe.py`
