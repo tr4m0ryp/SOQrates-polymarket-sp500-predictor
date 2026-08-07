@@ -22,11 +22,22 @@ market. Model background, validated numbers, and roadmap live in project memory
   from the FRED release-dates API into `.cache/releases.json`.
 - `model/` regime scaler + model cores (v1.2 ES-only, v1.3 adds
   VIX1D sigma + NQ spread) + inverse-variance fusion.
-- `replica/` stage-3 auction assembly: montecarlo (distributional first
+- `replica/` stage-3 auction assembly core: montecarlo (distributional first
   tick + pivotal names + print filtering), timing (per-stock print-delay
-  model, venue priors until LSEG labels), LSEG/Databento/feed clients.
-- `pm/` Polymarket gamma-api client + edge calculator.
+  model, venue priors until LSEG labels), assembly, deviation, pipeline.
+  Vendor subpackages: `databento/` (primary), `lseg/` (fallback),
+  `itch/` + `taq/` (raw-file parsers + public sample fetchers),
+  `stitch/` (free live fallbacks: Webull NOII + Massive imbalance).
+- `news/` LLM news layer: `sources/` (GDELT + Alpaca wires), `llm/`
+  (provider runner, prompts, Group-B weight), `eval/` (mistake inventory,
+  timing profile, replay, bench); prefetch + schedule jobs at package root.
+- `pm/` Polymarket gamma-api client + edge calculator + price history.
 - `backtest/` dataset builder (`.cache/dataset.json`) + metric runner.
+- `strategy/` Polymarket trading-strategy sim: rules, sizing, execution,
+  bootstrap confidence bands.
+- `cli/` argument parsing + command bodies (market/sources/auction/news/strategy).
+- `data_sourcing/` standalone WRDS probe (runs under `.venv-wrds`, not the
+  package import graph).
 
 ## Commands
 
