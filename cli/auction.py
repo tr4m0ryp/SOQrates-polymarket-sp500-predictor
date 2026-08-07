@@ -38,7 +38,7 @@ def cmd_noii_deviation(args):
 
 
 def cmd_lseg_status(_args):
-    from replica import lseg_tick_history as lseg
+    from replica.lseg import tick_history as lseg
     try:
         lseg.auth_token()
         print("DataScope Select credentials OK - token issued.")
