@@ -10,7 +10,7 @@ import time
 
 from config import CACHE, NY
 from macro import releases
-from news import gdelt
+from news.sources import gdelt
 
 OUT_DIR = CACHE / "news_llm_replay"
 CHECKPOINTS = {"04:00": 9.0, "07:00": 3.0, "08:35": 2.0}   # ET -> hours back

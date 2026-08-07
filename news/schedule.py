@@ -1,6 +1,6 @@
 """Group-B fetch routines: cadence per feed, checkpoints, triggers, budget.
 
-Derived from the decisive-hour profile (news/timing.py): moves spread all
+Derived from the decisive-hour profile (news/eval/timing.py): moves spread all
 night with 31% in the 8:00-9:00 hour, so scheduled runs cluster late and
 triggers cover the gaps between them.
 """

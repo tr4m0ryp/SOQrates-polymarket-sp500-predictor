@@ -31,7 +31,7 @@ import shutil
 import urllib.request
 
 from config import CACHE
-from replica import itch
+from replica.itch import parse as itch
 
 BASE_URL = "https://emi.nasdaq.com/ITCH/Nasdaq%20ITCH/"
 NOII_URL = BASE_URL + "NOII/"
