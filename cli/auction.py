@@ -2,7 +2,8 @@
 
 
 def cmd_noii_deviation(args):
-    from replica import itch, deviation
+    from replica import deviation
+    from replica.itch import parse as itch
     from data import weights as wmod
     try:
         w = {r["ticker"]: r["weight"] for r in wmod.load()}
