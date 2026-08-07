@@ -24,7 +24,7 @@ read when you touch that area.
 | [06-news.md](06-news.md) | The LLM News Layer | `spx/news/` reads overnight headlines through a provider-agnostic LLM runner and adds a fitted, bounded voice on conflicted days. | |
 | [07-polymarket-and-strategy.md](07-polymarket-and-strategy.md) | Polymarket and the Strategy Lab | `spx/pm/` prices the live edge; `spx/strategy/` simulates betting rules against archived minute curves, which are midpoints, not trades. | |
 | [08-backtest-and-evaluation.md](08-backtest-and-evaluation.md) | Backtesting and Evaluation | The 480-day dataset, chronological train/test halves, the quirk-day safety table, and White's reality check in `spx/backtest/`. | |
-| [09-commands.md](09-commands.md) | CLI Commands | All 21 subcommands with prerequisites and ordering dependencies, such as `stage3` needing a prior `databento-pull`. | yes |
+| [09-commands.md](09-commands.md) | CLI Commands | All 24 subcommands with prerequisites and ordering dependencies, such as `stage3` needing a prior `databento-pull`. | yes |
 | [10-research-artifacts.md](10-research-artifacts.md) | Research Artifacts | Where figures, the NeurIPS-format paper, and the methodology drafts live, and the Overleaf sync rule (slug `soqrates`). | |
 | [11-conventions-and-environment.md](11-conventions-and-environment.md) | Conventions and Environment | House rules, the full `.cache/` file map, and every environment key with the module that reads it. | |
 
