@@ -12,7 +12,7 @@ GREEN = "#008300"     # series 2: guarded min($50, 20% bankroll)
 def bankroll_band(out_path="research/plots/strategy_bankroll_50_band.png"):
     """Bootstrap-band version of the bankroll figure: the two headline
     records (first-signal flat $50; hour-4 hold at 10% of bankroll) with
-    their 5-95% day-resampled bootstrap bands from strategy/bootstrap.py."""
+    their 5-95% day-resampled bootstrap bands from analysis/bootstrap.py."""
     import json
     import matplotlib
     matplotlib.use("Agg")

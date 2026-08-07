@@ -13,7 +13,7 @@ def cmd_news_mistakes(args):
     out = mistakes.build(rows, ModelProd().fit(train))
 
     labels = {}
-    lf = ROOT / "spx" / "news" / "event_labels.json"
+    lf = ROOT / "spx" / "news" / "eval" / "event_labels.json"
     if lf.exists():
         labels = json.loads(lf.read_text())
 

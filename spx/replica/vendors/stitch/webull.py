@@ -4,8 +4,8 @@ The ONLY free live NOII (Net Order Imbalance Indicator) leg in this repo. It
 polls Webull's auction-snapshot endpoint every 5s across the 9:28-9:30 ET
 opening window and normalizes each snapshot into the same dict the ITCH path
 produces (paired_shares / imbalance_shares / imbalance_direction / far_price /
-near_price / current_reference_price), so replica/assembly.py and
-replica/montecarlo.py consume it unchanged.
+near_price / current_reference_price), so replica/core/assembly.py and
+replica/core/montecarlo.py consume it unchanged.
 
 Caveats (read before trusting live output):
   * FREE but not tick-continuous - 5-second snapshots, so the 9:29:5x preview

@@ -76,7 +76,7 @@ def replay_day(row: dict, label: str | None = None,
 
 
 def replay_labeled(rows: list[dict]) -> list[dict]:
-    labels = json.loads((CACHE.parent / "news" / "event_labels.json").read_text())
+    labels = json.loads((CACHE.parent / "spx" / "news" / "eval" / "event_labels.json").read_text())
     by_date = {r["date"]: r for r in rows}
     out = []
     for date, label in labels.items():
