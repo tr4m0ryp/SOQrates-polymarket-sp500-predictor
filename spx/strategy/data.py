@@ -8,8 +8,8 @@ and cap stakes by real liquidity (sim.LIQ_FRAC)."""
 import datetime as dt
 import json
 
-from config import CACHE, NY
-from pm import history
+from spx.config import CACHE, NY
+from spx.pm import history
 
 _CACHE_FILE = CACHE / "strategy_days.json"
 LAST_MINUTE = 9 * 60 + 29           # 9:29 ET, last tradeable minute
@@ -39,7 +39,7 @@ def _news_p(row: dict, h: int, mu: float, sig: float) -> float:
     groupb constants are fitted on the dataset train half only (disjoint
     from all strategy days), so this signal carries no look-ahead."""
     from math import erf, sqrt
-    from news.llm import groupb
+    from spx.news.llm import groupb
     gaps = {k: v for k, v in row["es"].items() if k <= h}
     sh, delta = groupb.last_shock(gaps)
     recent = sh is not None and h - sh <= groupb.RECENT_HOURS
@@ -57,8 +57,8 @@ def build(rebuild: bool = False) -> list[dict]:
     if not rebuild and _CACHE_FILE.exists():
         return json.loads(_CACHE_FILE.read_text())
 
-    from backtest import dataset
-    from model.core import ModelProd
+    from spx.backtest import dataset
+    from spx.model.core import ModelProd
     rows = dataset.load()
     train, _ = dataset.split(rows)
     model = ModelProd().fit(train)
@@ -121,7 +121,7 @@ def _llm_p(day: dict, minute: int) -> float | None:
     model at the in-force hour, using the production groupb.voice() math.
     Falls back to the plain model P when no voice exists."""
     from math import erf, sqrt
-    from news.llm import groupb
+    from spx.news.llm import groupb
     voices = _llm_voices().get(day["date"])
     base = model_p_at(day, minute, "model")
     if not voices or base is None:

@@ -2,8 +2,8 @@
 first-signal entry with the price gate, then checkpoint monitors that sell
 and optionally FLIP the position when the live signal turns against it.
 """
-from strategy.data import LAST_MINUTE, market_p_at
-from strategy.rules import _base, _edge_side, _enter_taker, _resolve, _sig, _tok
+from spx.strategy.data import LAST_MINUTE, market_p_at
+from spx.strategy.rules import _base, _edge_side, _enter_taker, _resolve, _sig, _tok
 
 CHECK_MINUTES = (8 * 60 + 35, 9 * 60)     # 8:35 release check, 9:00 refresh
 

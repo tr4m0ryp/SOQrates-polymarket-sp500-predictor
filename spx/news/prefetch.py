@@ -16,8 +16,8 @@ import datetime as dt
 import json
 import urllib.request
 
-from config import CACHE, NY
-from macro import releases
+from spx.config import CACHE, NY
+from spx.macro import releases
 
 _UA = {"User-Agent": "Mozilla/5.0"}
 _GAMMA = "https://gamma-api.polymarket.com/events"

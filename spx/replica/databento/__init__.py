@@ -7,13 +7,13 @@ share the schemas.py normalize_* functions, so both yield identical dicts.
 
 Preserved public names: get_range, nasdaq_noii, nyse_imbalance.
 """
-from replica.databento.client import (DatabentoError, get_range, live_client,
+from spx.replica.databento.client import (DatabentoError, get_range, live_client,
                                        _key)
-from replica.databento.historical import (cross_print_map, cross_prints,
+from spx.replica.databento.historical import (cross_print_map, cross_prints,
                                            nasdaq_noii, nbbo_quotes,
                                            nyse_imbalance, snapshots)
-from replica.databento.live import stream_imbalance
-from replica.databento.schemas import (discover, normalize_imbalance,
+from spx.replica.databento.live import stream_imbalance
+from spx.replica.databento.schemas import (discover, normalize_imbalance,
                                         normalize_quote, normalize_trade)
 
 __all__ = [

@@ -102,7 +102,7 @@ def _label(fam: str, prm: dict) -> str:
 
 
 def day_series(fam: str, prm: dict, days: list[dict]) -> list[float]:
-    from strategy import sim
+    from spx.strategy import sim
     res = sim.run(fam, days, _flat(prm))
     by_date = {d["date"]: d["pnl"] for d in res["days"]}
     return [float(by_date.get(day["date"], 0.0)) for day in days]
@@ -148,7 +148,7 @@ def reality_check(series: list[list[float]], draws: int = DRAWS,
 
 
 def main() -> None:
-    from strategy import data
+    from spx.strategy import data
     days = data.build()
     _, test = data.split(days)
     print(f"test half: {len(test)} days {test[0]['date']}..{test[-1]['date']}"

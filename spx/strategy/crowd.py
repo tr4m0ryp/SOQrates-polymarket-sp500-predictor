@@ -9,8 +9,8 @@ carrying binary resolution risk.
 import json
 from statistics import NormalDist
 
-from config import CACHE
-from strategy.data import market_p_at
+from spx.config import CACHE
+from spx.strategy.data import market_p_at
 
 _N = NormalDist()
 _CACHE_FILE = CACHE / "crowd_fit.json"

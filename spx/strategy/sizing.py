@@ -5,7 +5,7 @@ book), so there is an optimal stake where marginal edge = marginal impact.
 optimal_stake() maximizes expected profit E = p_true*shares - cost under the
 execution model; rules use it via params {"sizing":"optimal"}.
 """
-from strategy.execution import ExecModel
+from spx.strategy.execution import ExecModel
 
 
 def optimal_stake(p_true: float, p_tok: float, em: ExecModel, date: str,

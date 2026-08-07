@@ -14,8 +14,8 @@ auction mechanics, not news.
 import datetime as dt
 import json
 
-from config import CACHE, CONF_COMMIT
-from macro import releases
+from spx.config import CACHE, CONF_COMMIT
+from spx.macro import releases
 
 SWING_PCT = 0.35
 PRED_HOUR = 0

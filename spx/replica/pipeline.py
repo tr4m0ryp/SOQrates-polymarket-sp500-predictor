@@ -9,11 +9,11 @@ NYSE names are carried at prior close unless their imbalance feed shows a
 credible instant open - the measured NYSE indicative noise (~29bp at
 9:29:50 vs ~0-5bp for Nasdaq NOII) says: trust Nasdaq, default-stale NYSE.
 """
-from data import weights as wmod
-from model import fusion
-from replica.assembly import Constituent, first_tick_gap, replica_sigma
-from replica.montecarlo import McConstituent, simulate
-from replica.timing import TimingModel
+from spx.data import weights as wmod
+from spx.model import fusion
+from spx.replica.assembly import Constituent, first_tick_gap, replica_sigma
+from spx.replica.montecarlo import McConstituent, simulate
+from spx.replica.timing import TimingModel
 
 NYSE_TRUST_DEFAULT = False       # flip per-name once live data proves timing
 

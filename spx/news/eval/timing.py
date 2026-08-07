@@ -7,7 +7,7 @@ decisive moves had already happened?"
 """
 import json
 
-from config import CACHE
+from spx.config import CACHE
 
 HOURS = range(1, 10)
 

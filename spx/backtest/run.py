@@ -1,7 +1,7 @@
 """Backtest runner: metrics table + quirk-day handling for each model."""
-from config import CONF_COMMIT, QUIRK_DAYS
-from model.core import Baseline, ModelV12, ModelV13
-from backtest import dataset
+from spx.config import CONF_COMMIT, QUIRK_DAYS
+from spx.model.core import Baseline, ModelV12, ModelV13
+from spx.backtest import dataset
 
 EVAL_HOURS = (0, 4, 7, 9)
 

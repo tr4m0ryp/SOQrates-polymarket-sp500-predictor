@@ -14,8 +14,8 @@ Plus two stage-3 adapters that mirror replica/lseg/parse:
 """
 from collections import defaultdict
 
-from replica.databento.client import get_range
-from replica.databento.schemas import (normalize_imbalance, normalize_quote,
+from spx.replica.databento.client import get_range
+from spx.replica.databento.schemas import (normalize_imbalance, normalize_quote,
                                         normalize_trade)
 
 NASDAQ_DATASET = "XNAS.ITCH"

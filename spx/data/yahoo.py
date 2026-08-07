@@ -5,7 +5,7 @@ import urllib.parse
 import urllib.request
 import datetime as dt
 
-from config import NY
+from spx.config import NY
 
 _UA = {"User-Agent": "Mozilla/5.0"}
 

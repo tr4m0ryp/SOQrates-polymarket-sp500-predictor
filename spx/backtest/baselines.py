@@ -24,10 +24,10 @@ import datetime as dt
 import json
 import math
 
-from config import NY
-from backtest import dataset
-from model.core import ModelProd
-from pm.history import HIST_DIR
+from spx.config import NY
+from spx.backtest import dataset
+from spx.model.core import ModelProd
+from spx.pm.history import HIST_DIR
 
 PAPER_END = "2026-07-13"    # last dataset day when the paper numbers were run
 WINDOW = 200                # the paper's validated dataset window, days

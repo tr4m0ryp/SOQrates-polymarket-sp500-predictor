@@ -2,10 +2,10 @@
 import datetime as dt
 import json
 
-from config import CACHE, DATASET_DAYS, LOOKBACK_DAYS
-from data import futures, yahoo
-from macro import releases
-from model.regime import annotate_ewma
+from spx.config import CACHE, DATASET_DAYS, LOOKBACK_DAYS
+from spx.data import futures, yahoo
+from spx.macro import releases
+from spx.model.regime import annotate_ewma
 
 _CACHE_FILE = CACHE / "dataset.json"
 

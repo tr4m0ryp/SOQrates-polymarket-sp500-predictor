@@ -1,7 +1,7 @@
 """Argument parsing; command bodies live in market / sources / auction."""
 import argparse
 
-from cli import auction, market, newscmd, sources, strategy
+from spx.cli import auction, market, newscmd, sources, strategy
 
 
 def main():

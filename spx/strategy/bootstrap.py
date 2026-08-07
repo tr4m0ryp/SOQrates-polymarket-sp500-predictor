@@ -9,11 +9,11 @@ sim.run to the cent before any resampling. matplotlib stays in plot.py.
 import json
 import random
 
-from config import CACHE
-from strategy import data, sim
-from strategy.data import market_p_at
-from strategy.execution import ExecModel
-from strategy.rules import _tok
+from spx.config import CACHE
+from spx.strategy import data, sim
+from spx.strategy.data import market_p_at
+from spx.strategy.execution import ExecModel
+from spx.strategy.rules import _tok
 
 OUT_FILE = CACHE / "bootstrap_bands.json"
 B = 10_000

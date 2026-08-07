@@ -13,9 +13,9 @@ import queue
 import threading
 from datetime import time as dtime
 
-from config import NY
-from replica.databento.client import DatabentoError, live_client
-from replica.databento.schemas import normalize_imbalance
+from spx.config import NY
+from spx.replica.databento.client import DatabentoError, live_client
+from spx.replica.databento.schemas import normalize_imbalance
 
 WINDOW_START = dtime(9, 28)
 WINDOW_END = dtime(9, 30)

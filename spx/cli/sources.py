@@ -2,7 +2,7 @@
 
 
 def cmd_ground_truth(_args):
-    from data import ground_truth
+    from spx.data import ground_truth
     bad = ground_truth.audit()
     if not bad:
         print("yahoo and stooq agree on every official open (tol 0.75 pts)")
@@ -12,7 +12,7 @@ def cmd_ground_truth(_args):
 
 
 def cmd_weights(_args):
-    from data import weights
+    from spx.data import weights
     rows = weights.load()
     rows.sort(key=lambda r: -r["weight"])
     print(f"{len(rows)} constituents; Nasdaq-listed share of weight: "
@@ -22,7 +22,7 @@ def cmd_weights(_args):
 
 
 def cmd_calendar_refresh(_args):
-    from macro import releases
+    from spx.macro import releases
     try:
         out = releases.refresh()
     except RuntimeError as e:

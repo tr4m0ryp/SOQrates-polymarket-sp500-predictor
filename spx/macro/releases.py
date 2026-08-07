@@ -12,7 +12,7 @@ import json
 import os
 import urllib.request
 
-from config import CACHE
+from spx.config import CACHE
 
 _CACHE_FILE = CACHE / "releases.json"
 _MANUAL_FILE = CACHE / "releases_manual.json"
