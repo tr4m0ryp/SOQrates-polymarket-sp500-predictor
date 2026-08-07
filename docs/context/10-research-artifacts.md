@@ -18,10 +18,10 @@ actually includes.
 `research/figures/manifest.json` is the ledger for these figures. It is a JSON
 array with one object per figure, fields: `id`, `file` (repo-relative path
 into `research/plots/`), `status`, `caption_draft`, `producing_script`, plus
-`data_source` and `notes`. Eight entries exist: seven `placed` (in the paper)
+`data_source` and `notes`. Nine entries exist: eight `placed` (in the paper)
 and one `waived` (`strategy_bankroll_50`, superseded by the band version).
 
-The `producing_script` field is the honest part. Five figures have
+The `producing_script` field is the honest part. Six figures have
 `producing_script: null`: their generating scripts were session scratch and
 were not retained, so they cannot be regenerated and the captions were written
 from the images plus project memory. Three are regenerable:
