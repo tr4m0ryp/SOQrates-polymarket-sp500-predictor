@@ -22,7 +22,7 @@ All candidates run in flat-stake mode ($100 research stakes; bet_frac /
 stake_abs stripped) so mean daily PnL is in common units. Days the volume
 gate skips count as $0 days: the 58-day test grid is fixed.
 
-Run from the repo root:  python3 -m backtest.reality_check
+Run from the repo root:  python3 -m spx.backtest.reality_check
 """
 import math
 import random

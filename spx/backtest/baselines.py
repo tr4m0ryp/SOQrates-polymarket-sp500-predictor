@@ -18,7 +18,7 @@ half. Methods:
 Metrics per decision time: direction accuracy (with n) and Brier score,
 under the run.py convention that p > 0.5 calls UP. A paired block repeats
 model rows on the exact crowd-covered subset so crowd-vs-model cells are
-apples-to-apples. Run from the repo root:  python3 -m backtest.baselines
+apples-to-apples. Run from the repo root:  python3 -m spx.backtest.baselines
 """
 import datetime as dt
 import json
