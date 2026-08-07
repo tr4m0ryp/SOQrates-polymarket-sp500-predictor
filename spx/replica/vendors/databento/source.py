@@ -4,7 +4,7 @@ The CLI-facing bridge between the Databento client and the auction pipeline.
 `pull_day` fetches the four auction data types for every S&P constituent over
 the pre-open window and caches the raw JSON per date; `snapshots` and `prints`
 re-read that cache and hand stage3 / the timing model the SAME shapes the LSEG
-path produces (replica/lseg/parse.snapshots and {ticker: (price, ts_ns)}).
+path produces (replica/vendors/lseg/parse.snapshots and {ticker: (price, ts_ns)}).
 
   pull_day(date)      -> {counts, errors, records, dir}   (raw JSON cached)
   snapshots(date)     -> {ticker: [snap w/ pred_open]}     (== lseg_parse)

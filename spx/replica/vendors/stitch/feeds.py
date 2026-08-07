@@ -11,7 +11,7 @@ NYSE leg   : Massive (ex-Polygon.io) "Imbalances Expansion" websocket - LIVE
                a  = auction type (M core-opening, C closing, H halt/resume)
                at = planned auction time (epoch ms)
 
-Both normalize into the same dicts replica/assembly.py consumes
+Both normalize into the same dicts replica/core/assembly.py consumes
 (ticker / pred_open / paired / imbalance / venue / ts), so swapping back to
 Databento later is a one-line change in the caller.
 

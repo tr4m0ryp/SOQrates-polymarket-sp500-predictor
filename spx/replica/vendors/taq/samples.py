@@ -6,7 +6,7 @@ NYSE hosts a handful of full-day order-imbalance captures in an open directory
     https://ftp.nyse.com/Historical%20Data%20Samples/TAQ%20NYSE%20ORDER%20IMBALANCES/
 
 This module lists what is published, streams a chosen day into ``CACHE/nyse_taq/``,
-and hands the local file to the EXISTING CSV parser in ``replica.taq.parse``
+and hands the local file to the EXISTING CSV parser in ``replica.vendors.taq.parse``
 (``parse_opening``) to recover the opening-auction (0930) indicative clearing
 price stream + imbalance quantities for chosen symbols. That NYSE leg is the
 replica's estimate of the official opening print for NYSE-listed names.
@@ -18,7 +18,7 @@ Caveats (real, load-bearing):
     holds two 2026 ``EQY_US_NYSE_REF_IMBALANCES_YYYYMMDD.gz`` files and one
     older uncompressed ``NYSE_IMBALANCES_20200909``.
   * Two file shapes coexist: gzipped ``*.gz`` and older uncompressed CSV with no
-    extension. ``replica.taq.parse.parse_opening`` opens with ``gzip``, so an
+    extension. ``replica.vendors.taq.parse.parse_opening`` opens with ``gzip``, so an
     uncompressed download is gzip-normalised on the way into the cache; every
     cached file therefore ends in ``.gz`` and feeds the parser unchanged.
   * These are daily files (tens of MB). ``download`` streams to disk and skips
@@ -165,7 +165,7 @@ def download(date_or_filename: str) -> str:
 
 def imbalance_for_date(date_or_filename: str, symbols,
                        until: str = "09:30:10") -> dict:
-    """Download the day's sample then parse it with ``replica.taq.parse``.
+    """Download the day's sample then parse it with ``replica.vendors.taq.parse``.
 
     ``symbols`` is any iterable of tickers (e.g. ``["ELV", "USB"]``, matched
     case-insensitively) or ``None`` to keep every symbol. ``until`` bounds the

@@ -63,7 +63,7 @@ def cmd_lseg_pull(args):
     path = out / f"{args.date}.csv"
     path.write_bytes(payload)
     print(f"saved {path} ({len(payload)/1e6:.1f} MB)")
-    print("\ntop FIDs seen (extend replica/lseg/parse.py FID_MAP with auction fields):")
+    print("\ntop FIDs seen (extend replica/vendors/lseg/parse.py FID_MAP with auction fields):")
     for name, n in list(lseg_parse.discover(payload).items())[:25]:
         print(f"  {name}: {n}")
 
