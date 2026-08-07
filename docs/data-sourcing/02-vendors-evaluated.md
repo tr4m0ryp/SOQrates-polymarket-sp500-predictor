@@ -31,7 +31,7 @@ backfill; `live` = real-time; `fwd` = self-record forward only.
 ## Key per-vendor notes
 
 **Databento** — the only usage-metered vendor that covers all four, both venues, hist+live,
-arbitrary dates. Client built (`spx/replica/databento/`). Blocked only by card rejection; the
+arbitrary dates. Client built (`spx/replica/vendors/databento/`). Blocked only by card rejection; the
 advertised $125 free credits were adversarially **refuted** — not a workaround.
 
 **WRDS** — NYSE Daily TAQ gives NYSE imbalance + cross prints (ms ts + venue) + NBBO, free,
