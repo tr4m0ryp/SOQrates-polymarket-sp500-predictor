@@ -24,7 +24,7 @@ suggestions were repeatedly wrong; these are what actually held up.
 - NOII = **Nasdaq-listed only** ("NASDAQ names… NYSE's separate feed" excluded). Does **not**
   provide NYSE imbalance.
 - The official **OpenAPI** has a documented `/market-data/stock/noii/snapshot` endpoint — the
-  compliant way in (built as `replica/stitch/webull.py`).
+  compliant way in (built as `spx/replica/stitch/webull.py`).
 - Reverse-engineering the desktop client / copying tokens = **ToS + market-data-license
   violation** (retail Level 2 is display-only). Not built.
 

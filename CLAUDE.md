@@ -11,10 +11,21 @@ market. Model background, validated numbers, and roadmap live in project memory
 - matplotlib only inside plotting helpers.
 - No C/C++/Rust: the system is network-bound, one prediction/day; per-second
   data only in the 9:28-9:30 window. Do not add compiled components.
-- Files < 300 lines; split into the existing domain tree at repo root, never flat.
-- Research plots live in `plots/`; run all commands from the repo root.
+- Files < 300 lines; split into the existing domain tree inside `spx/`, never flat.
+- Research plots live in `research/plots/`; run all commands from the repo root.
 
-## Package map
+## Layout
+
+Four root directories only - do not add more:
+
+- `spx/` all source code (packages below).
+- `docs/` design notes (`approach.tex`) + the data-sourcing knowledge base.
+- `research/` non-code artifacts: `papers/` (LaTeX + scribe state),
+  `plots/` (research plots), `figures/` (figure manifest).
+- `tools/` standalone scripts outside the import graph: `wrds_probe.py`
+  (runs under `.venv-wrds`).
+
+## Package map (all under `spx/`)
 
 - `data/` fetchers: Yahoo chart API (ES/NQ/YM/^GSPC/^VIX1D), stooq
   ground-truth cross-check, Slickcharts + nasdaqlisted.txt -> index weights.
@@ -36,8 +47,6 @@ market. Model background, validated numbers, and roadmap live in project memory
 - `strategy/` Polymarket trading-strategy sim: rules, sizing, execution,
   bootstrap confidence bands.
 - `cli/` argument parsing + command bodies (market/sources/auction/news/strategy).
-- `data_sourcing/` standalone WRDS probe (runs under `.venv-wrds`, not the
-  package import graph).
 
 ## Commands
 
