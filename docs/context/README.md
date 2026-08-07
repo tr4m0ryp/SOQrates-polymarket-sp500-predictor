@@ -27,6 +27,7 @@ read when you touch that area.
 | [09-commands.md](09-commands.md) | CLI Commands | All 24 subcommands with prerequisites and ordering dependencies, such as `stage3` needing a prior `databento-pull`. | yes |
 | [10-research-artifacts.md](10-research-artifacts.md) | Research Artifacts | Where figures, the NeurIPS-format paper, and the methodology drafts live, and the Overleaf sync rule (slug `soqrates`). | |
 | [11-conventions-and-environment.md](11-conventions-and-environment.md) | Conventions and Environment | House rules, the full `.cache/` file map, and every environment key with the module that reads it. | |
+| [12-open-questions.md](12-open-questions.md) | Open Questions | 32 things the repo alone cannot answer (memory, accounts, pending decisions); check before assuming. | |
 
 ## Quick start
 
