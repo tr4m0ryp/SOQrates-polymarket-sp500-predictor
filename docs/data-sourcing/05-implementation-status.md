@@ -14,11 +14,11 @@ What exists in the repo as of 2026-07-18.
 - Prices normalized from fixed-point nanodollar ints; ET timestamps.
 
 **Free-stitch modules** (fallbacks, from the earlier build):
-- `replica/webull_noii.py` — Webull OpenAPI NOII snapshot (free Nasdaq live).
+- `replica/stitch/webull.py` — Webull OpenAPI NOII snapshot (free Nasdaq live).
 - `data/alpaca.py` — Alpaca auctions (#3) + quotes (#4).
-- `replica/itch_samples.py` — emi.nasdaq.com sample fetcher → `itch.py`.
-- `replica/nyse_taq_samples.py` — ftp.nyse.com sample fetcher → `nyse_taq.py`.
-- `replica/feeds.py` — Massive live NYSE imbalance websocket (completed stub).
+- `replica/itch/samples.py` — emi.nasdaq.com sample fetcher → `replica/itch/parse.py`.
+- `replica/taq/samples.py` — ftp.nyse.com sample fetcher → `replica/taq/parse.py`.
+- `replica/stitch/feeds.py` — Massive live NYSE imbalance websocket (completed stub).
 - `news/alpaca_stream.py` — Alpaca live news wire.
 
 ## Wired (CLI + config)

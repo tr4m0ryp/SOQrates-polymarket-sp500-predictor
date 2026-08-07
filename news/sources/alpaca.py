@@ -18,7 +18,7 @@ Public surface
 
 Auth: free API key, env ALPACA_API_KEY / ALPACA_API_SECRET (APCA headers).
 Historical archive reaches back to ~2015. The REST path is pure urllib; the
-websocket loop lazily imports `websockets` (like replica/feeds.py) so the
+websocket loop lazily imports `websockets` (like replica/stitch/feeds.py) so the
 dependency stays optional until the stream is actually run.
 """
 import datetime as dt

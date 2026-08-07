@@ -39,7 +39,7 @@ def _news_p(row: dict, h: int, mu: float, sig: float) -> float:
     groupb constants are fitted on the dataset train half only (disjoint
     from all strategy days), so this signal carries no look-ahead."""
     from math import erf, sqrt
-    from news import groupb
+    from news.llm import groupb
     gaps = {k: v for k, v in row["es"].items() if k <= h}
     sh, delta = groupb.last_shock(gaps)
     recent = sh is not None and h - sh <= groupb.RECENT_HOURS
@@ -121,7 +121,7 @@ def _llm_p(day: dict, minute: int) -> float | None:
     model at the in-force hour, using the production groupb.voice() math.
     Falls back to the plain model P when no voice exists."""
     from math import erf, sqrt
-    from news import groupb
+    from news.llm import groupb
     voices = _llm_voices().get(day["date"])
     base = model_p_at(day, minute, "model")
     if not voices or base is None:

@@ -8,7 +8,7 @@ every record through schemas.py so the output matches the live path:
   #3 cross_prints  <dataset>   'trades'     -> normalize_trade
   #4 nbbo_quotes   <dataset>   'mbp-1'      -> normalize_quote
 
-Plus two stage-3 adapters that mirror replica/lseg_parse:
+Plus two stage-3 adapters that mirror replica/lseg/parse:
   snapshots()      -> {ticker: [snapshot dicts with 'pred_open'], ...}
   cross_print_map()-> {ticker: (cross_price, ts_ns)} for the timing model.
 """
@@ -55,7 +55,7 @@ def _venue(dataset: str) -> str:
 def snapshots(records) -> dict[str, list[dict]]:
     """Group normalized imbalance records into stage-3's snapshot shape.
 
-    Mirrors replica/lseg_parse.snapshots: {ticker: [snap, ...]} time-ordered,
+    Mirrors replica/lseg/parse.snapshots: {ticker: [snap, ...]} time-ordered,
     each snap carrying 'pred_open'. Feed it nasdaq_noii()+nyse_imbalance()
     output; stage3 then takes the LAST snapshot with a non-null 'pred_open',
     identical to the LSEG path. Records lacking pred_open are dropped so the

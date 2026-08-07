@@ -2,7 +2,7 @@
 
 REST paths (historical auctions, historical quotes) use stdlib urllib only.
 The live IEX quote websocket needs an optional `pip install websockets`; that
-logic is kept out of the REST path, same pattern as replica/feeds.py Massive.
+logic is kept out of the REST path, same pattern as replica/stitch/feeds.py Massive.
 
 Auth: env ALPACA_API_KEY / ALPACA_API_SECRET -> request headers
 APCA-API-KEY-ID / APCA-API-SECRET-KEY.
@@ -199,7 +199,7 @@ class LiveIexQuotes:
     """Free real-time IEX quote websocket (wss).
 
     stdlib has no websocket client; live use needs `pip install websockets`
-    (kept optional, same pattern as replica/feeds.py Massive). This class holds
+    (kept optional, same pattern as replica/stitch/feeds.py Massive). This class holds
     the auth/subscribe/normalize logic so the REST paths stay stdlib-only.
     """
     WS_URL = "wss://stream.data.alpaca.markets/v2/iex"
