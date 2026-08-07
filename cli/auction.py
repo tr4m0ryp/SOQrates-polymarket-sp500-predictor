@@ -51,7 +51,7 @@ def cmd_lseg_status(_args):
 def cmd_lseg_pull(args):
     from config import CACHE
     from data import weights as wmod
-    from replica import lseg_tick_history as lseg, lseg_parse
+    from replica.lseg import parse as lseg_parse, tick_history as lseg
 
     rows = wmod.load()
     nas = [r["ticker"] for r in rows if r["exchange"] == "NASDAQ"]
