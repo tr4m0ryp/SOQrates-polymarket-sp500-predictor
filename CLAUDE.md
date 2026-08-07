@@ -51,19 +51,20 @@ forks the paper into a second Overleaf project.
   from the FRED release-dates API into `.cache/releases.json`.
 - `model/` regime scaler + model cores (v1.2 ES-only, v1.3 adds
   VIX1D sigma + NQ spread) + inverse-variance fusion.
-- `replica/` stage-3 auction assembly core: montecarlo (distributional first
-  tick + pivotal names + print filtering), timing (per-stock print-delay
-  model, venue priors until LSEG labels), assembly, deviation, pipeline.
-  Vendor subpackages: `databento/` (primary), `lseg/` (fallback),
-  `itch/` + `taq/` (raw-file parsers + public sample fetchers),
-  `stitch/` (free live fallbacks: Webull NOII + Massive imbalance).
+- `replica/` stage-3 auction assembly. `core/`: montecarlo (distributional
+  first tick + pivotal names + print filtering), timing (per-stock
+  print-delay model, venue priors until LSEG labels), assembly, deviation.
+  `vendors/`: `databento/` (primary), `lseg/` (fallback), `itch/` + `taq/`
+  (raw-file parsers + public sample fetchers), `stitch/` (free live
+  fallbacks: Webull NOII + Massive imbalance). `pipeline.py` orchestrates.
 - `news/` LLM news layer: `sources/` (GDELT + Alpaca wires), `llm/`
-  (provider runner, prompts, Group-B weight), `eval/` (mistake inventory,
-  timing profile, replay, bench); prefetch + schedule jobs at package root.
+  (provider runner, prompts, Group-B weight), `eval/` (mistake inventory +
+  labels, timing profile, replay, bench), `ops/` (prefetch + schedule jobs).
 - `pm/` Polymarket gamma-api client + edge calculator + price history.
 - `backtest/` dataset builder (`.cache/dataset.json`) + metric runner.
-- `strategy/` Polymarket trading-strategy sim: rules, sizing, execution,
-  bootstrap confidence bands.
+- `strategy/` Polymarket trading-strategy sim. `engine/`: sim loop,
+  execution model, stake sizing. `rules/`: strategy families + registry.
+  `analysis/`: bootstrap confidence bands + plots. `data.py`: day dataset.
 - `cli/` argument parsing + command bodies (market/sources/auction/news/strategy).
 
 ## Commands
