@@ -9,7 +9,7 @@ BLUE = "#2a78d6"      # series 1: raw $50/day
 GREEN = "#008300"     # series 2: guarded min($50, 20% bankroll)
 
 
-def bankroll_band(out_path="plots/strategy_bankroll_50_band.png"):
+def bankroll_band(out_path="research/plots/strategy_bankroll_50_band.png"):
     """Bootstrap-band version of the bankroll figure: the two headline
     records (first-signal flat $50; hour-4 hold at 10% of bankroll) with
     their 5-95% day-resampled bootstrap bands from strategy/bootstrap.py."""
@@ -69,7 +69,7 @@ def bankroll_band(out_path="plots/strategy_bankroll_50_band.png"):
     return out_path
 
 
-def bankroll_trajectories(out_path="plots/strategy_bankroll_50.png"):
+def bankroll_trajectories(out_path="research/plots/strategy_bankroll_50.png"):
     import matplotlib
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt

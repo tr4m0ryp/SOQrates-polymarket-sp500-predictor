@@ -44,7 +44,7 @@ def _test_predictions():
     return preds, brier
 
 
-def reliability_diagram(out_path="plots/reliability_diagram.png"):
+def reliability_diagram(out_path="research/plots/reliability_diagram.png"):
     import matplotlib
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
