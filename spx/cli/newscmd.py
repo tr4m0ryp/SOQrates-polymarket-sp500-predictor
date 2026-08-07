@@ -3,10 +3,10 @@ import json
 
 
 def cmd_news_mistakes(args):
-    from backtest import dataset
-    from model.core import ModelProd
-    from news.eval import mistakes
-    from config import ROOT
+    from spx.backtest import dataset
+    from spx.model.core import ModelProd
+    from spx.news.eval import mistakes
+    from spx.config import ROOT
 
     rows = dataset.load(rebuild=args.rebuild)
     train, _ = dataset.split(rows)
@@ -44,9 +44,9 @@ RUN_SCHEDULE = (          # ET checkpoints derived from the decisive-hour profil
 
 def cmd_news_timing(_args):
     import json
-    from backtest import dataset
-    from news.eval import timing
-    from config import CACHE
+    from spx.backtest import dataset
+    from spx.news.eval import timing
+    from spx.config import CACHE
 
     rows = dataset.load()
     mistakes = json.loads((CACHE / "news_mistakes.json").read_text())
@@ -67,7 +67,7 @@ def cmd_news_timing(_args):
 
 
 def cmd_news_prefetch(_args):
-    from news import prefetch
+    from spx.news import prefetch
     ctx = prefetch.build()
     print(f"prefetch for {ctx['date']}: releases {ctx['releases_0830'] or 'none'}, "
           f"NFP-Friday {ctx['is_nfp_friday']}")
@@ -78,9 +78,9 @@ def cmd_news_prefetch(_args):
 
 
 def cmd_news_groupb_fit(_args):
-    from backtest import dataset
-    from model.core import ModelProd
-    from news.llm import groupb
+    from spx.backtest import dataset
+    from spx.model.core import ModelProd
+    from spx.news.llm import groupb
 
     rows = dataset.load()
     train, test = dataset.split(rows)
@@ -103,8 +103,8 @@ def cmd_news_groupb_fit(_args):
 
 
 def cmd_news_llm_test(_args):
-    from news import prefetch
-    from news.llm import prompt, runner as llm
+    from spx.news import prefetch
+    from spx.news.llm import prompt, runner as llm
 
     ctx = prefetch.build()
     payload = {"group_a_block": ctx, "headlines_since_last_run": [
@@ -123,7 +123,7 @@ def cmd_news_llm_test(_args):
 
 def cmd_news_llm_bench(args):
     import os
-    from news.eval import bench
+    from spx.news.eval import bench
 
     base = os.environ.get("LLM_BASE_URL", "https://integrate.api.nvidia.com/v1")
     key = os.environ.get("LLM_API_KEY", "")
@@ -144,8 +144,8 @@ def cmd_news_llm_bench(args):
 
 
 def cmd_news_replay(_args):
-    from backtest import dataset
-    from news.eval import replay
+    from spx.backtest import dataset
+    from spx.news.eval import replay
 
     rows = dataset.load()
     results = replay.replay_labeled(rows)

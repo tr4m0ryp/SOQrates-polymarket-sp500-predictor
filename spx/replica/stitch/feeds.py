@@ -22,7 +22,7 @@ import json
 import os
 from datetime import datetime, timezone
 
-from config import NY
+from spx.config import NY
 
 
 class FeedError(RuntimeError):

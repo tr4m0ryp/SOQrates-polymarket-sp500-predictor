@@ -3,12 +3,12 @@ import json
 
 
 def cmd_pm_history(args):
-    from pm import history
+    from spx.pm import history
     history.fetch_all(refresh=args.refresh)
 
 
 def cmd_strategy_data(args):
-    from strategy import data
+    from spx.strategy import data
     days = data.build(rebuild=args.rebuild)
     tr, te = data.split(days)
     up = sum(1 for d in days if d["outcome_up"])
@@ -19,13 +19,13 @@ def cmd_strategy_data(args):
 
 
 def _half(days, which):
-    from strategy import data
+    from spx.strategy import data
     tr, te = data.split(days)
     return {"train": tr, "test": te, "all": days}[which]
 
 
 def cmd_strategy_run(args):
-    from strategy import data, sim
+    from spx.strategy import data, sim
     days = _half(data.build(), args.half)
     res = sim.run(args.family, days, json.loads(args.params))
     if args.json:
@@ -38,7 +38,7 @@ def cmd_strategy_run(args):
 
 
 def cmd_strategy_search(args):
-    from strategy import data, sim
+    from spx.strategy import data, sim
     days = _half(data.build(), args.half)
     grids = {
         "hold": [{"hour": h, "edge": e, "gate": g, "maker": mk}

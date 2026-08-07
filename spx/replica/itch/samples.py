@@ -30,8 +30,8 @@ import re
 import shutil
 import urllib.request
 
-from config import CACHE
-from replica.itch import parse as itch
+from spx.config import CACHE
+from spx.replica.itch import parse as itch
 
 BASE_URL = "https://emi.nasdaq.com/ITCH/Nasdaq%20ITCH/"
 NOII_URL = BASE_URL + "NOII/"

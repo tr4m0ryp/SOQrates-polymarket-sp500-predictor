@@ -1,7 +1,7 @@
 """Regime scaling: EWMA of overnight gap^2 + prior-day RV (+ optional VIX1D)."""
 import math
 
-from config import EWMA_LAMBDA
+from spx.config import EWMA_LAMBDA
 
 
 def annotate_ewma(rows: list[dict]) -> list[dict]:

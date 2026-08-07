@@ -2,20 +2,20 @@
 import datetime as dt
 import time
 
-from config import NY
+from spx.config import NY
 
 
 def cmd_backtest(args):
-    from backtest import run
+    from spx.backtest import run
     run.main(rebuild=args.rebuild)
 
 
 def cmd_predict(_args):
-    from backtest import dataset
-    from data import futures
-    from model.core import ModelV13
-    from macro import releases
-    from pm import gamma, edge
+    from spx.backtest import dataset
+    from spx.data import futures
+    from spx.model.core import ModelV13
+    from spx.macro import releases
+    from spx.pm import gamma, edge
 
     rows = dataset.load()
     model = ModelV13().fit(rows)
@@ -53,8 +53,8 @@ def cmd_predict(_args):
 
 
 def cmd_quirks(_args):
-    from backtest import dataset, run
-    from model.core import ModelV13
+    from spx.backtest import dataset, run
+    from spx.model.core import ModelV13
     rows = dataset.load()
     train, _ = dataset.split(rows)
     lines, safe, tot = run.quirk_report(ModelV13().fit(train), rows)

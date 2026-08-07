@@ -13,7 +13,7 @@ observed field names + counts and confirm the maps below.
 """
 from datetime import datetime, timezone
 
-from config import NY
+from spx.config import NY
 
 # Databento sentinels for "undefined".
 UNDEF_PRICE = 9223372036854775807          # INT64_MAX

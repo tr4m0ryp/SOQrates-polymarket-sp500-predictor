@@ -27,7 +27,7 @@ import os
 import urllib.parse
 import urllib.request
 
-from config import NY
+from spx.config import NY
 
 _REST_URL = "https://data.alpaca.markets/v1beta1/news"
 _WS_URL = "wss://stream.data.alpaca.markets/v1beta1/news"

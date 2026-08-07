@@ -33,8 +33,8 @@ import re
 import shutil
 import urllib.request
 
-from config import CACHE
-from replica.taq import parse as nyse_taq
+from spx.config import CACHE
+from spx.replica.taq import parse as nyse_taq
 
 BASE_URL = ("https://ftp.nyse.com/Historical%20Data%20Samples/"
             "TAQ%20NYSE%20ORDER%20IMBALANCES/")

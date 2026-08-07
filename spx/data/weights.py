@@ -13,7 +13,7 @@ import re
 import time
 import urllib.request
 
-from config import CACHE
+from spx.config import CACHE
 
 _CACHE_FILE = CACHE / "weights.json"
 _MAX_AGE = 5 * 86400

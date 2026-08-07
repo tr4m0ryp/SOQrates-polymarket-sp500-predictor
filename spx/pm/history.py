@@ -5,7 +5,7 @@ import re
 import time
 import urllib.request
 
-from config import CACHE, NY
+from spx.config import CACHE, NY
 
 SERIES_ID = 10945
 HIST_DIR = CACHE / "pm_history"

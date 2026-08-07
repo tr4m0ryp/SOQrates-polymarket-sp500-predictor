@@ -36,7 +36,7 @@ import os
 import urllib.parse
 import urllib.request
 
-from config import NY
+from spx.config import NY
 
 _BASE = "https://data.alpaca.markets/v2/stocks"
 

@@ -13,8 +13,8 @@ day's real traded volume.
 """
 import math
 
-from strategy.execution import ExecModel
-from strategy.rules import STRATEGIES
+from spx.strategy.execution import ExecModel
+from spx.strategy.rules import STRATEGIES
 
 START_BANKROLL = 100.0
 MIN_VOLUME = 1000.0     # USDC; below this the market never really traded and

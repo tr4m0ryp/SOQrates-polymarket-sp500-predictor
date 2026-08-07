@@ -9,7 +9,7 @@ than usual today").
 """
 import json
 
-from config import CACHE
+from spx.config import CACHE
 
 _STORE = CACHE / "print_delays.json"
 VENUE_PRIOR = {"NASDAQ": 0.97, "NYSE": 0.15}   # P(printed by first tick)

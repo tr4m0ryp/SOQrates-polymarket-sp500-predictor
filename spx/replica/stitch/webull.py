@@ -46,7 +46,7 @@ import uuid
 from datetime import datetime, timedelta, timezone
 from urllib.parse import quote, urlencode
 
-from config import NY
+from spx.config import NY
 
 HOST = "api.webull.com"
 PATH = "/openapi/market-data/stock/noii/snapshot"

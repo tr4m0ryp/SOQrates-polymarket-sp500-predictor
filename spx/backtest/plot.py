@@ -8,8 +8,8 @@ deciles of predicted P(up); whiskers are 95% Wilson intervals.
 """
 import math
 
-from backtest import dataset
-from model.core import ModelProd
+from spx.backtest import dataset
+from spx.model.core import ModelProd
 
 WINDOW = ("2025-09-09", "2026-07-13")   # the paper's validated 200-day window
 HOUR = 9

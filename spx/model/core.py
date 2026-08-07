@@ -1,9 +1,9 @@
 """Model cores: baseline, v1.2 (ES-only), v1.3 (VIX1D sigma + NQ spread)."""
 import math
 
-from config import (A0, K_DEFAULT, SMALL_GAP, SMALL_GAP_HOURS,
+from spx.config import (A0, K_DEFAULT, SMALL_GAP, SMALL_GAP_HOURS,
                       NFP_SIGMA_MULT, RELEASE_MULT_BOUNDS)
-from model.regime import RegimeScaler, terciles, tercile_of
+from spx.model.regime import RegimeScaler, terciles, tercile_of
 
 HOURS = range(10)
 
