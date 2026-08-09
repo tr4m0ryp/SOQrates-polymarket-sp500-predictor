@@ -1,5 +1,7 @@
 .cache/
 __pycache__/
+notes/
+tasks/
 .playwright-mcp/
 *.pdf
 *.b64
