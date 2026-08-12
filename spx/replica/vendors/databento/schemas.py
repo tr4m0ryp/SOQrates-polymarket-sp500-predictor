@@ -162,10 +162,17 @@ def _symbol(rec, override=None):
 
 
 def _indicative(rec):
-    """pred_open = the auction's indicative clearing price. ONE place only."""
+    """pred_open = the auction's indicative clearing price. ONE place only.
+
+    Zero means "this venue does not populate this field", not "this stock
+    clears at $0.00": NYSE Pillar leaves ind_match_price at 0 and carries the
+    indicative in cont_book_clr_price, so accepting 0 here silently blanked
+    every NYSE constituent (verified against the 2026-07-10 pull, where it
+    cost the replica 345 of 506 names and 43% of index weight).
+    """
     for k in _INDICATIVE_ORDER:
         px = _px(_field(rec, k))
-        if px is not None:
+        if px is not None and px > 0:
             return px
     return None
 
