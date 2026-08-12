@@ -51,7 +51,13 @@ def build_price_cache(tickers, refresh=False) -> dict:
 
 
 def prior_close(prices, ticker, date, index_days):
-    """Close on the trading day before `date`, from the cached history."""
+    """Close on the trading day before `date`, from the cached history.
+
+    FALLBACK ONLY. Yahoo history is split-adjusted while Databento prices are
+    raw and contemporaneous, so this is wrong by the cumulative split factor
+    for any name that split since `date` (measured 2025-09-12: NFLX +899%,
+    BKNG +2383%). Prefer `auction_reference` below.
+    """
     h = prices.get(ticker)
     if not h:
         return None
@@ -62,6 +68,20 @@ def prior_close(prices, ticker, date, index_days):
         c = h.get(index_days[i - back])
         if c:
             return c
+    return None
+
+
+def auction_reference(snaps_for_ticker):
+    """The auction's own reference price: contemporaneous and split-correct.
+
+    Exchanges publish the auction reference (prior close adjusted for
+    corporate actions) inside the imbalance record itself, so pairing it with
+    the same record's indicative price removes every adjustment mismatch and
+    the need to fetch prior closes at all.
+    """
+    for s in snaps_for_ticker:
+        if s.get("ref_price"):
+            return s["ref_price"]
     return None
 
 
@@ -101,13 +121,18 @@ def main() -> int:
             continue
         prev = index_days[index_days.index(d) - 1]
         snaps = source.snapshots(d)
-        pred = {}
+        pred, closes, fellback = {}, {}, 0
         for t, ss in snaps.items():
             last = next((s for s in reversed(ss) if s.get("pred_open")), None)
-            if last:
+            if not last:
+                continue
+            ref = auction_reference(ss)
+            if not ref:
+                ref = prior_close(prices, t, d, index_days)
+                fellback += 1
+            if ref:
                 pred[t] = last["pred_open"]
-        closes = {t: c for t in pred
-                  if (c := prior_close(prices, t, d, index_days))}
+                closes[t] = ref
         dist = pipeline.replica_distribution(pred, closes, timing=tm)
         est = pipeline.replica_estimate(pred, closes)
         official = (spx_hist[d][0] / spx_hist[prev][1] - 1) * 100
