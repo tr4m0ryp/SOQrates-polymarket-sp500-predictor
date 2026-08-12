@@ -17,11 +17,11 @@ delete the entry here.
 8. Provenance of the frozen constants A0 = 0.0092 and K_DEFAULT = 0.767: the fitting window and procedure are not in the repo (CLAUDE.md says model background lives in project memory, spx-open-predictor-roadmap.md).
 9. How QUIRK_DAYS were identified: the list in spx/config.py is hand-maintained; no script in the repo reproduces the selection.
 10. Why CONF_COMMIT is 0.65 and SWITCH_HOUR is 5: core.py's comment gives the rationale (v1.3 sharper early, v1.2 better calibrated late) but the supporting numbers are not in the repo.
-11. Whether the Databento account is entitled to XNYS.PILLAR (pull_day records per-slice errors, but actual entitlement status is not in the repo)
+11. ~~Whether the Databento account is entitled to XNYS.PILLAR~~ **RESOLVED 2026-08-12:** yes. `databento-status` reports 29 datasets with XNAS.ITCH and XNYS.PILLAR both visible, and a real 29-day backfill pulled NYSE imbalance records on every day. See `05-replica.md`.
 12. The exact Databento cross flag for the opening print: cross_print_map uses the earliest priced trade in a 9:29:55-9:34 window as a heuristic pending the first keyed pull
 13. Actual LSEG auction FID names: parse.py's FID_MAP is candidates only, untested until DSS credentials exist
 14. Whether Webull request signing uses HMAC-SHA256 (current docs) or HMAC-SHA1 (SDK default); unconfirmed against a live key, as is the NOII response field map
-15. Whether .cache/print_delays.json has ever been fitted with real print timestamps (cache is gitignored, so venue priors may still be in effect)
+15. ~~Whether the print-delay model has been fitted on real timestamps~~ **RESOLVED 2026-08-12:** it had not been, until this run. Fitted on 17 ordinary days of real Databento cross prints. Measured reality: 96% of constituents print within 5s of 9:30 (median 0.93s), against venue priors of 0.97 Nasdaq / 0.15 NYSE. One day of data caps Laplace-smoothed `p_live` at 0.75, so a stable fit needs roughly 10+ days. See `05-replica.md`.
 16. Which LLM provider and model run in production: LLM_BASE_URL/LLM_MODEL are env-configured and no chosen values or bench results are recorded in the repo.
 17. Three of the five STREAM_FEEDS (truth_social, edgar_8k, release_endpoints) and the prefetch slots nowcast_cpi/consensus/earnings_after_close have no implementation or data source in the repo.
 18. No scheduler or daemon in the repo executes the CHECKPOINTS_ET cadence in spx/news/ops/schedule.py; how the live nightly loop is launched is not determinable from the code.
