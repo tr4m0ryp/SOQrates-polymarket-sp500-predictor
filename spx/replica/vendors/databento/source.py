@@ -23,6 +23,7 @@ from datetime import datetime, time as dtime, timezone
 
 from spx.config import CACHE, NY
 from spx.data import weights as wmod
+from spx.replica.vendors.databento import budget
 from spx.replica.vendors.databento.client import DatabentoError, get_range, _key
 from spx.replica.vendors.databento.historical import (NASDAQ_DATASET, NYSE_DATASET,
                                            cross_print_map,
@@ -100,8 +101,9 @@ def pull_day(date: str, cache: bool = True) -> dict:
         records.extend(recs)
         if cache:
             (d / f"{name}.json").write_text(json.dumps(recs))
-    return {"date": date, "dir": str(d), "counts": counts,
-            "errors": errors, "records": records}
+    return {"date": date, "dir": str(d), "counts": counts, "errors": errors,
+            "records": records, "cost_usd": cost,
+            "spent_usd": budget.spent_usd(), "cap_usd": budget.cap_usd()}
 
 
 def cached(date: str) -> bool:
