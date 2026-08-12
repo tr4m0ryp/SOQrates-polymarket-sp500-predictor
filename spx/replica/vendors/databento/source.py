@@ -81,12 +81,18 @@ def pull_day(date: str, cache: bool = True) -> dict:
     d = _daydir(date)
     if cache:
         d.mkdir(parents=True, exist_ok=True)
-    counts, errors, records = {}, {}, []
+    counts, errors, records, cost = {}, {}, [], 0.0
     for schema, dataset, venue, window in _SLICES:
         name = f"{schema}_{venue}"
         start, end = _iso(date, window[0]), _iso(date, window[1])
         try:
+            # priced call: quote + reserve against the cap BEFORE fetching
+            cost += budget.check_and_reserve(f"{date}/{name}", dataset, schema,
+                                             syms[venue], start, end)
             recs = get_range(dataset, schema, syms[venue], start, end)
+        except budget.BudgetError as e:
+            errors[name] = f"BUDGET: {e}"
+            recs = []
         except DatabentoError as e:
             errors[name] = str(e)
             recs = []
