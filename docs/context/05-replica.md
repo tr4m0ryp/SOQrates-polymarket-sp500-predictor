@@ -53,6 +53,23 @@ ticker at 0.75 and a stable per-name estimate needs roughly 10 or more days.
 Fit on ordinary days and evaluate on quirk days; sharing days between the two
 leaks the answer into the model.
 
+**Prior closes: use the auction reference, never Yahoo history.** The replica
+gap is `pred_open / prior_close - 1` per name, so the two prices must share a
+price basis. Databento indicative prices are raw and contemporaneous; Yahoo
+daily history is **split-adjusted**, meaning every pre-split close is divided
+by the cumulative split factor. Pairing them is wrong by exactly that factor
+for any constituent that has split since the evaluated date. Measured on
+2025-09-12: median per-name gap -0.234%, but NFLX read +899%, KLAC +895% and
+BKNG +2383%, which dragged the whole index gap to +13.4%. The tell is that
+the error shrinks monotonically as dates approach the present, because recent
+dates have had no splits yet.
+
+The imbalance record carries its own `ref_price`, contemporaneous and already
+adjusted by the exchange for corporate actions. Use it. On the same names it
+gives NFLX -0.301%, BKNG -0.673%, KLAC -0.334%. It also removes the
+501-sequential-Yahoo-fetch step that made a single stage-3 day take minutes.
+Yahoo remains a per-name fallback and is safe only for very recent dates.
+
 **Deviation** (`spx/replica/core/deviation.py`): measures how far the NOII
 near price at 9:25/9:28/9:29/9:29:50 sits from the actual cross print, in bps,
 per symbol and weight-aggregated to index level. This number is the replica's
