@@ -126,26 +126,37 @@ def cmd_stage3(args):
                   f"lseg-pull --date {args.date}")
             return
         snaps = lseg_parse.snapshots(str(path))
-    pred = {}
-    for t, ss in snaps.items():
-        last = next((s for s in reversed(ss) if s.get("pred_open")), None)
-        if last:
-            pred[t] = last["pred_open"]
-    print(f"[{src}] {len(pred)} tickers with indicative prices")
     spx = yahoo.daily_open_close("^GSPC", 400)
     days = sorted(spx)
     if args.date not in spx:
         print(f"{args.date} not a trading day in ^GSPC history")
         return
     prior = days[days.index(args.date) - 1]
-    closes = {}
-    for t in pred:
-        try:
-            d = yahoo.daily_open_close(t.replace(".", "-"), 35)
-            closes[t] = d.get(prior, (None, None))[1]
-        except Exception:
+
+    # Reference price comes from the auction record itself: it is
+    # contemporaneous and already adjusted for corporate actions. Yahoo
+    # history is SPLIT-ADJUSTED while these prices are raw, so pairing the two
+    # is wrong by the cumulative split factor for any name that has split
+    # since (measured 2025-09-12: NFLX +899%, BKNG +2383%). Yahoo is a
+    # per-name fallback only, and is correct only for very recent dates.
+    pred, closes, fellback = {}, {}, []
+    for t, ss in snaps.items():
+        last = next((s for s in reversed(ss) if s.get("pred_open")), None)
+        if not last:
             continue
-    closes = {t: c for t, c in closes.items() if c}
+        ref = next((s.get("ref_price") for s in ss if s.get("ref_price")), None)
+        if not ref:
+            fellback.append(t)
+            try:
+                hist = yahoo.daily_open_close(t.replace(".", "-"), 35)
+                ref = hist.get(prior, (None, None))[1]
+            except Exception:
+                ref = None
+        if ref:
+            pred[t] = last["pred_open"]
+            closes[t] = ref
+    print(f"[{src}] {len(pred)} tickers with indicative prices "
+          f"({len(fellback)} needed a Yahoo prior-close fallback)")
     rep = pipeline.replica_estimate(pred, closes)
     dist = pipeline.replica_distribution(pred, closes)
     official = (spx[args.date][0] / spx[prior][1] - 1) * 100
