@@ -71,6 +71,18 @@ Three sources combine into one constituent table:
 3. Fallback: the iShares IVV holdings CSV. The endpoint currently serves a
    bot-wall, so it only runs if the Slickcharts parse throws.
 
+**Header sensitivity, the failure mode that takes the whole system down.**
+Both live hosts filter on request headers, and they disagree about what they
+want. Slickcharts returns 403 to a bare `Mozilla/5.0` user agent and needs a
+full browser UA string; nasdaqtrader returns 406 if `Accept` is html-only and
+wants `*/*`. On 2026-08-12 the bare UA started failing, `load()` fell through
+to the iShares bot-wall, and the whole chain died with a bare `StopIteration`
+from the CSV header scan. Nothing downstream works without weights: no
+Databento pull can build its symbol list, and the replica cannot weight
+constituents. If you see `StopIteration` out of `weights.py`, the real cause
+is upstream header rejection, not a malformed CSV. The current header set in
+`_UA` satisfies both hosts; re-verify it before blaming anything else.
+
 `load()` caches the result in `.cache/weights.json` for 5 days. Each row is
 `{ticker, weight, exchange}`. `nasdaq_share()` computes the Nasdaq-listed
 fraction of index weight. CLI: `python3 . weights`.
