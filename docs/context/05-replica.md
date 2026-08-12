@@ -39,11 +39,19 @@ with zero variance, and silent names get their p_live conditioned on "not
 printed yet".
 
 **Timing** (`spx/replica/core/timing.py`): per-stock p_live, the probability a
-stock prints before the photo moment. Until real print timestamps are fitted,
-venue priors apply: 0.97 Nasdaq, 0.15 NYSE. `fit_from_prints` replaces the
-priors with empirical per-ticker delay samples persisted to
+stock prints before the photo moment. Venue priors of 0.97 Nasdaq / 0.15 NYSE
+apply to any ticker with no fitted samples. `fit_from_prints` replaces them
+with empirical per-ticker delay samples persisted to
 `.cache/print_delays.json`, and `condition_not_printed` is the Bayes update
 used by `apply_prints`.
+
+Measured against real Databento cross prints (2026-08-12, 17 ordinary days):
+**96% of constituents print within 5 seconds of 9:30, median 0.93s**, so the
+NYSE prior of 0.15 is far too pessimistic. Note the sample-size floor: p_live
+is Laplace-smoothed as `(hits + 0.5) / (n + 1)`, so a single day caps any
+ticker at 0.75 and a stable per-name estimate needs roughly 10 or more days.
+Fit on ordinary days and evaluate on quirk days; sharing days between the two
+leaks the answer into the model.
 
 **Deviation** (`spx/replica/core/deviation.py`): measures how far the NOII
 near price at 9:25/9:28/9:29/9:29:50 sits from the actual cross print, in bps,
