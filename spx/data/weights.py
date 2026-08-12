@@ -17,7 +17,13 @@ from spx.config import CACHE
 
 _CACHE_FILE = CACHE / "weights.json"
 _MAX_AGE = 5 * 86400
-_UA = {"User-Agent": "Mozilla/5.0"}
+# Slickcharts 403s a bare "Mozilla/5.0" (verified 2026-08-09); nasdaqtrader
+# 406s an html-only Accept. A full browser UA with a wildcard Accept is the
+# one header set both hosts serve.
+_UA = {"User-Agent": ("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
+                      "(KHTML, like Gecko) Chrome/126.0 Safari/537.36"),
+       "Accept": "*/*",
+       "Accept-Language": "en-US,en;q=0.9"}
 
 _SLICKCHARTS = "https://www.slickcharts.com/sp500"
 _NASDAQ_DIR = "https://www.nasdaqtrader.com/dynamic/SymDir/nasdaqlisted.txt"
