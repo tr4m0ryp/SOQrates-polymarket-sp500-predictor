@@ -10,3 +10,5 @@ tasks/
 docs/*.log
 docs/*.out
 research/papers/**/*.log
+.env
+.env.local
