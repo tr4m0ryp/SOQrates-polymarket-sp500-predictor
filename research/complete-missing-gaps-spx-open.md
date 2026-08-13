@@ -162,3 +162,114 @@ the measurements supersede.
 - If a larger quirk sample (more backfill, affordable under the cap) moves
   the replica toward the futures arms, the 5/12 was noise and the paper's
   claim reduces to "no evidence of improvement at n=12".
+
+---
+
+# Autonomous Refinement (2026-08-13)
+
+Two audits ran against §1-§5. The completeness audit's findings are folded in
+above. The adversarial audit **refuted the central claim**, and its verdicts
+are recorded here rather than quietly edited away, because §1.1 was published
+to the repo and to the user before this section existed.
+
+## The headline claim is withdrawn
+
+**§1.1 "replica 5/12 beats futures 2/12" is not supported.** Three
+independent defeaters, each verified in the main thread before acceptance.
+
+**1. Lookahead. The replica is scored with the answer in hand.**
+`IMB_WINDOW` runs to 09:33 and `tools/stage3_eval.py` takes the *last*
+snapshot carrying `pred_open`, with no time bound. Verified on 2026-07-10:
+**69.3% of index weight has its last `pred_open` timestamped at or after
+09:30:00, max +179s.** After the open, `pred_open` is no longer an
+indicative: it equals the realized cross (median error 0.00 bp). The futures
+arm is scored at 09:00. This is not a like-for-like comparison; it is a
+partial oracle against a 30-minutes-early forecast.
+
+**2. The score is below a constant baseline.** Of the 12 days, 7 opened down
+and 5 up. **Always-predict-down scores 7/12; the replica scores 5/12;
+always-up scores 5/12.** The replica makes 6 up-calls against 5 up days, so a
+permutation null with fixed marginals gives E[hits]=6.0 and P(hits>=5)=0.88.
+5/12 is not evidence of skill in any direction.
+
+**3. The futures baseline is circular.** `spx/config.py` defines QUIRK_DAYS
+as "ES held direction, official printed opposite/tiny" - days selected
+*because futures failed on them*. Scoring futures there and reporting 2/12 is
+a tautology, not a baseline. Inverting the futures arm on the same days
+scores 10/12 (v1.3) and 11/12 (v1.2, prod). I should have caught this from
+the constant's own comment.
+
+**§1.1's zero-overlap claim is also withdrawn.** With 5 and 2 correct days
+placed at random over 12, P(zero overlap) = C(7,2)/C(12,2) = 0.32 (0.58
+against prod). A one-in-three coincidence cannot carry a complementarity
+claim, and the McNemar p-values in the same paragraph already said the arms
+were not separated.
+
+## The finding that replaces it
+
+An oracle given every realized opening cross price for all constituents,
+weighted and referenced to each stock's own auction `ref_price`, scores
+**3/12** on these days, with **corr(oracle gap, official gap) = -0.28** and
+MAE 0.127% against a mean |official| of 0.0455%. Perfect constituent auction
+knowledge is *worse than predicting zero*.
+
+Meanwhile corr(ES@09:00, official) = +0.957 over all 464 days with 89% sign
+agreement, so the ground truth is sane in general. The decoupling is specific
+to the selected days.
+
+**Therefore the stage-3 replica family has no reachable target on this day
+set, and the ceiling is below chance.** The 5/12 was never a floor to
+improve on. This is the run's real result and it is a negative one: the
+project's identified path past the futures ceiling does not exist in the form
+the paper proposes. Why the official print decouples from constituent auction
+prices on these days (index-calculation timing, the divisor, or Yahoo's
+"open" not being the first index tick) is a better research question than the
+replica, and determines whether stage 3 has a target at all.
+
+## Fifth defect, still live: the ground-truth cross-check passes vacuously
+
+`spx/data/ground_truth.py` fetches stooq, which now serves a JavaScript
+proof-of-work bot wall. Verified: `stooq_daily()` returns **0 rows**, so
+`audit()` intersects an empty set, returns `[]`, and `cmd_ground-truth`
+prints "yahoo and stooq agree on every official open". The check guarding
+the target of every arm has been passing because it compares nothing. Four
+of the twelve quirk targets are also smaller than the repo's own 0.75-point
+ground-truth tolerance (2026-06-22 is 0.14 pt), so their sign is not
+resolvable at the precision the project itself demands.
+
+## Other confirmed defects in §2's framing
+
+Defect 1 (weights headers) was **loud and fail-closed**, not silent
+corruption; §2's blanket "none raised an error" is wrong for that entry.
+
+Additional look-ahead not covered by the timing-model split: `weights.load()`
+scrapes *today's* index membership with no as-of date and applies it to
+2025-09-12, up to 11 months of survivorship and weight look-ahead. Weight
+jitter of 5-20% moves the score between 5 and 6 of 12, so the headline sat
+inside weight-error noise regardless.
+
+The Monte Carlo is **~3x overconfident**: z = (official - mean)/sigma has RMS
+3.14 against an expected 1.0, with |z|>2 on 5 of 12 days. `fused_p_up`
+inverse-variance-blends on that sigma, so fusion would hand the replica
+almost all the weight precisely because it is miscalibrated. The §5 fusion
+kill criterion would fire for reasons unrelated to complementarity.
+
+## Revised work order
+
+1. **Do not revise the paper to claim the replica works.** The honest paper
+   delta is the negative result plus the five defects, and an explicit
+   retraction of the projected "majority called".
+2. Thread a hard `as_of` cutoff through `snapshots()` and make it the only
+   supported evaluation path. Nothing measured before that is interpretable.
+3. Retire hand-picked QUIRK_DAYS as an evaluation set; score both arms on all
+   232 test-half days and report the sign-disagreement stratum at its full
+   n=22 with a stated rule.
+4. Replace sign-of-mean scoring on 0.14-point targets with Brier/log score,
+   and implement the ground-truth exclusion CLAUDE.md mandates.
+5. Fix or replace the stooq cross-check.
+6. Recalibrate the Monte Carlo before any fusion work.
+7. Investigate the -0.28 decoupling. This is the publishable question.
+
+Incidental: `montecarlo.simulate` calls `cons.index(c)` inside the
+2000-scenario loop (~100M dataclass comparisons/day); hoisting the index map
+gives ~50x speedup with bit-identical output.
