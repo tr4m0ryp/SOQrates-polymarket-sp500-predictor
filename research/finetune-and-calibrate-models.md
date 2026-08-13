@@ -490,6 +490,18 @@ weight ranged 36.3% to 88.2%.
 **Implications:** Not a tunable parameter. Excluded from the sweep, saving
 degrees of freedom.
 
+### F6: The replica and the strategy path are completely disconnected
+**Finding:** Independent codebase mapping confirms no reference exists between
+`spx/replica/` and `spx/strategy/` or `spx/backtest/` in either direction.
+`spx.replica.pipeline` is invoked only from `spx/cli/auction.py`, prints to
+stdout, and never persists into the dataset cache. Dataset rows carry
+`date, off, es, nq, ym, rv_prev, vix1d_prev, release_morning` plus EWMA
+fields, and nothing from the auction layer.
+**Implications:** The paper's $321 result measures the pre-replica system
+entirely. T14's insertion point is confirmed: the replica probability series
+must be added to the day record built in `spx/strategy/data.py`, since that is
+the only place the simulator reads signals from.
+
 ## References
 
 ### R1: Optimal strategies for reject option classifiers
