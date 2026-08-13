@@ -159,3 +159,23 @@ is a data-free synthetic self-test of the Monte Carlo, and `noii-deviation
 - `spx/replica/vendors/databento/schemas.py`: DBN field maps and the single
   `pred_open` definition.
 - `spx/cli/auction.py`: every replica CLI command, including `cmd_stage3`.
+
+## First valid stage-3 measurement (2026-08-13)
+
+Out of sample, timing fitted on 17 ordinary days and evaluated on the 12
+quirk days it never saw, using real Databento auction data through a pipeline
+with four corruption defects removed:
+
+**The replica calls 5 of 12 quirk days, identical to the futures-alone
+baseline of 5/12.** No improvement over futures is demonstrated.
+
+Read this carefully before drawing conclusions. Every stage-3 number produced
+before this date was computed with at least one of the four defects listed
+above in play, so the prior belief that the replica helped was never
+evidenced. n=12 is also far too small to separate 5/12 from 7/12. And the
+replica only ever sees 55-57% of index weight, so it is arguing from roughly
+half the available information: see the photo-moment note above for the most
+likely binding constraint.
+
+Artifact: `.cache/stage3_eval.json`, regenerate with
+`python3 tools/stage3_eval.py`.
