@@ -18,8 +18,11 @@ Standing empirical context, all measured on 2026-08-13 and recorded in
 
 - Replica calls 10/11 futures-disagreement days on a pre-registered holdout
   (p=0.006 exact binomial, best trivial baseline 6/11).
-- Index reconstruction error is 0.101% with consolidated closes; near-tie days
-  move 0.046%. The error exceeds the signal on that stratum.
+- Index reconstruction error is 0.129% (pre-open, split-correct closes, 17
+  ordinary days); near-tie days move 0.046%. The error is ~3x the signal on
+  that stratum. An earlier 0.101% figure circulated: that was the
+  close-to-close daily-return reconstruction over 275 days, a different
+  quantity, and it must not be used for the opening gap.
 - The Monte Carlo is ~3x overconfident: z=(official-mean)/sigma has RMS 3.14
   against an expected 1.0.
 - Liquidity caps a trade near $1,000 on a market doing $30-48k/day.
@@ -186,10 +189,11 @@ per-name errors is
     σ_r² ≈ Σ_i w_i² s_i²  +  (1 - c)² σ_stale²
 
 The first term is per-name preview noise attenuated by weight concentration
-(Σ w_i² ≈ 0.015 for the S&P 500, so a 16 bp per-name error contributes about
-2 bp); the second is the contribution of uncovered weight held at prior close.
-Measured total is 0.101%, an order of magnitude above the first term, which
-localises the residual in weights and coverage rather than in indicatives.
+(measured Σ w_i² = 0.02008, so the measured 20.2 bp median per-name error
+contributes 2.9 bp); the second is the contribution of uncovered weight held
+at prior close. Measured total is 12.9 bp, 4.5x the first term, and it does
+not fall when realised prices replace indicatives (F4). The residual is
+therefore localised in weights and coverage, not in the auction data.
 
 Decidability is the ratio of predicted signal to the day's own noise floor,
 with the ground-truth tolerance as a hard floor:
@@ -479,10 +483,19 @@ of work on `σ_m` can yield decidability. It must come from outside the model,
 and microstructure supplies it.
 
 ### F4: The reconstruction residual is not in the indicatives
-**Finding:** Per-name indicative error of 16-17 bp with Σw² ≈ 0.015 predicts
-~2 bp of index error. Measured is 0.101%, five-fold higher.
-**Implications:** The residual lives in weights and coverage, which is why T7
-routes to CRSP rather than to better auction data.
+**Finding:** Measured directly (2026-08-13, 29 cached days, n=14,340 name-days):
+per-name |indicative/print - 1| has median 20.2 bp and p90 94.7 bp, and
+Σw_i² = 0.02008 over normalised index weights. Independent per-name noise
+therefore predicts an index error of 0.202% × √0.02008 = **2.9 bp**. Measured
+index error is **12.9 bp**, 4.5x higher.
+**The decisive comparison:** substituting *realised* cross prices for the
+pre-open indicatives barely moves the error, 0.1372% versus 0.1287% MAE on
+ordinary days (corr +0.918 versus +0.942). Perfect knowledge of every
+constituent's opening price does not improve the index reconstruction.
+**Implications:** The residual is systematic and lives in weights and
+coverage, not in the auction data. No improvement to indicative quality,
+timing, or the replica can reach it. This is why T7 routes to CRSP
+point-in-time weights and why the near-tie stratum stays out of scope.
 
 ### F5: The photo moment carries no information
 **Finding:** Swept 1.0s to 5.0s, quirk calls constant at 5/12 while live index
