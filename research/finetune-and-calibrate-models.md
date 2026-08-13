@@ -698,3 +698,126 @@ free parameter and is counted, which the first draft of this doc omitted.
 Work; `Evaluation Plan` -> Experiments; `Novel Contributions` ->
 Contributions; `Threats to Validity` -> Limitations; `Artifact &
 Reproducibility` -> reproducibility checklist. Run `/paper` after Phase 5.
+
+---
+
+# Autonomous Refinement (2026-08-13)
+
+Two audits ran. The completeness audit's corrections are folded in above. The
+adversarial audit **refuted the design's two inventions and the prior
+headline result**. Its findings were verified in the main thread before
+acceptance and are recorded here rather than edited away, because the refuted
+claims were published to the repo and reported to the user.
+
+## The prior headline was an artifact of a circular day rule
+
+`prereg.md` defines the evaluation set as test-half days where
+`sign(ES gap at 09:00) != sign(official open)`. **That rule reads the label.**
+On every selected day futures are wrong by construction, so "predict the
+opposite of futures" is perfect on that set by definition. Verified: 22 of 22
+rows satisfy `es × official < 0`.
+
+| Arm | Holdout (n=11) |
+|---|---|
+| **anti-ES, guaranteed by the rule** | **11/11** |
+| replica full-500 | 10/11 |
+| replica top-30 | 10/11 |
+| always-up | 6/11 |
+
+The replica agrees with anti-ES on 10 of 11 days and its single deviation is
+its single error, so it carries **no information beyond the trivial
+baseline**. The reported p=0.006 tested against p=0.5; the correct null is
+p=1.0, under which the result is not significant at any level.
+
+This is the same defect class identified in run 1 (`QUIRK_DAYS` defined as
+days futures failed, making the futures baseline tautological), reproduced
+inside a pre-registration written specifically to avoid it. Pre-registration
+constrains the analysis; it cannot repair a sample whose selection rule
+contains the answer.
+
+## N1 (decidability) is dead
+
+- `σ_r` is a deterministic function of coverage, and coverage has CV 0.53%
+  across the 29 cached days, so `D` is Pearson 0.9999 / Spearman 0.9985 with
+  `|ĝ|`. It is `|ĝ|` in formal dress, exactly as the Publication Assessment
+  feared.
+- Risk-coverage is **identical** to `CONF_COMMIT` and to naive `|ĝ|` at every
+  coverage in the 41-79% band. Top-minus-bottom separation is **-1.0pp**
+  against a 15pp kill threshold; permutation p=0.730 over 20,000 draws. The
+  kill criterion fired on data already on disk.
+- `σ_stale` was never defined, so `σ_r` was not a well-formed quantity.
+- The `τ` floor binds on **0 of 29 days**; its planned ablation computes to
+  exactly 0.000. It is a non-parameter for the same reason F5 excluded the
+  photo moment.
+- Fatally, `D` ranks 2026-01-29 -- the failure the design cites as *precisely*
+  what `D` exists to catch -- **8th of 29 most decidable**. A score whose
+  numerator is `|ĝ|` cannot express "the prediction is large and the target is
+  not". That is a category error, not a tuning problem.
+
+## N2 (shrinkage) is inert
+
+Scaling mean and sigma by the same `λ` leaves the decision invariant:
+
+    p_up = Φ(λĝ / (λσ_m)) = Φ(ĝ / σ_m)
+
+so `p_up`, the `CONF_COMMIT` gate, and every Brier comparison are unchanged by
+construction. The sign-preservation proof in the Formal Model proves the same
+for `p_up`, which should have been visible when writing it. Where `λ` is not
+inert it acts backwards: inverse-variance weight scales as `λ⁻²`, so `λ≈1/3`
+would give the replica **9x more** fusion weight, the opposite of T5's stated
+purpose. The claimed direction of the z-RMS fix was also inverted.
+
+## What replaces them
+
+**Drop N1 and N2.** Neither is rescued by tuning; both fail analytically.
+
+**Stratify on pre-open observables only.** C5's strata (ordinary /
+disagreement / near-tie) are all defined by the realised open, so stratified
+selection was outcome-conditioned and uncounted against C10. Replace with
+bands of `|ES gap|`, which is known before 9:30.
+
+**New primary experiment: an unselected head-to-head.** Score replica and
+futures against each other on a sample of days drawn **without reference to
+the outcome** -- random or `|ES|`-stratified. This is the only design that can
+establish incremental value. The 17 ordinary days already cached qualify
+(selected by recency, not by label) and are the seed.
+
+**Two pre-open scores worth testing, from the audit.** `|es|` and
+`|ĝ - es|` each show +12.9pp top-bottom separation against `D`'s -1.0pp.
+`|es|` needs no auction data at all. Both are unproven at n=29 (4 misses; no
+difference here is significant) and neither may be adopted without the
+unselected sample above.
+
+**Elevate the reconstruction-fidelity study to the primary contribution.** It
+is untouched by this audit, needs no new data, and rests on the strongest
+measurement in the project: substituting realised cross prices for pre-open
+indicatives leaves index error essentially unchanged (0.1372% vs 0.1287% MAE),
+so the residual is in weights and coverage and no auction-side improvement can
+reach it.
+
+## Economics, corrected
+
+The audit reconstructed the $321.53 record: 28 trades, 26W-2L, implied fill
+0.795-0.802 against a break-even of 0.9286. **Over 85% of the edge survives
+doubling the half-spread**, so kill criterion #4 was arithmetically incapable
+of firing and T13's two-fill bound guards a ~3% risk. The real exposure is
+statistical: Clopper-Pearson 95% lower bound on the win rate is **0.765**,
+below the 0.795 average fill, so **the trade record does not exclude zero
+edge**. Also corrected: `LIQ_FRAC = 0.01` on $30-48k/day gives **$300-480**
+per trade, not the $1,000 asserted in C11/T15/T16.
+
+## Revised hypothesis
+
+**H1' (incremental value).** On days sampled without reference to the
+outcome, the auction replica improves directional accuracy over futures alone.
+**Kill:** if replica accuracy does not exceed futures accuracy on such a
+sample by a margin significant at n, the replica has no demonstrated
+incremental value and the paper reports that.
+
+**H2' (reconstruction).** Index reconstruction error is dominated by weight
+error, not by auction-data quality. **Supported already** by the oracle
+comparison; the remaining test is whether CRSP point-in-time weights reduce
+the 12.9bp error toward the 2.9bp independent-noise prediction.
+
+The project's defensible contribution is now H2' plus the defect catalogue,
+not a trading edge.
