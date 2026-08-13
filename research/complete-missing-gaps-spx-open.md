@@ -41,22 +41,30 @@ replica sees days futures structurally cannot" claim is, subject to n.
 ### 1.2 Backfill economics (answers vision question 1)
 
 $0.2047 per day measured via the free `metadata.get_cost` endpoint, so the
-agreed $50 cap affords roughly 244 trading days. 29 days pulled for $7.66.
+agreed $50 cap affords roughly 244 trading days. 29 full days pulled for $7.66 (the spend ledger also lists a 30th date, 2026-08-12, which failed with HTTP 403 as today's auction is unpublished; it is excluded from every analysis).
 Validation-window size is therefore a statistical question, not a budget one.
 
 ### 1.3 Print timing (answers vision question 2)
 
-11,460 real cross prints over 23 days: median 1.02s after 9:30, p90 1.58s,
-92.6% within 2s, **47.0% within the 1.0s photo moment the model uses**. The
+Source: all 29 per-day digests, `.cache/databento/*/digest.json`, n=14,439
+prints. Median 1.026s after 9:30, p90 1.595s, 92.6% within 2.0s, **46.2%
+within the 1.0s photo moment the model uses**, zero negative. Do not
+recompute from `.cache/print_delays.json`: that is the fit store and covers
+only the 17 ordinary days (8,474 obs), a different population. The
 p_live estimator is Laplace-smoothed as `(hits + 0.5)/(n + 1)`, so one day
 caps any ticker at 0.75 and a stable per-name fit needs 10+ days. Fit on
 ordinary days and score on quirk days; sharing days leaks the answer.
 
-The photo moment is the largest identified lever: at 2.0s the replica would
-see 92.6% of constituents instead of 47%. An in-sample sweep is underway and
-must not be reported as a result, because tuning a parameter on the same 12
-days it is scored on is the selection bias `spx/backtest/reality_check.py`
-exists to catch. Any chosen photo moment needs out-of-sample confirmation.
+**The photo moment was hypothesised to be the largest lever. It is not, and
+the sweep refutes it.** At 2.0s live index weight rises from 36.3% to 87.0%
+as the coverage figures predict, but quirk calls stay at 5/12 and mean
+absolute index error worsens from 6.79 to 11.14 bps. Newly included names
+enter at indicative prices carrying preview noise (0.30% sigma NYSE), while
+excluded names sit at prior close contributing zero, damping the estimate
+toward the near-zero official gaps. Coverage is not the binding constraint,
+so the remaining error is in the indicative prices themselves, not in how
+many of them are used. This was an in-sample sweep and is reported as a
+refutation, not as a tuning result.
 
 ## 2. Four defects fixed (all silent-corruption class, none raised an error)
 
@@ -115,13 +123,25 @@ the measurements supersede.
    read. Sync to `soqrates`.
 2. **Fusion arm.** The zero-overlap result makes fused replica+futures the
    obvious next measurement, and the code already exists.
-3. **Photo-moment calibration**, out of sample, on days disjoint from both
-   the timing fit and the quirk evaluation.
-4. **Live morning loop**, replay-provable per C4, real-morning shakedown per
+3. **NOII-vs-print deviation on real days** (vision "In scope", previously
+   dropped from this list). The sweep result points here: if coverage is not
+   the constraint, indicative-vs-print accuracy is. `spx/replica/core/
+   deviation.py` has only ever run on 2019 ITCH samples.
+4. **Evaluation refresh**: re-run `backtest`, `baselines` and
+   `reality_check` with the replica arm included, per the vision's
+   evaluation-refresh scope item.
+5. **Context pack + open questions updated in the same pass** (C5). This was
+   missing from an earlier draft of this list, which is exactly the failure
+   C5 names.
+6. **Two vision questions still unanswered and not deferred anywhere**: which
+   remaining free news feeds (Truth Social, EDGAR 8-K, release endpoints) and
+   FMP slots earn their maintenance cost, and how to re-derive Polymarket
+   series id 10945 programmatically instead of hardcoding it.
+7. **Live morning loop**, replay-provable per C4, real-morning shakedown per
    C8 on the next trading day.
-5. **News layer**, now unblocked: refresh the bench shortlist, run it, commit
+8. **News layer**, now unblocked: refresh the bench shortlist, run it, commit
    a provider, wire the bounded news voice into fusion.
-6. **Hygiene**: ground-truth exclusion in code, bootstrap CLI subcommand,
+9. **Hygiene**: ground-truth exclusion in code, bootstrap CLI subcommand,
    Alpaca decision, figure-producing scripts.
 
 ## 5. Kill criteria
