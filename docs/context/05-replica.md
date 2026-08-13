@@ -45,13 +45,20 @@ with empirical per-ticker delay samples persisted to
 `.cache/print_delays.json`, and `condition_not_printed` is the Bayes update
 used by `apply_prints`.
 
-Measured against real Databento cross prints (2026-08-12, 17 ordinary days):
-**96% of constituents print within 5 seconds of 9:30, median 0.93s**, so the
-NYSE prior of 0.15 is far too pessimistic. Note the sample-size floor: p_live
-is Laplace-smoothed as `(hits + 0.5) / (n + 1)`, so a single day caps any
-ticker at 0.75 and a stable per-name estimate needs roughly 10 or more days.
-Fit on ordinary days and evaluate on quirk days; sharing days between the two
-leaks the answer into the model.
+Measured against real Databento cross prints (2026-08-13, 23 days, n=11,460
+prints): **median 1.02s, p90 1.58s, 92.6% within 2s, 47.0% within 1.0s**. The
+NYSE prior of 0.15 is far too pessimistic, but so is any assumption that the
+index is substantially printed at the 1.0s photo moment: fewer than half of
+constituents have printed by then, and the median print lands at 1.02s, right
+on the boundary. Moving the photo to 2s would raise coverage from 47% to
+92.6%, which is the single largest lever on how much index weight the replica
+can see.
+
+Two disciplines when refitting. p_live is Laplace-smoothed as
+`(hits + 0.5) / (n + 1)`, so one day caps any ticker at 0.75 and a stable
+per-name estimate needs roughly 10 or more days. And fit on ordinary days,
+evaluate on quirk days: sharing days between the two leaks the answer into
+the model.
 
 **Prior closes: use the auction reference, never Yahoo history.** The replica
 gap is `pred_open / prior_close - 1` per name, so the two prices must share a
