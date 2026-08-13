@@ -66,6 +66,14 @@ so the remaining error is in the indicative prices themselves, not in how
 many of them are used. This was an in-sample sweep and is reported as a
 refutation, not as a tuning result.
 
+At 5.0s: still 5/12, 11.33 bps, 88.2% live weight. The call count is
+**identical at every photo moment tested** while live index weight ranges
+from 36.3% to 88.2%. The replica's direction calls are therefore insensitive
+to how much of the index it can see, which is itself a warning: a signal that
+does not respond to more than doubling its input either is robust and
+broad-based, or is being set by something other than the auction evidence.
+Deciding which is a prerequisite for any claim built on the 5/12.
+
 ## 2. Four defects fixed (all silent-corruption class, none raised an error)
 
 1. **Weights host headers.** Slickcharts 403s a bare `Mozilla/5.0`;
