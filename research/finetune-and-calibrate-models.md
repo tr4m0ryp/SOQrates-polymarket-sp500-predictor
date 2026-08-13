@@ -634,10 +634,26 @@ weakest of the three.
 
 ## Build Plan
 
-**Phase 1 (instrument, no new data).** Per-day ledger over cached days.
-Decidability score implemented and the minimal falsifying experiment run.
+**Phase 1 (instrument + the safety rails that make measurement honest, no new
+data).** Three things, together, because they are the same concern:
+(a) hard `as_of` enforcement threaded through `snapshots()` so no post-cutoff
+data can enter any prediction, which is what the 2026-08-13 lookahead defect
+required and which is equally a production requirement (T10);
+(b) liveness assertions on the three known silent-failure dependencies -- index
+weights, the stooq cross-check, per-slice entitlement -- each failing loudly
+(T11);
+(c) the per-day ledger and the decidability score, then the minimal falsifying
+experiment.
 Gate: if `D` fails to separate top and bottom halves by 15 points, stop and
 write the negative result.
+
+Rationale for folding the live-path rails into phase 1 rather than phase 6:
+C6 forbids backtest-first-then-productionise, and these particular rails are
+not hardening. An unenforced cutoff produced a partial oracle that scored a
+result we had to retract, and a silently dead dependency produced a
+vacuously-passing ground-truth audit. They are correctness requirements for
+the measurement itself, so they cannot be deferred without the measurement
+being untrustworthy again.
 
 **Phase 2 (calibration).** Fit `λ` on tuning days. Verify unit z-RMS and sign
 retention. Baseline arms: raw, Platt, isotonic.
@@ -653,8 +669,30 @@ market-history window under both fill assumptions.
 mechanisms only, degrees of freedom counted, every proposed change tested on
 days that did not produce it.
 
-**Phase 6 (live path).** `as_of` enforcement, dependency liveness assertions,
-fail-closed defaults. Replay-provable per the prior vision's C4.
+**Phase 6 (live orchestration).** The morning loop itself: checkpoint
+scheduling, crash recovery, fail-closed abstention when any input is stale.
+The correctness rails it depends on already landed in phase 1. Replay-provable
+per the prior vision's C4; the real-morning shakedown needs a trading day and
+is expected to be marked BLOCKED within any single run.
+
+## Degrees-of-Freedom Ledger (C10)
+
+Outcome-informed choices are counted here and the count is reported with every
+result. Budget: at n≈22 rule-derived days, 4-5 exhausts the statistical
+content.
+
+| # | Parameter | Fitted on | Outcome-dependent? | Status |
+|---|---|---|---|---|
+| 1 | `λ` shrinkage | tuning days, z-RMS only | No -- targets unit variance, never PnL | spent |
+| 2 | `k` decidability threshold | tuning days, risk-coverage | Partially -- coverage is chosen, error is measured | spent |
+| 3 | Kelly fraction (T15) | tuning days | Yes -- must be declared before the evaluation set is touched | reserved |
+| — | Fusion weights (T5) | not fitted; inverse-variance formula | No | free |
+| — | Photo moment | not fitted; measured inert (F5) | No | free |
+| — | `PREVIEW_SIGMA` | measured directly from dispersion | No | free |
+
+T3 and T5 are reconciled here: fusion weights are **formula-derived, not
+fitted**, so they cost nothing from the budget. T15's Kelly fraction is a real
+free parameter and is counted, which the first draft of this doc omitted.
 
 **Paper handoff.** `Formal Model` -> Method; `Related Work Map` -> Related
 Work; `Evaluation Plan` -> Experiments; `Novel Contributions` ->
