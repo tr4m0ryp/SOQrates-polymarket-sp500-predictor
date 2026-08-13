@@ -58,7 +58,22 @@ def _call(provider: dict, system: str, user_payload: dict,
                  "Authorization": f"Bearer {provider['key']}"})
     with urllib.request.urlopen(req, timeout=timeout) as r:
         res = json.load(r)
-    return res["choices"][0]["message"]["content"]
+    msg = res["choices"][0]["message"]
+    content = msg.get("content")
+    if content:
+        return content
+    # Reasoning models (gpt-oss, nemotron and friends) put their chain in
+    # `reasoning_content` and return content=None when the token budget runs
+    # out before they emit an answer. Verified on NVIDIA 2026-08-13:
+    # gpt-oss-120b at max_tokens=64 returns None, at 512 returns the answer.
+    # Surface that as a named failure instead of a NoneType error three
+    # frames deeper in the JSON validator.
+    if msg.get("reasoning_content"):
+        raise LlmError(
+            f"{provider['model']} returned reasoning but no content "
+            f"(finish_reason={res['choices'][0].get('finish_reason')}); "
+            f"the token budget was consumed before an answer was emitted")
+    raise LlmError(f"{provider['model']} returned an empty message")
 
 
 def run(system: str, user_payload: dict, validator, retries: int = 2) -> dict:
