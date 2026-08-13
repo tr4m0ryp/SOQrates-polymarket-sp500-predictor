@@ -167,7 +167,11 @@ def main() -> int:
               f"{est['live_weight_pct']:>6.1f}%")
 
     print(f"\nquirk days called by the auction replica: {hits}/{n}")
-    print("paper baseline, futures alone: 5/12")
+    print("paper (appendix replica.tex) states futures alone call 2 of 12 "
+          "quirk days; that figure is NOT computed here and is not\n"
+          "  directly comparable - it uses a different criterion. A\n"
+          "  like-for-like futures baseline on these same 12 days is\n"
+          "  still owed before claiming any improvement.")
     out = CACHE / "stage3_eval.json"
     out.write_text(json.dumps({"fit_days": ordinary, "results": results,
                                "hits": hits, "n": n}, indent=1))
