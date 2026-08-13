@@ -64,7 +64,9 @@ that each newly included name enters at its indicative price and carries
 preview noise (0.30% sigma on NYSE), whereas excluded names sit at prior
 close contributing zero, damping the estimate toward zero. Since quirk-day
 official gaps are themselves near zero, the damping was flattering the error.
-Coverage is not the binding constraint.
+Coverage is not the binding constraint. Tested at 1.0s, 2.0s and 5.0s:
+calls are 5/12 at all three while live weight runs 36.3% to 88.2%, so the
+direction calls do not respond to coverage at all.
 
 Two disciplines when refitting. p_live is Laplace-smoothed as
 `(hits + 0.5) / (n + 1)`, so one day caps any ticker at 0.75 and a stable
