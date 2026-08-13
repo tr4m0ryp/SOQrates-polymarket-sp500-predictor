@@ -59,6 +59,30 @@ def main() -> int:
           _indicative({"ind_match_price": -5000000000,
                        "cont_book_clr_price": 42860000000}) == 42.86)
 
+    print("\nopening-cross identification (odd-lot defect, 2026-08-12)")
+    from spx.replica.vendors.databento.historical import cross_print_map
+
+    # The window opens at 9:29:55, so pre-open odd lots arrive BEFORE the
+    # cross. Taking the earliest trade picked a 20-share AAPL print over the
+    # 404,032-share cross and gave the timing model negative delays.
+    recs = [
+        {"ticker": "AAPL", "cross_price": 307.73, "ts_ns": 1000, "size": 20},
+        {"ticker": "AAPL", "cross_price": 307.75, "ts_ns": 6000, "size": 404032},
+        {"ticker": "AAPL", "cross_price": 307.80, "ts_ns": 9000, "size": 500},
+    ]
+    got = cross_print_map(recs)["AAPL"]
+    check("largest trade wins, not earliest", got == (307.75, 6000),
+          f"got {got}")
+
+    tie = [{"ticker": "X", "cross_price": 10.0, "ts_ns": 500, "size": 100},
+           {"ticker": "X", "cross_price": 11.0, "ts_ns": 900, "size": 100}]
+    check("size ties break to the earlier print",
+          cross_print_map(tie)["X"] == (10.0, 500))
+
+    check("records without a size are still usable",
+          cross_print_map([{"ticker": "Y", "cross_price": 5.0,
+                            "ts_ns": 1}])["Y"] == (5.0, 1))
+
     print("\nspend governor")
     from spx.replica.vendors.databento import budget
     check("default cap is the agreed $50", budget.DEFAULT_CAP_USD == 50.00,
