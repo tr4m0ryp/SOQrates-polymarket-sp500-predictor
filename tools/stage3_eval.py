@@ -130,7 +130,7 @@ def main() -> int:
 
     # --- fit timing on ordinary days ONLY (out-of-sample for quirks) --------
     tm = TimingModel(venues=venues)
-    tm.fit_from_prints({d: source.print_delays(d) for d in ordinary})
+    tm.fit_from_prints({d: digest(d)["delays"] for d in ordinary})
     pl = [tm.p_live(r["ticker"]) for r in rows]
     wsum = sum(r["weight"] for r in rows)
     lw = sum(r["weight"] * tm.p_live(r["ticker"]) for r in rows) / wsum * 100
@@ -146,18 +146,12 @@ def main() -> int:
         if d not in spx_hist:
             continue
         prev = index_days[index_days.index(d) - 1]
-        snaps = source.snapshots(d)
-        pred, closes, fellback = {}, {}, 0
-        for t, ss in snaps.items():
-            last = next((s for s in reversed(ss) if s.get("pred_open")), None)
-            if not last:
-                continue
-            ref = auction_reference(ss)
-            if not ref:
-                ref = prior_close(prices, t, d, index_days)
-                fellback += 1
+        dg = digest(d)
+        pred, closes = {}, {}
+        for t, po in dg["pred"].items():
+            ref = dg["ref"].get(t) or prior_close(prices, t, d, index_days)
             if ref:
-                pred[t] = last["pred_open"]
+                pred[t] = po
                 closes[t] = ref
         dist = pipeline.replica_distribution(pred, closes, timing=tm)
         est = pipeline.replica_estimate(pred, closes)
