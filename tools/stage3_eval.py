@@ -27,6 +27,32 @@ from spx.replica.vendors.databento import source  # noqa: E402
 PRICES = CACHE / "prior_closes.json"
 
 
+def digest(date: str) -> dict:
+    """Small per-day summary, computed once and cached beside the raw pull.
+
+    The raw JSON for one day is ~130 MB across six slices, and re-parsing 29
+    days of it on every evaluation costs more than 15 minutes. Everything
+    downstream needs only three numbers per ticker, so they are precomputed
+    here and written to `digest.json` next to the raw files. Writing per day
+    makes a long build resumable.
+    """
+    path = CACHE / "databento" / date / "digest.json"
+    if path.exists():
+        return json.loads(path.read_text())
+    snaps = source.snapshots(date)
+    out = {"pred": {}, "ref": {}}
+    for t, ss in snaps.items():
+        last = next((s for s in reversed(ss) if s.get("pred_open")), None)
+        ref = next((s.get("ref_price") for s in ss if s.get("ref_price")), None)
+        if last:
+            out["pred"][t] = last["pred_open"]
+        if ref:
+            out["ref"][t] = ref
+    out["delays"] = source.print_delays(date)
+    path.write_text(json.dumps(out))
+    return out
+
+
 def cached_days() -> list[str]:
     d = CACHE / "databento"
     return sorted(p.name for p in d.iterdir()
