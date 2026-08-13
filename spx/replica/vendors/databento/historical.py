@@ -77,17 +77,28 @@ def cross_print_map(records) -> dict[str, tuple[float, int]]:
 
     Feeds timing.fit_from_prints and montecarlo.apply_prints (the caller
     splits into {ticker: price} for apply_prints and hands ts_ns to timing).
-    The opening cross is taken as the EARLIEST priced trade per ticker in the
-    requested window - confirm the exact cross flag on the first keyed pull.
+    The opening cross is taken as the LARGEST priced trade per ticker in the
+    requested window, which the first keyed pull (2026-08-12) confirmed is the
+    right discriminator: the trades schema carries no cross flag (`flags` only
+    holds F_LAST packet markers), and the auction print dwarfs every other
+    trade around the open. On 2026-08-11 AAPL crossed 404,032 shares at
+    09:30:00.234 and MSFT 355,376 at 09:30:00.688.
+
+    The earlier "earliest trade in the window" rule silently picked pre-open
+    odd lots for exactly the most liquid names: 20 shares for AAPL at
+    09:29:55.158 and 1 share for MSFT, which both mispriced the realized open
+    and handed the timing model negative print delays.
     """
-    best: dict[str, tuple[float, int]] = {}
+    best: dict[str, tuple[float, int, int]] = {}
     for r in records:
         t = r.get("ticker")
         px = r.get("cross_price")
         ts = r.get("ts_ns")
         if not t or px is None or ts is None:
             continue
+        sz = r.get("size") or 0
         cur = best.get(t)
-        if cur is None or ts < cur[1]:
-            best[t] = (px, ts)
-    return best
+        # largest size wins; ties break to the earlier print
+        if cur is None or sz > cur[2] or (sz == cur[2] and ts < cur[1]):
+            best[t] = (px, ts, sz)
+    return {t: (px, ts) for t, (px, ts, _sz) in best.items()}
