@@ -45,14 +45,26 @@ with empirical per-ticker delay samples persisted to
 `.cache/print_delays.json`, and `condition_not_printed` is the Bayes update
 used by `apply_prints`.
 
-Measured against real Databento cross prints (2026-08-13, 23 days, n=11,460
-prints): **median 1.02s, p90 1.58s, 92.6% within 2s, 47.0% within 1.0s**. The
-NYSE prior of 0.15 is far too pessimistic, but so is any assumption that the
-index is substantially printed at the 1.0s photo moment: fewer than half of
-constituents have printed by then, and the median print lands at 1.02s, right
-on the boundary. Moving the photo to 2s would raise coverage from 47% to
-92.6%, which is the single largest lever on how much index weight the replica
-can see.
+Measured against real Databento cross prints (2026-08-13). Source: all 29
+per-day digests, `.cache/databento/*/digest.json`, n=14,439 prints. **Median
+1.026s, p90 1.595s, 46.2% within 1.0s, 92.6% within 2.0s, zero negative.**
+Do not recompute this from `.cache/print_delays.json`: that file is the
+TimingModel fit store and holds only the 17 ordinary fit days (8,474 obs), so
+it answers a different question and gives different numbers.
+
+The NYSE prior of 0.15 is far too pessimistic. But note that fewer than half
+of constituents have printed at the 1.0s photo moment, with the median print
+landing at 1.026s, right on the boundary.
+
+**Widening the photo does not help, which was tested rather than assumed.**
+Moving it to 2.0s raises live index weight from 36.3% to 87.0% exactly as the
+coverage numbers predict, yet quirk-day calls stay at 5/12 and the mean
+absolute index error gets *worse*, 6.79 bps to 11.14 bps. The mechanism is
+that each newly included name enters at its indicative price and carries
+preview noise (0.30% sigma on NYSE), whereas excluded names sit at prior
+close contributing zero, damping the estimate toward zero. Since quirk-day
+official gaps are themselves near zero, the damping was flattering the error.
+Coverage is not the binding constraint.
 
 Two disciplines when refitting. p_live is Laplace-smoothed as
 `(hits + 0.5) / (n + 1)`, so one day caps any ticker at 0.75 and a stable
