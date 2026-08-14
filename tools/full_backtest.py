@@ -163,11 +163,27 @@ def main() -> int:
         row["counterfactual_pnl"] = pnl_if_traded
         row["liquidity_cap"] = cap
 
+        # Expected value at the ACTUAL fill, not probability edge. A binary
+        # bought at fill f pays (1/f - 1) per unit staked on a win and loses
+        # the whole stake otherwise, so break-even accuracy is f + fee terms,
+        # not the market's implied probability. At the median fill of 0.99
+        # break-even is 99.0%, above any accuracy this model has ever
+        # measured, so `edge > 0` waves through trades that are negative-EV
+        # by arithmetic. This is derived from the payoff, not fitted to
+        # results, so it is a mechanism fix under C9.
+        p_win = p if side == "UP" else 1 - p
+        ev = p_win * (1.0 / fill - 1.0) * (1 - FEE) - (1 - p_win)
+        row["ev_per_unit"] = ev
+        row["breakeven_p"] = 1.0 / (1.0 + (1.0 / fill - 1.0) * (1 - FEE))
+
         if conf < CONF_COMMIT:
             row.update({"decision": "abstain", "suppressed_by": "CONF_COMMIT",
                         "pnl": 0.0})
         elif edge <= 0:
             row.update({"decision": "abstain", "suppressed_by": "no_edge",
+                        "pnl": 0.0})
+        elif ev <= 0:
+            row.update({"decision": "abstain", "suppressed_by": "negative_ev",
                         "pnl": 0.0})
         else:
             bank += pnl_if_traded
