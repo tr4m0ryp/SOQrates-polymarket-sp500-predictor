@@ -55,25 +55,19 @@ def replica_p(date: str, closes: dict, W: dict, idx: list, spx_hist: dict):
     a prediction. That rule is what the 2026-08-13 lookahead defect required,
     and it is enforced here rather than trusted to the request window.
     """
-    dpath = CACHE / "databento" / date / "digest.json"
+    dpath = CACHE / "databento" / date / "preopen.json"
     if not dpath.exists() or date not in spx_hist:
         return None
-    from spx.replica.vendors.databento import source
+    dg = json.loads(dpath.read_text())
     prev = idx[idx.index(date) - 1]
-    y, m, d = (int(x) for x in date.split("-"))
-    cut = int(dt.datetime(y, m, d, 9, 29, 59, tzinfo=NY).timestamp() * 1e9)
     num = cov = 0.0
-    for t, ss in source.snapshots(date).items():
+    for t, px in dg.get("pred_preopen", {}).items():
         w = W.get(t)
         h = closes.get(t) or {}
         ks = [k for k in h if k <= prev]
         if not w or not ks:
             continue
-        pre = [s for s in ss if s.get("pred_open") and s.get("ts_ns")
-               and int(s["ts_ns"]) <= cut]
-        if not pre:
-            continue
-        num += w * (pre[-1]["pred_open"] / h[max(ks)] - 1) * 100
+        num += w * (px / h[max(ks)] - 1) * 100
         cov += w
     if cov <= 0:
         return None
