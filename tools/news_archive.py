@@ -128,8 +128,16 @@ def main() -> int:
     todo = [d for d in days if not (OUT / f"{d}.json").exists()]
     print(f"{len(days)} days in window, {len(days)-len(todo)} already archived, "
           f"{len(todo)} to fetch", flush=True)
-    est = len(todo) * (17.5 / SLICE_HOURS) * (PAUSE + 1.5) / 3600
-    print(f"estimated wall clock: {est:.1f}h\n", flush=True)
+    # GDELT's own response time (measured 17-34s) dominates, not the pause.
+    # Budget 25s latency + PAUSE per slice, or the estimate reads far too low.
+    window_h = ((dt.datetime.combine(dt.date(2000, 1, 2), WINDOW_END_ET)
+                 - dt.datetime.combine(dt.date(2000, 1, 1), WINDOW_START_ET))
+                .total_seconds() / 3600)
+    slices_per_day = -(-window_h // SLICE_HOURS)
+    est = len(todo) * slices_per_day * (25.0 + PAUSE) / 3600
+    print(f"{slices_per_day:.0f} slices/day over a {window_h:.1f}h window; "
+          f"estimated wall clock: {est:.1f}h", flush=True)
+    print("resumable: completed days are skipped on restart\n", flush=True)
 
     t0 = time.time()
     for i, day in enumerate(todo, 1):
