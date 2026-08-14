@@ -36,7 +36,12 @@ from spx.data import weights as wmod, yahoo  # noqa: E402
 from spx.model.core import ModelProd  # noqa: E402
 from spx.pm.history import HIST_DIR  # noqa: E402
 
-DECISION_HOUR = 9          # ET hour the call is fixed at
+DECISION_HOUR = 9          # ET hour the FUTURES model is scored at
+# The market price must be taken at the same moment as the newest information
+# used. The replica reads auction snapshots up to 09:29:59, so quoting the
+# 09:00 price against it is a 30-minute lookahead: we would be trading on
+# information the book had not yet seen. Both arms therefore price at 09:29.
+DECISION_MINUTE = 9 * 60 + 29
 LIQ_FRAC = 0.01            # matches spx/strategy/engine/sim.py
 HALF_SPREAD = 0.01         # matches spx/strategy/engine/execution.py
 FEE = 0.04                 # taker fee
@@ -141,7 +146,7 @@ def main() -> int:
         # equal-variance blend when both arms exist; no fitted weights
         p = p_fut if p_rep is None else 0.5 * (p_fut + p_rep)
 
-        price, vol = market_at(date, DECISION_HOUR * 60)
+        price, vol = market_at(date, DECISION_MINUTE)
         up = r["off"] > 0
         conf = max(p, 1 - p)
         row = {"date": date, "official_pct": r["off"], "up": up,
