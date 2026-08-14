@@ -46,11 +46,16 @@ QUERY = ('("federal reserve" OR "interest rate" OR "interest rates" OR '
          '"treasury yield" OR "jobs report" OR "consumer price" OR '
          '"s&p 500" OR "nasdaq futures" OR tariffs)')
 
-WINDOW_START_ET = dt.time(16, 0)     # prior session close
+# 20:00 rather than 16:00: the 16:00-20:00 block is post-close US evening with
+# little market-moving flow, and each slice costs ~25s of GDELT latency. This
+# trims 2 slices/day (about 1.5h across the window) for very little coverage.
+WINDOW_START_ET = dt.time(20, 0)     # prior evening, around the Asia open
 WINDOW_END_ET = dt.time(9, 30)       # the open we are predicting
 SLICE_HOURS = 2
-PAUSE = 6.0                          # API asks for >=5s between requests
+PAUSE = 8.0                          # measured: throttling is erratic, and
+                                     # request latency (17-34s) dominates anyway
 EMPTY_RETRIES = 2                    # a rate-limit page is HTTP 200 with 0 hits
+THROTTLE_BACKOFF = 90.0              # on an explicit 429, wait properly
 
 
 def utc(day: str, t: dt.time, offset_days: int = 0) -> dt.datetime:
@@ -63,20 +68,33 @@ def utc(day: str, t: dt.time, offset_days: int = 0) -> dt.datetime:
 def fetch_day(day: str) -> dict:
     start = utc(day, WINDOW_START_ET, -1)
     end = utc(day, WINDOW_END_ET, 0)
-    arts, slices = {}, 0
+    arts, slices, slice_log = {}, 0, []
     cur = start
     while cur < end:
         nxt = min(cur + dt.timedelta(hours=SLICE_HOURS), end)
-        got = []
+        # A throttled response and a genuinely quiet slice look identical:
+        # both are HTTP 200 with zero articles. Retry every empty result, and
+        # record which slices never returned data so the fidelity report can
+        # separate "nothing happened" from "we never found out".
+        got, status = [], "ok"
         for attempt in range(EMPTY_RETRIES + 1):
-            got = gdelt.query(QUERY,
-                              cur.strftime("%Y%m%d%H%M%S"),
-                              nxt.strftime("%Y%m%d%H%M%S"),
-                              max_records=250, sort="datedesc")
+            try:
+                got = gdelt.query(QUERY,
+                                  cur.strftime("%Y%m%d%H%M%S"),
+                                  nxt.strftime("%Y%m%d%H%M%S"),
+                                  max_records=250, sort="datedesc")
+            except Exception as e:                      # noqa: BLE001
+                status = "throttled" if "429" in str(e) else "error"
+                time.sleep(THROTTLE_BACKOFF if status == "throttled" else PAUSE)
+                continue
             if got:
+                status = "ok"
                 break
+            status = "empty_unverified"
             if attempt < EMPTY_RETRIES:
-                time.sleep(PAUSE * 2)      # empty may mean throttled, not quiet
+                time.sleep(PAUSE * 2)
+        slice_log.append({"start": cur.isoformat(), "status": status,
+                          "n": len(got)})
         for a in got:
             if a.get("ts") and a.get("title"):
                 arts[a["url"]] = a          # url dedupes across slice edges
@@ -87,9 +105,12 @@ def fetch_day(day: str) -> dict:
         time.sleep(PAUSE)
     rows = sorted((a for k, a in arts.items() if k != "_truncated"),
                   key=lambda x: x["ts"])
+    bad = [s2 for s2 in slice_log if s2["status"] != "ok"]
     return {"date": day, "query": QUERY, "slices": slices,
             "window_utc": [start.isoformat(), end.isoformat()],
             "truncated_slice": "_truncated" in arts,
+            "slice_log": slice_log, "unverified_slices": len(bad),
+            "complete": not bad,
             "n": len(rows), "articles": rows}
 
 
@@ -119,6 +140,8 @@ def main() -> int:
         print(f"[{i}/{len(todo)}] {day}  {rec['n']:>4} articles  "
               f"{rec['slices']} slices"
               + ("  TRUNCATED" if rec["truncated_slice"] else "")
+              + (f"  UNVERIFIED:{rec['unverified_slices']}"
+                 if rec["unverified_slices"] else "")
               + f"  (eta {(len(todo)-i)*rate/3600:.1f}h)", flush=True)
     print(f"\ndone: {len(todo)} days in {(time.time()-t0)/3600:.2f}h")
     return 0
