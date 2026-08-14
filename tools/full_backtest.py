@@ -41,6 +41,11 @@ LIQ_FRAC = 0.01            # matches spx/strategy/engine/sim.py
 HALF_SPREAD = 0.01         # matches spx/strategy/engine/execution.py
 FEE = 0.04                 # taker fee
 
+# Directional accuracy of the production model at the decision hour, measured
+# on the TRAIN half only (2024-08..2025-08), which ends before this backtest
+# window opens. Caps the optimism any single day's probability may express.
+TRAIN_ACC = 0.94
+
 
 def market_days() -> list[str]:
     """Every day with a resolved Polymarket market, in order. The universe."""
@@ -171,7 +176,13 @@ def main() -> int:
         # measured, so `edge > 0` waves through trades that are negative-EV
         # by arithmetic. This is derived from the payoff, not fitted to
         # results, so it is a mechanism fix under C9.
-        p_win = p if side == "UP" else 1 - p
+        # Use the model's TRAIN-half measured accuracy, not the live fused
+        # probability, to decide whether the payoff can support a bet. The
+        # fused p is uncalibrated (one arm is ~3x overconfident), and an EV
+        # gate fed a miscalibrated p underperformed a cruder rule. Train-half
+        # accuracy is a fixed number known before this window begins, so
+        # using it introduces no dependence on the outcomes being scored.
+        p_win = min(p if side == "UP" else 1 - p, TRAIN_ACC)
         ev = p_win * (1.0 / fill - 1.0) * (1 - FEE) - (1 - p_win)
         row["ev_per_unit"] = ev
         row["breakeven_p"] = 1.0 / (1.0 + (1.0 / fill - 1.0) * (1 - FEE))
