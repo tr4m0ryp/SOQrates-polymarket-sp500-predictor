@@ -85,20 +85,21 @@ def market_at(date: str, minute: int):
         curve = json.loads(p.read_text())
     except (OSError, ValueError):
         return None, None
-    pts = curve.get("points") if isinstance(curve, dict) else curve
-    if not pts:
-        return None, (curve.get("volume") if isinstance(curve, dict) else None)
+    meta = curve.get("meta") or {}
+    vol = meta.get("volume")
     best = None
-    for row in pts:
-        t = row.get("t") if isinstance(row, dict) else row[0]
-        v = row.get("p") if isinstance(row, dict) else row[1]
+    for row in curve.get("history") or []:
+        t, v = row.get("t"), row.get("p")
         if t is None or v is None:
             continue
         et = dt.datetime.fromtimestamp(int(t), tz=dt.timezone.utc).astimezone(NY)
+        # the curve spans the prior noon to resolution; only same-day points
+        # at or before the decision minute are knowable at decision time
+        if et.strftime("%Y-%m-%d") != date:
+            continue
         mm = et.hour * 60 + et.minute
         if mm <= minute and (best is None or mm > best[0]):
             best = (mm, float(v))
-    vol = curve.get("volume") if isinstance(curve, dict) else None
     return (best[1] if best else None), vol
 
 
