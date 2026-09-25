@@ -13,3 +13,4 @@ docs/research/**/*.log
 .env
 .env.local
 .claude/settings.local.json
+docs/research/paper/
