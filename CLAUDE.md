@@ -267,13 +267,20 @@ The paper lives at `docs/research/paper/` and mirrors the
 Overleaf project **soqrates**
 (https://www.overleaf.com/project/6a5bf21b6022bf005e17893a). Whenever the
 paper is written or materially revised, push it to that project in the same
-turn; the repo stays the source of truth:
+turn; the repo stays the source of truth. Push through Overleaf's git bridge
+(credential in the keychain) via the mirror clone:
 
 ```
-python3 ~/projects/research/style-corpus/overleaf/sync.py \
-  --paper-dir docs/research/paper \
-  --name soqrates --message "<what changed>"
+M=~/projects/research/overleaf-mirror/soqrates
+[ -d $M ] || git clone https://git.overleaf.com/6a5bf21b6022bf005e17893a $M
+git -C $M pull && cp docs/research/paper/{*.tex,*.bib,*.sty} $M/ \
+  && cp -R docs/research/paper/sections $M/
+git -C $M add -A && git -C $M commit -m "<what changed>" && git -C $M push
 ```
+
+Diff the mirror against the repo before copying: an edit made on Overleaf must
+be pulled into the repo first, never overwritten. The mirror also holds the
+vector figure PDFs that the repo gitignores.
 
 The compiled paper is also kept at the repo root as `paper.pdf`, so any
 session can read the full context without a TeX build. It is **not a paper for
@@ -289,9 +296,6 @@ cd docs/research/paper && pdflatex main && bibtex main \
   && pdflatex main && pdflatex main && cp main.pdf ../../../paper.pdf
 ```
 
-Always reuse the `soqrates` slug (registered in
-`~/projects/research/overleaf-mirror/manifest.tsv`); a new slug silently
-forks the paper into a second Overleaf project.
 
 ## Package map (all under `open_predictor/`)
 
