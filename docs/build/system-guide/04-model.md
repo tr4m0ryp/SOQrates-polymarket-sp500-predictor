@@ -11,7 +11,7 @@ modules: `open_predictor/forecast/model/regime.py` (volatility regime scaler), `
 
 ## Input rows and the hour convention
 
-Each dataset row (built in `open_predictor/evaluation/backtest/dataset.py`) covers one trading day:
+Each dataset row (built in `open_predictor/forecast/backtest/dataset.py`) covers one trading day:
 `off` is the official open gap in percent of prior close, and `es`, `nq`, `ym`
 are hourly futures gap paths from `open_predictor/sources/market/futures.py`. The hour key `h` in
 0..9 is the ET clock hour on the prediction day, so `es[9]` is the ES gap at
@@ -68,7 +68,7 @@ fitted by OLS on the residual after the ES term (default 0.0).
 ModelV13 and a ModelV12 and routes by hour: v1.3 for `h < 5` (early, where
 VIX1D and the NQ spread sharpen the call), v1.2 for `h >= 5` (late, where the
 plain ES view is better calibrated). This is what `open_predictor/trading/strategy/data.py`,
-`open_predictor/cli/newscmd.py`, and `open_predictor/evaluation/backtest/plot.py` use.
+`open_predictor/cli/newscmd.py`, and `open_predictor/forecast/backtest/plot.py` use.
 
 ## Inverse-variance fusion (`open_predictor/forecast/model/fusion.py`)
 
@@ -101,21 +101,21 @@ are ET) and `CACHE` (the gitignored `.cache/` directory, created on import).
 
 `CONF_COMMIT` drives behavior in two places: `open_predictor/trading/polymarket/edge.py` refuses to bet
 below it (and additionally requires a 0.05 model-vs-market price edge), and
-`open_predictor/evaluation/backtest/run.py` reports the coin-flip fraction and committed-call
+`open_predictor/forecast/backtest/run.py` reports the coin-flip fraction and committed-call
 accuracy separately. `QUIRK_DAYS` feeds `quirk_report` in
-`open_predictor/evaluation/backtest/run.py`: at 9:00 the model is judged "safe" on a quirk day if it
+`open_predictor/forecast/backtest/run.py`: at 9:00 the model is judged "safe" on a quirk day if it
 either stood down (confidence below `CONF_COMMIT`) or called the direction
 right. The runner's own note states the quirk direction is unfixable from
 futures data alone and needs the stage-3 auction replica.
 
 ## Train/test discipline
 
-`split` in `open_predictor/evaluation/backtest/dataset.py` cuts the chronological row list in half:
+`split` in `open_predictor/forecast/backtest/dataset.py` cuts the chronological row list in half:
 first half train, second half test. Nothing is ever fitted on the test half.
 All fitting respects this: `RegimeScaler` means, tercile bounds, every OLS
 slope, per-hour sigmas, and the release multiplier come from `fit(train)`
 only. `annotate_ewma` is additionally lookahead-free within a row. The
-backtest (`open_predictor/evaluation/backtest/run.py`) evaluates Baseline, v1.2, and v1.3 on the
+backtest (`open_predictor/forecast/backtest/run.py`) evaluates Baseline, v1.2, and v1.3 on the
 test half at hours 0, 4, 7, 9 with Brier score, accuracy, coin-flip fraction,
 committed accuracy, and an `oc80` count (calls at 80%+ confidence that were
 wrong).
@@ -126,5 +126,5 @@ wrong).
 - `open_predictor/forecast/model/regime.py`: EWMA annotation, `RegimeScaler`, terciles
 - `open_predictor/forecast/model/fusion.py`: inverse-variance pooling used by stage 3
 - `open_predictor/config.py`: every named constant, with inline comments
-- `open_predictor/evaluation/backtest/dataset.py`: row schema, cache, and the chronological split
-- `open_predictor/evaluation/backtest/run.py`: metrics table and the quirk-day report
+- `open_predictor/forecast/backtest/dataset.py`: row schema, cache, and the chronological split
+- `open_predictor/forecast/backtest/run.py`: metrics table and the quirk-day report

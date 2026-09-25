@@ -6,12 +6,12 @@ from open_predictor.config import NY
 
 
 def cmd_backtest(args):
-    from open_predictor.evaluation.backtest import run
+    from open_predictor.forecast.backtest import run
     run.main(rebuild=args.rebuild)
 
 
 def cmd_predict(_args):
-    from open_predictor.evaluation.backtest import dataset
+    from open_predictor.forecast.backtest import dataset
     from open_predictor.sources.market import futures
     from open_predictor.forecast.model.core import ModelV13
     from open_predictor.sources.macro import releases
@@ -53,7 +53,7 @@ def cmd_predict(_args):
 
 
 def cmd_quirks(_args):
-    from open_predictor.evaluation.backtest import dataset, run
+    from open_predictor.forecast.backtest import dataset, run
     from open_predictor.forecast.model.core import ModelV13
     rows = dataset.load()
     train, _ = dataset.split(rows)

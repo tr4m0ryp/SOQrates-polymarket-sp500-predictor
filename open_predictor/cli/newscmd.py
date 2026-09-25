@@ -3,7 +3,7 @@ import json
 
 
 def cmd_news_mistakes(args):
-    from open_predictor.evaluation.backtest import dataset
+    from open_predictor.forecast.backtest import dataset
     from open_predictor.forecast.model.core import ModelProd
     from open_predictor.forecast.news.eval import mistakes
     from open_predictor.config import ROOT
@@ -44,7 +44,7 @@ RUN_SCHEDULE = (          # ET checkpoints derived from the decisive-hour profil
 
 def cmd_news_timing(_args):
     import json
-    from open_predictor.evaluation.backtest import dataset
+    from open_predictor.forecast.backtest import dataset
     from open_predictor.forecast.news.eval import timing
     from open_predictor.config import CACHE
 
@@ -78,7 +78,7 @@ def cmd_news_prefetch(_args):
 
 
 def cmd_news_groupb_fit(_args):
-    from open_predictor.evaluation.backtest import dataset
+    from open_predictor.forecast.backtest import dataset
     from open_predictor.forecast.model.core import ModelProd
     from open_predictor.forecast.news.llm import groupb
 
@@ -144,7 +144,7 @@ def cmd_news_llm_bench(args):
 
 
 def cmd_news_replay(_args):
-    from open_predictor.evaluation.backtest import dataset
+    from open_predictor.forecast.backtest import dataset
     from open_predictor.forecast.news.eval import replay
 
     rows = dataset.load()

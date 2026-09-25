@@ -133,5 +133,5 @@ live loop will follow.
 - `open_predictor/forecast/news/llm/groupb.py`: the fitted Group-B weight and the fusion voice
 - `open_predictor/forecast/news/ops/prefetch.py`: Group-A block, feed registry, A/B rationale
 - `open_predictor/forecast/news/ops/schedule.py`: checkpoints, triggers, call budget
-- `open_predictor/forecast/news/eval/replay.py`: end-to-end historical replay on labeled days
+- `open_predictor/forecast/news/eval/replay/run.py`: end-to-end historical replay on labeled days
 - `open_predictor/cli/newscmd.py`: every `news-*` CLI command in one file

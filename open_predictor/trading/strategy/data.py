@@ -57,7 +57,7 @@ def build(rebuild: bool = False) -> list[dict]:
     if not rebuild and _CACHE_FILE.exists():
         return json.loads(_CACHE_FILE.read_text())
 
-    from open_predictor.evaluation.backtest import dataset
+    from open_predictor.forecast.backtest import dataset
     from open_predictor.forecast.model.core import ModelProd
     rows = dataset.load()
     train, _ = dataset.split(rows)

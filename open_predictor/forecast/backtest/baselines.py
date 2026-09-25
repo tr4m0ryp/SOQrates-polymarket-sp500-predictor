@@ -18,14 +18,14 @@ half. Methods:
 Metrics per decision time: direction accuracy (with n) and Brier score,
 under the run.py convention that p > 0.5 calls UP. A paired block repeats
 model rows on the exact crowd-covered subset so crowd-vs-model cells are
-apples-to-apples. Run from the repo root:  python3 -m open_predictor.evaluation.backtest.baselines
+apples-to-apples. Run from the repo root:  python3 -m open_predictor.forecast.backtest.baselines
 """
 import datetime as dt
 import json
 import math
 
 from open_predictor.config import NY
-from open_predictor.evaluation.backtest import dataset
+from open_predictor.forecast.backtest import dataset
 from open_predictor.forecast.model.core import ModelProd
 from open_predictor.trading.polymarket.history import HIST_DIR
 

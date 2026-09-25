@@ -24,8 +24,8 @@ from datetime import datetime, time as dtime, timezone
 from open_predictor.config import CACHE, NY
 from open_predictor.sources.market import weights as wmod
 from open_predictor.forecast.auction.vendors.databento import budget
-from open_predictor.forecast.auction.vendors.databento.client import DatabentoError, get_range, _key
-from open_predictor.forecast.auction.vendors.databento.historical import (NASDAQ_DATASET, NYSE_DATASET,
+from open_predictor.forecast.auction.vendors.databento.transport.client import DatabentoError, get_range, _key
+from open_predictor.forecast.auction.vendors.databento.feeds.historical import (NASDAQ_DATASET, NYSE_DATASET,
                                            cross_print_map,
                                            snapshots as _group_snapshots)
 from open_predictor.forecast.auction.vendors.databento.schemas import normalize_imbalance, normalize_trade

@@ -70,7 +70,7 @@ def cmd_lseg_pull(args):
 
 def cmd_databento_status(_args):
     from open_predictor.forecast.auction.vendors.databento import source
-    from open_predictor.forecast.auction.vendors.databento.client import DatabentoError
+    from open_predictor.forecast.auction.vendors.databento.transport.client import DatabentoError
     try:
         datasets = source.ping()
     except DatabentoError as e:
@@ -86,7 +86,7 @@ def cmd_databento_status(_args):
 
 def cmd_databento_pull(args):
     from open_predictor.forecast.auction.vendors.databento import source, schemas
-    from open_predictor.forecast.auction.vendors.databento.client import DatabentoError
+    from open_predictor.forecast.auction.vendors.databento.transport.client import DatabentoError
     try:
         res = source.pull_day(args.date)
     except DatabentoError as e:

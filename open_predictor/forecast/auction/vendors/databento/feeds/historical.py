@@ -14,7 +14,7 @@ Plus two stage-3 adapters that mirror replica/vendors/lseg/parse:
 """
 from collections import defaultdict
 
-from open_predictor.forecast.auction.vendors.databento.client import get_range
+from open_predictor.forecast.auction.vendors.databento.transport.client import get_range
 from open_predictor.forecast.auction.vendors.databento.schemas import (normalize_imbalance, normalize_quote,
                                         normalize_trade)
 

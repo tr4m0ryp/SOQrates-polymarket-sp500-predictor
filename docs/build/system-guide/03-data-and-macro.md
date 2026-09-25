@@ -50,11 +50,11 @@ returns every date where the two sources disagree on the open by more than
 prints the disagreement list.
 
 One caveat: the project convention (see the repo `CLAUDE.md`) says disagreement
-days are excluded from fits, but nothing in `open_predictor/evaluation/backtest/dataset.py` or
-`open_predictor/evaluation/backtest/run.py` calls `audit()`. Exclusion is a manual step today. The
+days are excluded from fits, but nothing in `open_predictor/forecast/backtest/dataset.py` or
+`open_predictor/forecast/backtest/run.py` calls `audit()`. Exclusion is a manual step today. The
 separate `QUIRK_DAYS` list in `open_predictor/config.py` (12 dates where ES held direction
 but the official print went the other way) is only used for the quirk report in
-`open_predictor/evaluation/backtest/run.py`, not removed from training either.
+`open_predictor/forecast/backtest/run.py`, not removed from training either.
 
 ## open_predictor/sources/market/weights.py and the index-weights pipeline
 
@@ -117,7 +117,7 @@ fetches; do not re-add them. CLI: `python3 . calendar-refresh`.
 
 ## Who consumes this layer
 
-`open_predictor/evaluation/backtest/dataset.py` is the main consumer: it joins futures gap paths,
+`open_predictor/forecast/backtest/dataset.py` is the main consumer: it joins futures gap paths,
 `^GSPC` daily open/close, `^VIX1D` prior close, prior-day RV, and the
 `release_morning` flag into `.cache/dataset.json` (last 480 trading days).
 `open_predictor/cli/market.py` uses `releases.is_release_morning()` on the live predict
@@ -130,4 +130,4 @@ path, and `open_predictor/forecast/news/` modules attach `release_names()` to ne
 - `open_predictor/sources/market/weights.py`: full weights pipeline including venue tagging
 - `open_predictor/sources/market/ground_truth.py`: the Yahoo-vs-stooq audit
 - `open_predictor/sources/macro/releases.py`: FRED calendar plus the no-key NFP fallback
-- `open_predictor/evaluation/backtest/dataset.py`: how it all lands in `.cache/dataset.json`
+- `open_predictor/forecast/backtest/dataset.py`: how it all lands in `.cache/dataset.json`

@@ -36,7 +36,7 @@ Files and subdirectories written by the package:
 
 | Path | Written by |
 |---|---|
-| `.cache/dataset.json` | `open_predictor/evaluation/backtest/` dataset builder (`python3 . backtest --rebuild`) |
+| `.cache/dataset.json` | `open_predictor/forecast/backtest/` dataset builder (`python3 . backtest --rebuild`) |
 | `.cache/releases.json`, `releases_manual.json` | `open_predictor/sources/macro/releases.py` (FRED calendar) |
 | `.cache/weights.json` | index-weights fetcher in `open_predictor/sources/market/` |
 | `.cache/crowd_fit.json`, `print_delays.json`, `bootstrap_bands.json`, `strategy_days.json` | model, replica timing, and strategy fits |
@@ -52,7 +52,7 @@ All keys are optional until the corresponding feature is used. None are required
 | Key | Unlocks | Read in |
 |---|---|---|
 | `FRED_API_KEY` | CPI/PPI/NFP/GDP release calendar (free from FRED). Without it, the calendar falls back to the computed NFP first-Friday rule. | `open_predictor/sources/macro/releases.py` |
-| `DATABENTO_API_KEY` | Primary auction source, stage-3 default: historical NOII, imbalance, prints, NBBO via stdlib HTTP+JSON. Live feed needs an optional `pip install databento`. | `open_predictor/forecast/auction/vendors/databento/client.py` |
+| `DATABENTO_API_KEY` | Primary auction source, stage-3 default: historical NOII, imbalance, prints, NBBO via stdlib HTTP+JSON. Live feed needs an optional `pip install databento`. | `open_predictor/forecast/auction/vendors/databento/transport/client.py` |
 | `DSS_USERNAME` / `DSS_PASSWORD` | LSEG DataScope Select tick history, the auction fallback. Academic license is research-only; production trading needs commercial data. | `open_predictor/forecast/auction/vendors/lseg/tick_history.py` |
 | `MASSIVE_API_KEY` | Live NYSE imbalance websocket leg in the free-stitch fallback. | `open_predictor/forecast/auction/vendors/stitch/feeds.py` |
 | `NCDS_CLIENT_ID` / `NCDS_CLIENT_SECRET` | Nasdaq NOII leg of the same free-stitch fallback. | `open_predictor/forecast/auction/vendors/stitch/feeds.py` |

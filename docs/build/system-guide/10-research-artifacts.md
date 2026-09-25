@@ -27,8 +27,8 @@ The `producing_script` field is the honest part. Six figures have
 were not retained, so they cannot be regenerated and the captions were written
 from the images plus project memory. Three are regenerable:
 
-- `reliability_diagram`: `open_predictor/evaluation/backtest/plot.py`, run
-  `python3 -c 'from open_predictor.evaluation.backtest.plot import reliability_diagram; reliability_diagram()'`
+- `reliability_diagram`: `open_predictor/forecast/backtest/plot.py`, run
+  `python3 -c 'from open_predictor.forecast.backtest.plot import reliability_diagram; reliability_diagram()'`
   from the repo root.
 - `strategy_bankroll_50_band`: `open_predictor/trading/strategy/analysis/plot.py` (`bankroll_band`),
   bands from `open_predictor/trading/strategy/analysis/bootstrap.py`, cached in

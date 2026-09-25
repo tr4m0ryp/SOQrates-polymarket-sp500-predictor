@@ -52,7 +52,7 @@ Both cores live in `open_predictor/forecast/model/core.py`:
   `open_predictor/forecast/model/fusion.py`, with a regime scaler in `open_predictor/forecast/model/regime.py`.
 
 Train/test splits are chronological halves and the model is fitted once and
-never refit on the test half (`open_predictor/evaluation/backtest/`).
+never refit on the test half (`open_predictor/forecast/backtest/`).
 
 ## Headline results (paper abstract)
 

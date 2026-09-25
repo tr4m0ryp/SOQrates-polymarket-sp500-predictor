@@ -8,7 +8,7 @@ deciles of predicted P(up); whiskers are 95% Wilson intervals.
 """
 import math
 
-from open_predictor.evaluation.backtest import dataset
+from open_predictor.forecast.backtest import dataset
 from open_predictor.forecast.model.core import ModelProd
 
 WINDOW = ("2025-09-09", "2026-07-13")   # the paper's validated 200-day window

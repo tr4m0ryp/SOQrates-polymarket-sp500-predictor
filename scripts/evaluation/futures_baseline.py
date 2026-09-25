@@ -23,7 +23,7 @@ sys.path.insert(0, ".")
 
 import open_predictor  # noqa: E402  (loads .env)
 from open_predictor.config import CACHE, CONF_COMMIT, QUIRK_DAYS  # noqa: E402
-from open_predictor.evaluation.backtest import dataset  # noqa: E402
+from open_predictor.forecast.backtest import dataset  # noqa: E402
 from open_predictor.forecast.model.core import ModelV12, ModelV13, ModelProd  # noqa: E402
 
 HOUR = 9          # 9:00 ET, the last hour the futures model is scored at

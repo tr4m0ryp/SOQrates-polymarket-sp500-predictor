@@ -1,7 +1,7 @@
 """Capped, resumable Databento backfill.
 
 Pulls a list of trading days under the spend cap enforced in
-`open_predictor.forecast.auction.vendors.databento.budget`, skipping days already cached so a
+`open_predictor.forecast.auction.vendors.databento.transport.budget`, skipping days already cached so a
 re-run costs nothing. Quirk days come first (C6), then ordinary days for the
 print-delay fit.
 

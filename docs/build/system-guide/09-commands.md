@@ -15,7 +15,7 @@ Bodies in `open_predictor/cli/market.py`.
 
 | Command | What it does | Prerequisites | Prints / writes |
 |---|---|---|---|
-| `backtest [--rebuild]` | Runs `open_predictor/evaluation/backtest/run.py` train/test metrics on chronological halves | Network (Yahoo) on first build or `--rebuild`; else `.cache/dataset.json` | Metrics tables and quirk report to stdout; writes `.cache/dataset.json` |
+| `backtest [--rebuild]` | Runs `open_predictor/forecast/backtest/run.py` train/test metrics on chronological halves | Network (Yahoo) on first build or `--rebuild`; else `.cache/dataset.json` | Metrics tables and quirk report to stdout; writes `.cache/dataset.json` |
 | `predict` | Fits ModelV13 on the full dataset, reads live ES/NQ gaps, prints predicted official gap and P(up), compares to today's Polymarket odds | Network: Yahoo live futures + gamma-api.polymarket.com; dataset cache (auto-built) | Live gap, mu/sigma/P(up), Polymarket P(up), edge verdict |
 | `quirks` | Lists quirk days (where the futures photo misleads) with safe/total count | Dataset cache (auto-built) | Quirk-day table via `run.quirk_report` |
 

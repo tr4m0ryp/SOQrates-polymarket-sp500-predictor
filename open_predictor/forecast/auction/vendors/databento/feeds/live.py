@@ -14,7 +14,7 @@ import threading
 from datetime import time as dtime
 
 from open_predictor.config import NY
-from open_predictor.forecast.auction.vendors.databento.client import DatabentoError, live_client
+from open_predictor.forecast.auction.vendors.databento.transport.client import DatabentoError, live_client
 from open_predictor.forecast.auction.vendors.databento.schemas import normalize_imbalance
 
 WINDOW_START = dtime(9, 28)

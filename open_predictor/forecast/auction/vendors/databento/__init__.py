@@ -7,12 +7,12 @@ share the schemas.py normalize_* functions, so both yield identical dicts.
 
 Preserved public names: get_range, nasdaq_noii, nyse_imbalance.
 """
-from open_predictor.forecast.auction.vendors.databento.client import (DatabentoError, get_range, live_client,
+from open_predictor.forecast.auction.vendors.databento.transport.client import (DatabentoError, get_range, live_client,
                                        _key)
-from open_predictor.forecast.auction.vendors.databento.historical import (cross_print_map, cross_prints,
+from open_predictor.forecast.auction.vendors.databento.feeds.historical import (cross_print_map, cross_prints,
                                            nasdaq_noii, nbbo_quotes,
                                            nyse_imbalance, snapshots)
-from open_predictor.forecast.auction.vendors.databento.live import stream_imbalance
+from open_predictor.forecast.auction.vendors.databento.feeds.live import stream_imbalance
 from open_predictor.forecast.auction.vendors.databento.schemas import (discover, normalize_imbalance,
                                         normalize_quote, normalize_trade)
 

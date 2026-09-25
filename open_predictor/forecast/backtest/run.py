@@ -1,7 +1,7 @@
 """Backtest runner: metrics table + quirk-day handling for each model."""
 from open_predictor.config import CONF_COMMIT, QUIRK_DAYS
 from open_predictor.forecast.model.core import Baseline, ModelV12, ModelV13
-from open_predictor.evaluation.backtest import dataset
+from open_predictor.forecast.backtest import dataset
 
 EVAL_HOURS = (0, 4, 7, 9)
 

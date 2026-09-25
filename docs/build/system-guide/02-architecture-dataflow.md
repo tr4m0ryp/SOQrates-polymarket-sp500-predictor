@@ -21,12 +21,12 @@ constants (`K_DEFAULT = 0.767` attenuation, `EWMA_LAMBDA = 0.94`,
 one direction but the official open printed the opposite.
 
 The top-level package `__init__.py` files (`open_predictor/sources/market`, `open_predictor/forecast/model`, `open_predictor/trading/polymarket`,
-`open_predictor/evaluation/backtest`, `open_predictor/forecast/news`, `open_predictor/forecast/auction`, `open_predictor/trading/strategy`) are empty; intent
+`open_predictor/forecast/backtest`, `open_predictor/forecast/news`, `open_predictor/forecast/auction`, `open_predictor/trading/strategy`) are empty; intent
 lives in module docstrings and the subpackage `__init__.py` files.
 
 ## Flow 1: daily prediction (`predict`, `backtest`)
 
-`open_predictor/evaluation/backtest/dataset.py` builds `.cache/dataset.json`: hourly overnight gap
+`open_predictor/forecast/backtest/dataset.py` builds `.cache/dataset.json`: hourly overnight gap
 paths for ES/NQ/YM from `open_predictor/sources/market/futures.py` (which wraps the Yahoo v8 chart
 API in `open_predictor/sources/market/yahoo.py`), a release-morning flag from
 `open_predictor/sources/macro/releases.py` (FRED release-dates API, first-Friday NFP fallback),
@@ -49,7 +49,7 @@ Yahoo chart API              FRED release dates
       |                             |
 open_predictor/sources/market/futures.py         open_predictor/sources/macro/releases.py
       \                            /
-       open_predictor/evaluation/backtest/dataset.py  ->  .cache/dataset.json
+       open_predictor/forecast/backtest/dataset.py  ->  .cache/dataset.json
                     |
       open_predictor/forecast/model/core.py (ModelV13.fit / .predict)
       open_predictor/forecast/model/regime.py (EWMA + RV sigma scaling)
@@ -61,7 +61,7 @@ open_predictor/sources/market/futures.py         open_predictor/sources/macro/re
             open_predictor/trading/polymarket/edge.py -> action + edge
 ```
 
-`backtest` runs the same dataset through `open_predictor/evaluation/backtest/run.py`: chronological
+`backtest` runs the same dataset through `open_predictor/forecast/backtest/run.py`: chronological
 train/test halves, metrics at hours 0/4/7/9, and a quirk-day report.
 
 ## Flow 2: stage-3 auction replica (`databento-pull` / `lseg-pull`, `stage3`)

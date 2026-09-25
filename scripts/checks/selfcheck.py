@@ -60,7 +60,7 @@ def main() -> int:
                        "cont_book_clr_price": 42860000000}) == 42.86)
 
     print("\nopening-cross identification (odd-lot defect, 2026-08-12)")
-    from open_predictor.forecast.auction.vendors.databento.historical import cross_print_map
+    from open_predictor.forecast.auction.vendors.databento.feeds.historical import cross_print_map
 
     # The window opens at 9:29:55, so pre-open odd lots arrive BEFORE the
     # cross. Taking the earliest trade picked a 20-share AAPL print over the
