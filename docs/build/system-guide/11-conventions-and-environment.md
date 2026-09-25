@@ -6,7 +6,7 @@ House rules for working in this repo: layout, language constraints, data convent
 
 The repo root holds exactly three directories, and `CLAUDE.md` forbids adding a fourth:
 
-- `open_predictor/` all source code, grouped by role: `sources/` (`market/`, `macro/`), `forecast/` (`model/`, `news/`, `auction/`), `trading/` (`polymarket/`, `strategy/`), `evaluation/` (`backtest/`), `cli/`, plus `open_predictor/config.py` for shared constants.
+- `open_predictor/` all source code, grouped by role: `sources/` (`market/`, `macro/`), `forecast/` (`model/`, `news/`, `auction/`, `backtest/`), `trading/` (`polymarket/`, `strategy/`), `cli/`, plus `open_predictor/config.py` for shared constants.
 - `scripts/` standalone scripts outside the import graph, by role: `data/` (`backfill.py`, `wrds_probe.py`), `evaluation/` (`stage3_eval.py`, `futures_baseline.py`), `checks/` (`selfcheck.py`).
 - `docs/` all writing: `build/` (`system-guide/`, these pages; `data-vendors/`, the data-sourcing knowledge base), `tasks/` (open work items), `research/` (`approach.tex`, `paper/`, `plots/`, `figures/`).
 
