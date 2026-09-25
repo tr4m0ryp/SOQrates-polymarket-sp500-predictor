@@ -7,8 +7,8 @@ tasks/
 *.b64
 *.aux
 *.toc
-docs/*.log
-docs/*.out
+docs/research/*.log
+docs/research/*.out
 docs/research/**/*.log
 .env
 .env.local
