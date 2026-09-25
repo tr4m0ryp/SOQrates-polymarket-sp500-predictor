@@ -23,7 +23,7 @@ from datetime import datetime, time as dtime, timezone
 
 from open_predictor.config import CACHE, NY
 from open_predictor.sources.market import weights as wmod
-from open_predictor.forecast.auction.vendors.databento import budget
+from open_predictor.forecast.auction.vendors.databento.transport import budget
 from open_predictor.forecast.auction.vendors.databento.transport.client import DatabentoError, get_range, _key
 from open_predictor.forecast.auction.vendors.databento.feeds.historical import (NASDAQ_DATASET, NYSE_DATASET,
                                            cross_print_map,

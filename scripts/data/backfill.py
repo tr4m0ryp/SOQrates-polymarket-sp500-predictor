@@ -16,7 +16,8 @@ sys.path.insert(0, ".")
 import open_predictor  # noqa: E402  (loads .env)
 from open_predictor.config import QUIRK_DAYS  # noqa: E402
 from open_predictor.sources.market import yahoo  # noqa: E402
-from open_predictor.forecast.auction.vendors.databento import budget, source  # noqa: E402
+from open_predictor.forecast.auction.vendors.databento import source  # noqa: E402
+from open_predictor.forecast.auction.vendors.databento.transport import budget  # noqa: E402
 
 
 def trading_days(n: int) -> list[str]:

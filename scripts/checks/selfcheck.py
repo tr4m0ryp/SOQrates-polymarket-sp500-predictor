@@ -84,7 +84,7 @@ def main() -> int:
                             "ts_ns": 1}])["Y"] == (5.0, 1))
 
     print("\nspend governor")
-    from open_predictor.forecast.auction.vendors.databento import budget
+    from open_predictor.forecast.auction.vendors.databento.transport import budget
     check("default cap is the agreed $50", budget.DEFAULT_CAP_USD == 50.00,
           f"got {budget.DEFAULT_CAP_USD}")
     check("cap is overridable by env",
