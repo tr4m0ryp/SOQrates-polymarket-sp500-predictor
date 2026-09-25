@@ -53,34 +53,106 @@ move survives into the official open**. The crowd prices it as if 100% does.
 That gap, plus knowing how uncertain to be at each hour of the night, is the
 whole edge.
 
-```
- overnight futures gap (ES)
-            |
-            v
-   x k (about 0.8)  ------------------->  predicted official gap
-                                                  |
-   uncertainty that shrinks toward 9:30 ------->  |
-                                                  v
-                                   P(official open is UP)
-                                                  |
-                   compare with the Polymarket price
-                                                  |
-                                                  v
-      trade only when confident AND the price is at least 5 cents wrong
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/research/figures/readme/pipeline-dark.png">
+  <img alt="How SOQrates turns the overnight gap into a trade" src="docs/research/figures/readme/pipeline-light.png" width="100%">
+</picture>
+
+## The model in formulas
+
+Everything is fitted once on the first half of the data and never refit on
+the test half.
+
+**The core: one line plus a clock.** $`g`$ is the overnight E-mini futures
+gap in % of the prior close, $`\tau`$ the minutes left until 9:30 ET. The
+crowd prices $`k = 1`$ and $`\sigma = 0`$; measured, $`k \approx 0.77\text{-}0.80`$
+and $`a_0 \approx 0`$.
+
+```math
+\hat g = a_0 + k\,g, \qquad
+P(\mathrm{up}) = \Phi\!\left(\frac{a_0 + k\,g}{\sigma(\tau)}\right), \qquad
+\sigma(\tau)^2 \approx 0.0066 + 0.0002\,\tau
 ```
 
-The model is one line plus a clock:
+The width is not a guess: the measured error shrinks from about 0.344% at
+midnight to 0.083% at 9:29, and the linear clock fits that schedule.
+Version 1.2 conditions $`k`$ on the volatility regime (0.733 calm, 0.827
+mid, 0.839 volatile), and version 1.3 widens $`\sigma`$ with the one-day
+volatility index VIX1D and adds the Nasdaq futures spread.
 
-```
-predicted gap  =  a0 + k * futures_gap          k ~ 0.77-0.80, a0 ~ 0
-P(up)          =  Phi( predicted gap / sigma(tau) )
-sigma(tau)^2   ~  0.0066 + 0.0002 * tau         tau = minutes left until 9:30
+**Combining signals.** The futures core, the news voices, and later the
+auction replica each give a center $`\mu_i`$ and a width $`\sigma_i`$. They
+are pooled by inverse variance, so a noisy signal gets little say:
+
+```math
+\mu_F = \frac{\sum_i \mu_i / \sigma_i^2}{\sum_i 1/\sigma_i^2}, \qquad
+\frac{1}{\sigma_F^2} = \sum_i \frac{1}{\sigma_i^2}, \qquad
+P(\mathrm{up}) = \Phi\!\left(\frac{\mu_F}{\sigma_F}\right)
 ```
 
-It was fitted once on the first half of the data and never refit on the test
-half. Version 1.3 adds a short-dated volatility index (VIX1D) for the width
-and the Nasdaq futures spread. An LLM news layer and the auction replica are
-built as extra signals, but neither is part of the production call yet.
+How much room is there for news? The overnight uncertainty that disappears
+between midnight and 9:29 bounds it:
+
+```math
+\sigma_{\mathrm{news}} = \sqrt{\sigma_{00:00}^2 - \sigma_{9:29}^2} = \sqrt{0.34^2 - 0.09^2} \approx 0.33\%
+```
+
+**From probability to a trade.** With model probability $`p_m`$ and market
+price $`q`$ of the UP side (in USDC):
+
+```math
+c = \max(p_m,\ 1 - p_m), \qquad
+e_{\mathrm{up}} = p_m - q, \qquad
+e_{\mathrm{down}} = q - p_m
+```
+
+A side is bought only when its edge is at least 0.05 and the confidence
+$`c`$ clears the rule's gate (0.60 to 0.70). Every fill pays Polymarket's
+taker fee, where $`n`$ is shares filled and $`p`$ the price paid:
+
+```math
+f = n\,r\,p\,(1-p), \qquad r = 0.04
+```
+
+**How much to stake.** The stake on day $`t`$ is capped three ways: half the
+bankroll $`B_t`$, a hard 400 USDC, and 1% of the day's traded volume
+$`V_t`$. The last term is the liquidity ceiling from the top of this page:
+
+```math
+s_t = \min\!\left(\tfrac{1}{2}\,B_t,\ 400,\ 0.01\,V_t\right)
+```
+
+**Flip risk.** For a position already open, the chance that the effective
+gap changes sign before 9:30, with the center drifting about 0.014% per
+square-root minute:
+
+```math
+P(\mathrm{flip}) = \Phi\!\left(\frac{-\,\lvert 0.83\,g\rvert}{0.014\%\,\sqrt{\tau}}\right)
+```
+
+**The auction replica.** Rebuild the first tick stock by stock: weight
+$`w_i`$, predicted first print $`\hat P_i`$, prior close $`C_i`$, counted only
+if the stock opens in time for the first tick:
+
+```math
+\mu_R = \sum_i w_i \left(\frac{\hat P_i}{C_i} - 1\right)\mathbf{1}[\,i \in \text{first tick}\,]
+```
+
+**How the results are scored.** Brier score for probability quality (lower
+is better, 0.25 is a coin flip), Wilson intervals for every accuracy, and
+White's reality check to price in that the best of $`K`$ strategies was
+picked ($`\bar f_k`$ is strategy $`k`$'s mean daily excess return, $`*b`$ a
+bootstrap resample):
+
+```math
+\mathrm{Brier} = \frac{1}{n}\sum_{t=1}^{n}(p_t - y_t)^2, \qquad
+\mathrm{CI}_{95} = \frac{\hat p + \frac{z^2}{2n} \pm z\sqrt{\frac{\hat p(1-\hat p)}{n} + \frac{z^2}{4n^2}}}{1 + z^2/n}
+```
+
+```math
+V = \max_{k \le K} \sqrt{n}\,\bar f_k, \qquad
+p_{\mathrm{adj}} = \frac{1}{B}\sum_{b=1}^{B}\mathbf{1}\!\left[\max_{k \le K}\sqrt{n}\left(\bar f^{\,*b}_k - \bar f_k\right) \ge V\right]
+```
 
 ## How well it works
 
@@ -92,6 +164,14 @@ Each line is one day's predicted probability that the open is UP, from
 midnight to 9:29. Green days opened up, red days opened down. The closer to
 9:30, the more the lines split toward the right answer.
 
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/research/figures/readme/accuracy-dark.png">
+  <img alt="Out-of-sample accuracy by prediction time" src="docs/research/figures/readme/accuracy-light.png" width="90%">
+</picture>
+
+<details>
+<summary>The exact numbers</summary>
+
 | Prediction time (ET) | Accuracy | 95% CI | Sample |
 |---|---|---|---|
 | 00:00 | 72.5% | 65.9-78.2% | 145/200 days |
@@ -101,7 +181,9 @@ midnight to 9:29. Green days opened up, red days opened down. The closer to
 | 09:29 | ~94% | 74.2-99.0% | 18 days, minute-level |
 | Ceiling with perfect 9:30 futures data | 96.3% | 89.7-98.7% | 81 unseen days |
 
-The last row matters: even perfect futures data tops out at 96.3%. The rest is
+</details>
+
+The dashed line matters: even perfect futures data tops out at 96.3%. The rest is
 decided inside the opening auction, which futures cannot see.
 
 ### Midnight calls, and knowing when to stand down
