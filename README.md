@@ -72,8 +72,8 @@ Contributor rules (coding standards, directory discipline) are in `CLAUDE.md`.
 
 ## License
 
-sOQrates is **source-available**, licensed under the
-[PolyForm Noncommercial License 1.0.0](./LICENSE) — **not** an OSI
+SPX Open Predictor is **source-available**, licensed under the
+[PolyForm Noncommercial License 1.0.0](./LICENSE), **not** an OSI
 open-source license.
 
 - **You may** use, modify, fork, and share SPX Open Predictor freely for any
