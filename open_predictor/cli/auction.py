@@ -126,7 +126,7 @@ def cmd_stage3(args):
                   f"lseg-pull --date {args.date}")
             return
         snaps = lseg_parse.snapshots(str(path))
-    open_predictor = yahoo.daily_open_close("^GSPC", 400)
+    spx = yahoo.daily_open_close("^GSPC", 400)
     days = sorted(spx)
     if args.date not in spx:
         print(f"{args.date} not a trading day in ^GSPC history")
