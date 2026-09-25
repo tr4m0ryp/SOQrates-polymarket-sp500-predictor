@@ -67,6 +67,10 @@ docs/
   research/              approach.tex, paper/ (Overleaf mirror), plots/, figures/
 ```
 
+`paper.pdf` at the root is the compiled paper. It is not a submission: it is
+LLM-written as development context, iterated every time the project is worked
+on. The research itself stays with the maintainer and is not public.
+
 New here? Read `docs/build/system-guide/README.md`, then pages 01, 02, and 09.
 Contributor rules (coding standards, directory discipline) are in `CLAUDE.md`.
 

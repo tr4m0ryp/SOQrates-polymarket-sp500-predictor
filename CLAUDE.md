@@ -86,7 +86,7 @@ and their agents read the source files for the full rationale.
 - **Order within a file:** imports, constants, types, private helpers, public API.
 - **Root minimalism.** The repo root holds only config anchors and entry
   points (`CLAUDE.md`, `README.md`, `LICENSE`, `NOTICE`, `__main__.py`,
-  dotfiles) plus the three root directories listed under Layout. Nothing else.
+  `paper.pdf`, dotfiles) plus the three root directories listed under Layout. Nothing else.
 - **After moving a file:** fix every path reference (grep the repo), re-anchor
   any `Path(__file__).resolve().parents[N]`, and re-run the affected commands.
 - **Scope and known debt.** The cap covers `open_predictor/`, `scripts/`, and
@@ -177,6 +177,7 @@ question, holds at most 5 entries, and a new file goes into the deepest
 directory that fits it.
 
 ```
+paper.pdf                compiled paper: full development context
 open_predictor/          the importable package (entry: python3 .)
   config.py              paths, quirk days, shared constants
   cli/                   argument parsing + command bodies
@@ -272,6 +273,20 @@ turn; the repo stays the source of truth:
 python3 ~/projects/research/style-corpus/overleaf/sync.py \
   --paper-dir docs/research/paper \
   --name soqrates --message "<what changed>"
+```
+
+The compiled paper is also kept at the repo root as `paper.pdf`, so any
+session can read the full context without a TeX build. It is **not a paper for
+publication**. It is LLM-written for context, not for research; the research
+itself stays with the maintainer and is not public. Every page carries this in
+a vertical side note, together with its purpose: an iterated
+context-engineering document, rewritten each time we work on the project
+inside the harness. Rebuild `paper.pdf` whenever the paper changes
+(two figures are referenced as PDFs; convert their PNGs first if missing):
+
+```
+cd docs/research/paper && pdflatex main && bibtex main \
+  && pdflatex main && pdflatex main && cp main.pdf ../../../paper.pdf
 ```
 
 Always reuse the `soqrates` slug (registered in
