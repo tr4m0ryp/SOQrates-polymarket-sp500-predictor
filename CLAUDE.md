@@ -205,18 +205,60 @@ docs/
 
 Run all commands from the repo root.
 
-## System guide (`docs/build/system-guide/`)
+## Docs: the full development context (`docs/`)
 
-Shared onboarding context for sessions with no memory of this project.
-If you are new here (or recalling nothing about this repo), read
-`docs/build/system-guide/README.md` first; pages 01, 02, and 09 are the minimum
-(overview, architecture, commands), the rest are per-subsystem deep dives,
-and `12-open-questions.md` lists what the repo alone cannot answer.
+`docs/` is not decoration. Together with the paper it holds everything the code
+does not say: why each mechanism exists, which numbers were validated, what
+was tried and rejected, and what is still open. **Read the matching doc before
+changing a mechanism**, and treat the paper as the reference for design
+rationale and results.
 
-Keep it honest: whoever changes the architecture, a CLI command, or a data
-flow updates the matching `docs/build/system-guide/` page in the same commit.
-When an open question gets resolved, move the answer into its numbered page
-and delete the entry from `12-open-questions.md`.
+- `docs/build/system-guide/` onboarding pack for sessions with no memory of
+  this repo. Start at its `README.md`; pages 01 (overview), 02 (architecture
+  and data flow), and 09 (commands) are the minimum. Pages 03-08 are
+  per-subsystem deep dives (data and macro, model, auction replica, news,
+  Polymarket and strategy, backtest and evaluation); 10 maps the research
+  artifacts, 11 the conventions, 12 the open questions the repo alone cannot
+  answer.
+- `docs/build/data-vendors/` auction-data sourcing knowledge base:
+  requirements, every vendor evaluated, the decided stack (Databento primary,
+  LSEG fallback, free stitch), verified facts, implementation status, open
+  questions. Read before touching `forecast/auction/vendors/`.
+- `docs/tasks/` open work items with their technical designs and evidence
+  (`complete-missing-gaps.md`: the measured defects and the plan to close them).
+- `docs/research/approach.tex` the long-form methodology draft: the fullest
+  prose explanation of model, replica, news layer, and strategy.
+- `docs/research/plots/` + `docs/research/figures/manifest.json` every research
+  figure and the ledger of which script regenerates it.
+
+### The paper as development context (`docs/research/paper/`)
+
+The NeurIPS-format paper is the most complete, most checked description of
+the system. Use it as the primary context for any non-trivial change:
+
+| Working on | Read first |
+|---|---|
+| The futures-gap model, sigma, calibration | `sections/method.tex`, `sections/results.tex` |
+| The opening-auction replica | `sections/appendix/replica.tex` |
+| Execution, fees, stake sizing | `sections/appendix/execution.tex` |
+| The news layer | `sections/appendix/news.tex` |
+| Strategy selection, reality check, overfitting | `sections/appendix/selection.tex` |
+| The Polymarket market itself | `sections/appendix/market.tex` |
+| Limits and threats to validity | `sections/discussion.tex` |
+
+- `main.tex` wires the sections; `references.bib` holds every citation.
+- `.harvest/context.md` is the claim ledger: 131 numbered, source-tagged claims
+  (each pointing at the repo file, command, or memory it came from). Check it
+  before quoting a number anywhere.
+- `.harvest/outline.md` and the `*-findings.md` files record the paper's
+  structure and the baseline, selection, and statistics findings behind it.
+
+**Keep code and paper consistent.** A code change that moves a reported number
+or invalidates a claim updates the paper section and the claim ledger in the
+same piece of work, then syncs Overleaf (below). Whoever changes the
+architecture, a CLI command, or a data flow updates the matching
+`docs/build/system-guide/` page in the same commit; a resolved open question
+moves into its numbered page and leaves `12-open-questions.md`.
 
 ## Paper -> Overleaf
 
