@@ -12,7 +12,7 @@ import json
 import os
 import sys
 
-CACHE = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+CACHE = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))),
                      ".cache")
 
 # The datasets this project needs, as (library, table, why, date column).
