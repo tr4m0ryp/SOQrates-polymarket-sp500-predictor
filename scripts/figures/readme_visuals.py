@@ -125,6 +125,9 @@ def render_accuracy(theme: str, path: Path) -> None:
             ax.annotate(text, (x, y), xytext=(-10, 10), textcoords="offset points",
                         ha="right", va="bottom", fontsize=12, color=c["fg"], weight="bold")
     ax.set_xticks(xs, [row[0] for row in ACCURACY])
+    ticks = ax.get_xticklabels()
+    ticks[-2].set_horizontalalignment("right")
+    ticks[-1].set_horizontalalignment("left")
     ax.set_xlim(-0.6, 10.6)
     ax.set_ylim(45, 100)
     ax.set_xlabel("Prediction time (ET)", fontsize=13, color=c["fg"])
