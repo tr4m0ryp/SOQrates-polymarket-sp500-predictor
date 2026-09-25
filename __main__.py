@@ -1,3 +1,3 @@
-from spx.cli import main
+from open_predictor.cli import main
 
 main()

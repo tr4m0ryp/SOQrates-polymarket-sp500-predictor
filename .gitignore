@@ -9,7 +9,7 @@ tasks/
 *.toc
 docs/*.log
 docs/*.out
-research/papers/**/*.log
+docs/research/**/*.log
 .env
 .env.local
 .claude/settings.local.json
