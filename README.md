@@ -82,7 +82,9 @@ volatility index VIX1D and adds the Nasdaq futures spread.
 
 **Combining signals.** The futures core, the news voices, and later the
 auction replica each give a center $`\mu_i`$ and a width $`\sigma_i`$. They
-are pooled by inverse variance, so a noisy signal gets little say:
+are pooled by inverse variance, so a noisy signal gets little say. The news
+layer and the replica are built, but neither is part of the production call
+yet:
 
 ```math
 \mu_F = \frac{\sum_i \mu_i / \sigma_i^2}{\sum_i 1/\sigma_i^2}, \qquad
