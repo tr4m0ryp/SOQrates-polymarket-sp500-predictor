@@ -145,7 +145,7 @@ def cmd_news_llm_bench(args):
 
 def cmd_news_replay(_args):
     from open_predictor.forecast.backtest import dataset
-    from open_predictor.forecast.news.eval import replay
+    from open_predictor.forecast.news.eval.replay import run as replay
 
     rows = dataset.load()
     results = replay.replay_labeled(rows)
