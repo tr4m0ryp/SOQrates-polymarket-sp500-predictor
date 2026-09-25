@@ -1,4 +1,4 @@
-"""Official-open ground truth: Yahoo ^GSPC cross-checked against stooq ^open_predictor."""
+"""Official-open ground truth: Yahoo ^GSPC cross-checked against stooq ^spx."""
 import csv
 import io
 import urllib.request

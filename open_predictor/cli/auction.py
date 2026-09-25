@@ -127,8 +127,8 @@ def cmd_stage3(args):
             return
         snaps = lseg_parse.snapshots(str(path))
     open_predictor = yahoo.daily_open_close("^GSPC", 400)
-    days = sorted(open_predictor)
-    if args.date not in open_predictor:
+    days = sorted(spx)
+    if args.date not in spx:
         print(f"{args.date} not a trading day in ^GSPC history")
         return
     prior = days[days.index(args.date) - 1]

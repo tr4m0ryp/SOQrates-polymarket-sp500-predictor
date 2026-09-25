@@ -17,7 +17,7 @@ def build() -> list[dict]:
         vix = yahoo.daily_open_close("^VIX1D", LOOKBACK_DAYS + 30)
     except Exception:
         vix = {}
-    days = sorted(open_predictor)
+    days = sorted(spx)
 
     rows = []
     for i in range(1, len(days)):

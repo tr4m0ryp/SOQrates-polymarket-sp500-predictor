@@ -43,7 +43,7 @@ the current gap for the live predict path.
 ## open_predictor/sources/market/ground_truth.py and the ground-truth rule
 
 Official-open ground truth is Yahoo `^GSPC` daily open, cross-checked against
-stooq. `stooq_daily()` downloads the full `^open_predictor` daily history as CSV from
+stooq. `stooq_daily()` downloads the full `^spx` daily history as CSV from
 `https://stooq.com/q/d/l/?s=%5Espx&i=d`. `audit(days_back=330, tol_pts=0.75)`
 returns every date where the two sources disagree on the open by more than
 0.75 index points. `python3 . ground-truth` (wired in `open_predictor/cli/sources.py`)
