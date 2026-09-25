@@ -2,14 +2,13 @@
 
 House rules for working in this repo: layout, language constraints, data conventions, the cache, and every environment key. Source of truth is `CLAUDE.md` at the repo root; this page adds detail found in the code.
 
-## Four root directories, no more
+## Three root directories, no more
 
-The repo root holds exactly four directories, and `CLAUDE.md` forbids adding a fifth:
+The repo root holds exactly three directories, and `CLAUDE.md` forbids adding a fourth:
 
-- `open_predictor/` all source code. Packages: `data/`, `macro/`, `model/`, `replica/`, `news/`, `pm/`, `backtest/`, `strategy/`, `cli/`, plus `open_predictor/config.py` for shared constants.
-- `docs/` design notes (`docs/research/approach.tex`), the data-sourcing knowledge base (`docs/build/data-vendors/`), and these context pages (`docs/build/system-guide/`).
-- `research/` non-code artifacts: `papers/` (LaTeX plus scribe state), `plots/`, `figures/`.
-- `scripts/` standalone scripts outside the import graph. Currently one: `scripts/data/wrds_probe.py`.
+- `open_predictor/` all source code, grouped by role: `sources/` (`market/`, `macro/`), `forecast/` (`model/`, `news/`, `auction/`), `trading/` (`polymarket/`, `strategy/`), `evaluation/` (`backtest/`), `cli/`, plus `open_predictor/config.py` for shared constants.
+- `scripts/` standalone scripts outside the import graph, by role: `data/` (`backfill.py`, `wrds_probe.py`), `evaluation/` (`stage3_eval.py`, `futures_baseline.py`), `checks/` (`selfcheck.py`).
+- `docs/` all writing: `build/` (`system-guide/`, these pages; `data-vendors/`, the data-sourcing knowledge base), `tasks/` (open work items), `research/` (`approach.tex`, `paper/`, `plots/`, `figures/`).
 
 Entry point is `__main__.py` at the root, so every command is `python3 . <command>` run from the repo root.
 
