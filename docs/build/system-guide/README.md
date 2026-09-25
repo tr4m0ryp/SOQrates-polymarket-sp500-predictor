@@ -1,4 +1,4 @@
-# Team Context Pack
+# System Guide
 
 This directory is the shared onboarding context for teammates opening this repo
 in a fresh Claude Code session with no memory of the project. The eleven

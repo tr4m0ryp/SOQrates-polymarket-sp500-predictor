@@ -1,9 +1,10 @@
 # Research Artifacts and Where Writing Goes
 
-Research output lives in two trees. `research/` holds the figures, the figure
-manifest, and the paper. `docs/` holds the prose that is not the paper: the
-methodology working draft and the data-sourcing knowledge base. This page maps
-both and explains the Overleaf mirroring rule for the paper.
+All writing lives under `docs/`. `docs/research/` holds the figures, the figure
+manifest, the paper, and the methodology working draft. `docs/build/` holds the
+data-sourcing knowledge base and this system guide; `docs/tasks/` holds open
+work items. This page maps them and explains the Overleaf mirroring rule for
+the paper.
 
 ## Figures: `docs/research/plots/` and the manifest
 
@@ -35,7 +36,7 @@ from the images plus project memory. Three are regenerable:
 - `strategy_bankroll_50`: `open_predictor/trading/strategy/analysis/plot.py` (waived).
 
 Manifest notes mention regenerated PDF versions alongside the PNGs, but no
-`.pdf` files exist anywhere under `research/` today. Only the PNGs survive.
+`.pdf` files exist anywhere under `docs/research/` today. Only the PNGs survive.
 
 New figures follow the same contract: put the PNG in `docs/research/plots/`, add a
 manifest entry with a caption draft and the producing script, and copy the file
