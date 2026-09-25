@@ -289,13 +289,12 @@ itself stays with the maintainer and is not public. Every page carries this in
 a vertical side note, together with its purpose: an iterated
 context-engineering document, rewritten each time we work on the project
 inside the harness. Rebuild `paper.pdf` whenever the paper changes
-(two figures are referenced as PDFs; convert their PNGs first if missing):
+(copy the figure PDFs from the Overleaf mirror into `figures/` first):
 
 ```
 cd docs/research/paper && pdflatex main && bibtex main \
   && pdflatex main && pdflatex main && cp main.pdf ../../../paper.pdf
 ```
-
 
 ## Package map (all under `open_predictor/`)
 
