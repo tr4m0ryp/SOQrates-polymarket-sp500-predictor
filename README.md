@@ -275,6 +275,93 @@ stake you intended and flatten out near **$1,000, about 1% of a day's
 volume**. Doubling the stake from $1,000 to $2,000 adds only about 27% more
 profit. With volume now at $30-48k a day, the flat part ends even sooner.
 
+## The news layer: when the world moves overnight
+
+After the first backtests I went through every wrong midnight call to see
+what caused it. Nothing was unexplained, and the biggest group was not the
+model or the auction. It was the news.
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/research/figures/readme/misses-dark.png">
+  <img alt="Why the midnight call misses" src="docs/research/figures/readme/misses-light.png" width="90%">
+</picture>
+
+Of the 55 wrong midnight calls, **51% were overnight news reversals**:
+something happened after midnight and the futures gap flipped. The largest
+mistake days read like a news archive: the Iran de-escalation on
+2026-03-23, Meta and Microsoft earnings, a Russian doctrine change, CPI and
+jobs mornings, and tariffs. A lot of tariffs. While labeling those days, one
+name kept coming back. I will not say who, but he posts on Truth Social, and
+a tariff post at 3 a.m. moves the S&P open more than any constant in this
+model. His feed is literally on the to-do list as a news source.
+
+So I added an LLM layer. The easy version would be to ask a model "is this
+bullish?" and use the answer as a weight. That does not work here, for a
+reason the data made very clear.
+
+**News and the market move at the same moment.** The first Iran headline
+was indexed in the same 15-minute window in which the futures swung 2%. By
+the time an LLM reads a headline, the gap has usually already priced it in.
+Adding the LLM's opinion on top would count the same news twice. Two design
+rules follow from that:
+
+1. **The LLM never sees market data**: not the futures gap, not the
+   Polymarket price, not the model's position. That information already
+   lives in the quant model, and showing it to the LLM would only anchor it.
+2. **Market moves only trigger a run.** A 0.15% gap move within 15 minutes
+   wakes the layer up; the LLM then reads the headlines, not the chart.
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/research/figures/readme/news-dark.png">
+  <img alt="The news layer: a bounded second voice" src="docs/research/figures/readme/news-light.png" width="100%">
+</picture>
+
+The layer has two voices, split by how fast their input changes:
+
+| | Group A: midnight briefing | Group B: headline checkpoints |
+|---|---|---|
+| When | once, at 00:05 ET | 02:30, 04:30, 07:00, 08:00, 08:35, 09:15, plus triggers |
+| Reads | release calendar, earnings, nowcast vs consensus, prediction-market odds | new GDELT and Alpaca headlines since the last run |
+| Says | how uncertain tomorrow is | what happened, which direction, was it a shock |
+| Becomes | a variance multiplier $`m_A \in [1, 2.5]`$, anchored at the fitted 1.29 for jobs mornings | only the fitted effects below |
+
+Group A may only tilt the direction (by at most 0.3) when the nowcast
+disagrees with the consensus; pre-event risk is otherwise symmetric.
+
+Group B's direction is not trusted as an opinion. It only switches on the
+two effects that survived in the data:
+
+- **After a shock, widen.** After a gap move of at least 0.35% in one hour,
+  the official open lands further from the prediction: residuals were about
+  1.9 times wider over 76 shock days (1.32 when refit on the train half only).
+- **On a conflicted day, follow the shock.** When a shock happened but the
+  gap has come back under 0.15%, the market has not priced it. On those days
+  the shock's sign predicted the official open 85.4% of the time (n = 41).
+  With $`d_B`$ the LLM's direction, $`c`$ its confidence, and $`\sigma_m`$ the
+  model width:
+
+```math
+\mu_B = 0.9\; d_B\, c\, \sigma_m \qquad \text{(zero on days the gap already repriced)}
+```
+
+**Guardrails.** Every LLM answer is JSON, validated and clamped to its fitted
+range, so a misbehaving model cannot push the fusion outside the numbers the
+data supports. Its own uncertainty has a floor of 0.25%, so in the
+inverse-variance fusion it can nudge and widen the prediction but never
+dominate it. The runner works with any OpenAI-compatible endpoint at
+temperature 0.1, with a fallback chain, at about 12 calls a night, which
+fits free tiers.
+
+**How it is tested.** A mistake inventory of every day where post-midnight
+news mattered, 14 hand-verified labeled days, a replay that feeds the real
+prompt the exact headlines available at each checkpoint (no hindsight), and
+a benchmark of 8 labeled cases to pick a model.
+
+**Status.** Built, bounded, and tested in replay, but not yet part of the
+production call. The most room it can ever take is the overnight uncertainty
+that disappears between midnight and 9:29, about 0.33% (see
+[the formulas](#the-model-in-formulas)).
+
 ## The unfinished part: an auction replica
 
 Futures cannot see the quirk days, but the exchanges publish their opening
@@ -309,8 +396,9 @@ In order of value:
    only run on 2019 ITCH sample files.
 4. **A live morning loop with real fills**, paper trading first. This is the
    only way to confirm the edge.
-5. **The news layer.** Pick an LLM provider from the benchmark and wire its
-   bounded vote into the fusion.
+5. **The news layer.** Pick an LLM provider from the benchmark, wire its
+   bounded voice into the fusion, and add the missing feeds (Truth Social,
+   EDGAR 8-K filings).
 
 The full plan with evidence is in `docs/tasks/complete-missing-gaps.md`, and
 the questions the code alone cannot answer are in
