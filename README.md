@@ -352,13 +352,13 @@ dominate it. The runner works with any OpenAI-compatible endpoint at
 temperature 0.1, with a fallback chain, at about 12 calls a night, which
 fits free tiers.
 
-**How it is tested.** A mistake inventory of every day where post-midnight
+**The test harness.** A mistake inventory of every day where post-midnight
 news mattered, 14 hand-verified labeled days, a replay that feeds the real
 prompt the exact headlines available at each checkpoint (no hindsight), and
-a benchmark of 8 labeled cases to pick a model.
+a benchmark of 8 labeled cases to pick a model. The full replay over all
+news days is built but has not been run end to end yet.
 
-**Status.** Built, bounded, and tested in replay, but not yet part of the
-production call. The most room it can ever take is the overnight uncertainty
+**Status.** Built and bounded, but not yet part of the production call. The most room it can ever take is the overnight uncertainty
 that disappears between midnight and 9:29, about 0.33% (see
 [the formulas](#the-model-in-formulas)).
 
