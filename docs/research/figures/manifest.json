@@ -98,5 +98,23 @@
     "producing_script": "scripts/figures/readme_visuals.py",
     "data_source": null,
     "notes": null
+  },
+  {
+    "id": "readme_misses",
+    "file": "docs/research/figures/readme/misses-light.png",
+    "status": "placed",
+    "caption_draft": "README chart: attribution of the 55 midnight misses (33% coin toss, 51% overnight news, 16% auction quirk).",
+    "producing_script": "scripts/figures/readme_visuals.py",
+    "data_source": null,
+    "notes": null
+  },
+  {
+    "id": "readme_news",
+    "file": "docs/research/figures/readme/news-light.png",
+    "status": "placed",
+    "caption_draft": "README diagram: the bounded LLM news layer (Group A, Group B, guardrails, fusion).",
+    "producing_script": "scripts/figures/readme_visuals.py",
+    "data_source": null,
+    "notes": null
   }
 ]
