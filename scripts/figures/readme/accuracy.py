@@ -73,9 +73,9 @@ def render_accuracy(theme: str, path: Path) -> None:
 
 def render_misses(theme: str, path: Path) -> None:
     """Render the stacked breakdown of the 55 wrong midnight calls for one theme."""
-    fig, ax, c = new_canvas(theme, (9, 3.4))
+    fig, ax, c = new_canvas(theme, (9, 3.1))
     ax.set_xlim(0, 100)
-    ax.set_ylim(-3.1, 1.6)
+    ax.set_ylim(-2.55, 1.6)
     ax.axis("off")
     left = 0.0
     for pct, label, detail, accent in MISSES:
@@ -90,7 +90,7 @@ def render_misses(theme: str, path: Path) -> None:
         ax.text(mid, -0.95, detail, ha="center", va="top", fontsize=11, color=c["muted"],
                 linespacing=1.4)
         left += pct
-    ax.text(0, -2.75, "55 midnight misses over 200 trading days; zero unexplained",
+    ax.text(0, -2.15, "55 midnight misses over 200 trading days; zero unexplained",
             ha="left", va="top", fontsize=11, color=c["muted"], style="italic")
     fig.suptitle("Why the midnight call misses", fontsize=16, color=c["fg"], weight="bold",
                  x=0.125, ha="left", y=0.98)
