@@ -28,6 +28,7 @@ read when you touch that area.
 | [10-research-artifacts.md](10-research-artifacts.md) | Research Artifacts | Where figures, the NeurIPS-format paper, and the methodology drafts live, and the Overleaf sync rule (slug `soqrates`). | |
 | [11-conventions-and-environment.md](11-conventions-and-environment.md) | Conventions and Environment | House rules, the full `.cache/` file map, and every environment key with the module that reads it. | |
 | [12-open-questions.md](12-open-questions.md) | Open Questions | 32 things the repo alone cannot answer (memory, accounts, pending decisions); check before assuming. | |
+| [13-columnar-store.md](13-columnar-store.md) | Columnar Store for the Databento Pulls | When a Parquet + DuckDB copy of the 21 GB raw pulls pays (digest-rule rebuilds, ~20 min -> seconds), where the converter lives, and the fixed-point / ns-timestamp / null-sentinel rules. | |
 
 ## Quick start
 

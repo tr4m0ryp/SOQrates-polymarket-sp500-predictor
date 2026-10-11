@@ -39,6 +39,14 @@ flow updates the matching `docs/context/` page in the same commit. When an
 open question gets resolved, move the answer into its numbered page and
 delete the entry from `12-open-questions.md`.
 
+## Large data (columnar store)
+
+Before re-deriving anything from the 21 GB of raw Databento pulls in `.cache/databento/`
+(new digest rules, cutoffs, cross definitions), read `docs/context/13-columnar-store.md`.
+It says when a Parquet + DuckDB copy pays, where the converter may live (a separate venv
+under `tools/`, never in core `spx/`), and the exactness rules: fixed-point prices, ns
+timestamps, `ts_event` cutoffs, `"0"` null sentinels, raw JSON never deleted.
+
 ## Paper -> Overleaf
 
 The paper lives at `research/papers/spx-open-polymarket/` and mirrors the
