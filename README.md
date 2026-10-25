@@ -1,5 +1,9 @@
 # SOQrates: Polymarket S&P 500 Open Predictor
 
+<p align="center">
+  <a href="https://x.com/tr4m0ryp"><img alt="Follow on X" src="https://img.shields.io/badge/X-@tr4m0ryp-000000?logo=x&logoColor=white"></a>
+</p>
+
 ## Why I am publishing this
 
 I published this simply because I no longer care about it. I found a game
